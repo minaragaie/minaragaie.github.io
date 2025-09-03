@@ -28,7 +28,7 @@ export default function HeroSection({ isVisible }: HeroSectionProps) {
         <div
           className={`transition-all duration-1000 ${isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"}`}
         >
-          <div className="flex items-center gap-6 mb-8">
+          <div className="flex flex-col md:flex-row items-center gap-6 mb-8">
             <div className="relative group">
               <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-[var(--vscode-blue)] p-1 bg-gradient-to-br from-[var(--vscode-blue)] to-[var(--vscode-green)]">
                 <img
@@ -66,7 +66,7 @@ export default function HeroSection({ isVisible }: HeroSectionProps) {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 text-sm mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm mb-8">
             <div className="flex items-center gap-2 p-3 rounded bg-[var(--card)] hover:bg-[var(--popover)] transition-all">
               <MapPin className="w-4 h-4 text-[var(--vscode-green)]" />
               <span>Voorhees, NJ</span>
@@ -85,7 +85,7 @@ export default function HeroSection({ isVisible }: HeroSectionProps) {
             </div>
           </div>
 
-          <div className="flex gap-4">
+          <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
             <Button
               className="bg-gradient-to-r from-[#007acc] to-[#0086d4] hover:from-[#005a9e] hover:to-[#006bb3] text-white shadow-lg hover:shadow-xl border border-[#007acc]/20"
               size="lg"
