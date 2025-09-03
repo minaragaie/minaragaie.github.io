@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Mail, Phone, MapPin, Linkedin, Send, MessageSquare } from "lucide-react"
@@ -100,85 +99,61 @@ export default function ContactSection({ onStatusChange, isVisible = false }: Co
     <div
       className={`transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
     >
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold mb-4" style={{ color: "var(--text-primary)" }}>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4" style={{ color: "var(--text-primary)" }}>
             <span className="text-[#569cd6] font-mono">function</span>{" "}
             <span className="text-[#4ec9b0]">getInTouch</span>
             <span style={{ color: "var(--text-primary)" }}>()</span>
           </h2>
-          <p className="max-w-2xl mx-auto font-mono" style={{ color: "var(--text-secondary)" }}>
+          <p className="max-w-xl mx-auto font-mono text-sm sm:text-base" style={{ color: "var(--text-secondary)" }}>
             // Ready to collaborate on your next project
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12">
+        {/* Grid: stacks on mobile, 2 cols on large screens */}
+        <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
           {/* Contact Info */}
-          <div className="space-y-8">
+          <div className="space-y-6 sm:space-y-8">
             <div
-              className="rounded-lg p-8"
-              style={{ backgroundColor: "var(--vscode-bg)", borderColor: "var(--vscode-border)", border: "1px solid" }}
+              className="rounded-lg p-6 sm:p-8"
+              style={{
+                backgroundColor: "var(--vscode-bg)",
+                borderColor: "var(--vscode-border)",
+                border: "1px solid",
+              }}
             >
-              <h3 className="text-xl font-bold mb-6 flex items-center gap-3" style={{ color: "var(--text-primary)" }}>
+              <h3
+                className="text-lg sm:text-xl font-bold mb-4 sm:mb-6 flex items-center gap-3"
+                style={{ color: "var(--text-primary)" }}
+              >
                 <MessageSquare className="w-5 h-5 text-[#4ec9b0]" /> Let's Connect
               </h3>
-              <div className="space-y-6">
-                <div
-                  className="flex items-center gap-4 p-4 rounded-lg transition-colors"
-                  style={{ backgroundColor: "var(--vscode-input-bg)" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "var(--vscode-hover)")}
-                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--vscode-input-bg)")}
-                >
-                  <div className="p-2 bg-gradient-to-br from-[#007acc] to-[#4ec9b0] rounded">
-                    <Mail className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <p className="text-[#569cd6] font-mono text-sm">email:</p>
-                    <p style={{ color: "var(--text-primary)" }}>{resumeData.personalInfo.email}</p>
-                  </div>
-                </div>
-
-                <div
-                  className="flex items-center gap-4 p-4 rounded-lg transition-colors"
-                  style={{ backgroundColor: "var(--vscode-input-bg)" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "var(--vscode-hover)")}
-                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--vscode-input-bg)")}
-                >
-                  <div className="p-2 bg-gradient-to-br from-[#28ca42] to-[#4ec9b0] rounded">
-                    <Phone className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <p className="text-[#569cd6] font-mono text-sm">phone:</p>
-                    <p style={{ color: "var(--text-primary)" }}>{resumeData.personalInfo.phone}</p>
-                  </div>
-                </div>
-
-                <div
-                  className="flex items-center gap-4 p-4 rounded-lg transition-colors"
-                  style={{ backgroundColor: "var(--vscode-input-bg)" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "var(--vscode-hover)")}
-                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--vscode-input-bg)")}
-                >
-                  <div className="p-2 bg-gradient-to-br from-[#dcb67a] to-[#4ec9b0] rounded">
-                    <MapPin className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <p className="text-[#569cd6] font-mono text-sm">location:</p>
-                    <p style={{ color: "var(--text-primary)" }}>{resumeData.personalInfo.location}</p>
-                  </div>
-                </div>
-
-                <div
-                  className="flex items-center gap-4 p-4 rounded-lg transition-colors"
-                  style={{ backgroundColor: "var(--vscode-input-bg)" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "var(--vscode-hover)")}
-                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--vscode-input-bg)")}
-                >
-                  <div className="p-2 bg-gradient-to-br from-[#0077b5] to-[#4ec9b0] rounded">
-                    <Linkedin className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <p className="text-[#569cd6] font-mono text-sm">linkedin:</p>
+              <div className="space-y-4 sm:space-y-6">
+                {/* Email */}
+                <ContactItem
+                  icon={<Mail className="w-5 h-5 text-[var(--vscode-green)]" />}
+                  label="email"
+                  value={resumeData.personalInfo.email}
+                />
+                {/* Phone */}
+                <ContactItem
+                  icon={<Phone className="w-5 h-5 text-[var(--vscode-green)]" />}
+                  label="phone"
+                  value={resumeData.personalInfo.phone}
+                />
+                {/* Location */}
+                <ContactItem
+                  icon={<MapPin className="w-5 h-5 text-[var(--vscode-green)]" />}
+                  label="location"
+                  value={resumeData.personalInfo.location}
+                />
+                {/* LinkedIn */}
+                <ContactItem
+                  icon={<Linkedin className="w-5 h-5 text-[var(--vscode-green)]" />}
+                  label="linkedin"
+                  value={
                     <a
                       href={resumeData.personalInfo.linkedin}
                       target="_blank"
@@ -187,17 +162,21 @@ export default function ContactSection({ onStatusChange, isVisible = false }: Co
                     >
                       View Profile
                     </a>
-                  </div>
-                </div>
+                  }
+                />
               </div>
             </div>
 
             {/* Status Card */}
             <div
-              className="rounded-lg p-6"
-              style={{ backgroundColor: "var(--vscode-bg)", borderColor: "var(--vscode-border)", border: "1px solid" }}
+              className="rounded-lg p-4 sm:p-6"
+              style={{
+                backgroundColor: "var(--vscode-bg)",
+                borderColor: "var(--vscode-border)",
+                border: "1px solid",
+              }}
             >
-              <div className="rounded p-4" style={{ backgroundColor: "var(--vscode-input-bg)" }}>
+              <div className="rounded p-3 sm:p-4" style={{ backgroundColor: "var(--vscode-input-bg)" }}>
                 <code className="text-xs text-[#569cd6] font-mono block mb-2">// Available for opportunities</code>
                 <code className="text-xs text-[#ce9178] font-mono block">const status = "Open to new challenges";</code>
                 <code className="text-xs text-[#4ec9b0] font-mono block">const responseTime = "Within 24 hours";</code>
@@ -207,24 +186,31 @@ export default function ContactSection({ onStatusChange, isVisible = false }: Co
 
           {/* Contact Form */}
           <div
-            className="rounded-lg p-8"
-            style={{ backgroundColor: "var(--vscode-bg)", borderColor: "var(--vscode-border)", border: "1px solid" }}
+            className="rounded-lg p-6 sm:p-8"
+            style={{
+              backgroundColor: "var(--vscode-bg)",
+              borderColor: "var(--vscode-border)",
+              border: "1px solid",
+            }}
           >
-            <h3 className="text-xl font-bold mb-6 flex items-center gap-3" style={{ color: "var(--text-primary)" }}>
+            <h3
+              className="text-lg sm:text-xl font-bold mb-4 sm:mb-6 flex items-center gap-3"
+              style={{ color: "var(--text-primary)" }}
+            >
               <Send className="w-5 h-5 text-[#4ec9b0]" /> Send Message
             </h3>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
               {["name", "email"].map((field) => (
                 <div key={field}>
-                  <label className="block text-[#569cd6] font-mono text-sm mb-2">{field}:</label>
+                  <label className="block text-[#569cd6] font-mono text-sm mb-1 sm:mb-2">{field}:</label>
                   <input
                     type={field === "email" ? "email" : "text"}
                     name={field}
                     value={formData[field as keyof typeof formData]}
                     onChange={handleInputChange}
                     placeholder={field === "email" ? "your.email@example.com" : "Your name"}
-                    className="w-full rounded px-4 py-3 focus:border-[#007acc] focus:outline-none transition-colors"
+                    className="w-full rounded px-3 sm:px-4 py-2 sm:py-3 focus:border-[#007acc] focus:outline-none transition-colors"
                     style={{
                       backgroundColor: "var(--vscode-input-bg)",
                       borderColor: "var(--vscode-border)",
@@ -237,14 +223,14 @@ export default function ContactSection({ onStatusChange, isVisible = false }: Co
               ))}
 
               <div>
-                <label className="block text-[#569cd6] font-mono text-sm mb-2">message:</label>
+                <label className="block text-[#569cd6] font-mono text-sm mb-1 sm:mb-2">message:</label>
                 <textarea
                   name="message"
                   value={formData.message}
                   onChange={handleInputChange}
-                  rows={6}
+                  rows={5}
                   placeholder="Tell me about your project..."
-                  className="w-full rounded px-4 py-3 focus:border-[#007acc] focus:outline-none transition-colors resize-none"
+                  className="w-full rounded px-3 sm:px-4 py-2 sm:py-3 focus:border-[#007acc] focus:outline-none transition-colors resize-none"
                   style={{
                     backgroundColor: "var(--vscode-input-bg)",
                     borderColor: "var(--vscode-border)",
@@ -279,17 +265,36 @@ export default function ContactSection({ onStatusChange, isVisible = false }: Co
 
       {/* Terminal Window */}
       {showTerminal && (
-        <div className="fixed bottom-4 right-4 w-96 z-50">
+        <div className="fixed bottom-4 right-4 w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl z-50">
           <TerminalWindow
             title="Message Sender"
             commands={terminalCommands}
             isProcessing={isSubmitting}
             cursorBlinkSpeed={isSubmitting ? 500 : 0}
             autoCloseAfter={14000}
-            onClose={() => setShowTerminal(false)} // remove terminal from DOM
+            onClose={() => setShowTerminal(false)}
           />
         </div>
       )}
+    </div>
+  )
+}
+
+function ContactItem({ icon, label, value }: { icon: React.ReactNode; label: string; value: React.ReactNode }) {
+  return (
+    <div
+      className="flex items-start sm:items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg transition-colors"
+      style={{ backgroundColor: "var(--vscode-input-bg)" }}
+      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "var(--vscode-hover)")}
+      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--vscode-input-bg)")}
+    >
+      <div className="p-2">{icon}</div>
+      <div>
+        <p className="text-[#569cd6] font-mono text-xs sm:text-sm">{label}:</p>
+        <p style={{ color: "var(--text-primary)" }} className="text-sm sm:text-base">
+          {value}
+        </p>
+      </div>
     </div>
   )
 }
