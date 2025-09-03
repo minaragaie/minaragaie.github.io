@@ -28,7 +28,7 @@ export default function HeroSection({ isVisible }: HeroSectionProps) {
         <div
           className={`transition-all duration-1000 ${isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"}`}
         >
-          <div className="flex flex-col md:flex-row items-center gap-6 mb-8">
+          <div className="flex flex-row md:flex-row items-center gap-6 mb-8">
             <div className="relative group">
               <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-[var(--vscode-blue)] p-1 bg-gradient-to-br from-[var(--vscode-blue)] to-[var(--vscode-green)]">
                 <img

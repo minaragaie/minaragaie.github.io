@@ -29,14 +29,14 @@ export default function ExperienceSection({ isVisible }: ExperienceSectionProps)
           {resumeData.experience.map((exp, index) => (
             <div key={exp.id} className="relative">
               {/* Timeline marker */}
-              <div className="absolute left-2 sm:left-6 w-3 sm:w-4 h-3 sm:h-4 bg-[var(--vscode-blue)] rounded-full border-2 sm:border-4 border-[var(--bg-primary)] z-10 shadow-md shadow-[var(--vscode-blue)]/50"></div>
+              <div className="absolute left-2 sm:left-6 top-0 w-3 sm:w-4 h-3 sm:h-4 bg-[var(--vscode-blue)] rounded-full border-2 sm:border-4 border-[var(--bg-primary)] z-10 shadow-md shadow-[var(--vscode-blue)]/50"></div>
 
               {/* Step card */}
               <div
-                className={`ml-6 sm:ml-16 bg-[var(--bg-tertiary)] border border-[var(--border-color)] rounded-lg p-4 sm:p-8 hover:border-[var(--vscode-blue)] transition-all duration-700 hover:shadow-lg hover:shadow-[var(--vscode-blue)]/10 transform relative ${
+                className={`bg-[var(--bg-tertiary)] border border-[var(--border-color)] rounded-lg p-4 sm:p-8 hover:border-[var(--vscode-blue)] transition-all duration-700 hover:shadow-lg hover:shadow-[var(--vscode-blue)]/10 transform relative ${
                   isVisible
                     ? "translate-x-0 opacity-100"
-                    : "translate-x-4 sm:translate-x-12 opacity-0"
+                    : "opacity-0 sm:translate-x-12"
                 }`}
                 style={{
                   transitionDelay: `${index * 300}ms`,
@@ -50,11 +50,9 @@ export default function ExperienceSection({ isVisible }: ExperienceSectionProps)
                 <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-4 sm:mb-6">
                   <div className="flex-1">
                     {/* Title + Badge */}
-                    <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
-                      <Briefcase className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--vscode-green)]" />
-                      <h3 className="text-lg sm:text-xl font-bold text-[var(--text-primary)]">
-                        {exp.title}
-                      </h3>
+                    <div className="flex items-center gap-2 sm:gap-3 mb-2">
+                      <Briefcase className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 text-[var(--vscode-green)]" />
+                      <h3 className="text-lg sm:text-xl font-bold text-[var(--text-primary)]">{exp.title}</h3>
                       {exp.type && (
                         <Badge
                           variant="outline"
@@ -68,11 +66,11 @@ export default function ExperienceSection({ isVisible }: ExperienceSectionProps)
                     {/* Company + Dates */}
                     <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-[var(--text-primary)] mb-3">
                       <div className="flex items-center gap-1 sm:gap-2">
-                        <MapPin className="w-4 h-4 text-[var(--vscode-blue)]" />
+                        <MapPin className="w-4 h-4 text-[var(--vscode-blue)] flex-shrink-0" />
                         <span className="font-semibold text-[var(--vscode-blue)]">{exp.company}</span>
                       </div>
                       <div className="flex items-center gap-1 sm:gap-2">
-                        <Calendar className="w-4 h-4 text-[var(--vscode-yellow)]" />
+                        <Calendar className="w-4 h-4 text-[var(--vscode-yellow)] flex-shrink-0" />
                         <span className="text-[var(--vscode-yellow)] text-sm sm:text-base">{exp.startDate} - {exp.endDate}</span>
                       </div>
                     </div>
