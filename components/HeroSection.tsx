@@ -52,15 +52,15 @@ export default function HeroSection({ isVisible }: HeroSectionProps) {
           </div>
 
           <div className="space-y-4 mb-8">
-            <div className="flex items-center gap-3 text-[var(--vscode-text-muted)]">
+            <div className="flex items-start gap-3 text-[var(--vscode-text-muted)]">
               <span className="text-[var(--vscode-keyword)] font-mono">experience:</span>
               <span className="text-[var(--vscode-string)]">"10+ years"</span>
             </div>
-            <div className="flex items-center gap-3 text-[var(--vscode-text-muted)]">
+            <div className="flex items-start gap-3 text-[var(--vscode-text-muted)]">
               <span className="text-[var(--vscode-keyword)] font-mono">specialization:</span>
               <span className="text-[var(--vscode-string)]">"Full-Stack Web Development"</span>
             </div>
-            <div className="flex items-center gap-3 text-[var(--vscode-text-muted)]">
+            <div className="flex items-start gap-3 text-[var(--vscode-text-muted)]">
               <span className="text-[var(--vscode-keyword)] font-mono">passion:</span>
               <span className="text-[var(--vscode-string)]">"Scalable & Secure Applications"</span>
             </div>
