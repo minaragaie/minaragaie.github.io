@@ -105,9 +105,6 @@ export default function RootLayout({
       className={`${playfair.variable} ${sourceSans.variable}`}
       suppressHydrationWarning
     >
-      <Head>
-        <meta name="google-site-verification" content="wH7dOBP-A1bpU7vR8ZxMFJkSWBlCnCz_923eiLUiCkc" />
-      </Head>
     {/* JSON-LD Structured Data - Placed directly in the HTML without `next/head` */}
       <body className="font-sans antialiased transition-colors duration-300 bg-[var(--bg-primary)] text-[var(--text-primary)]">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
