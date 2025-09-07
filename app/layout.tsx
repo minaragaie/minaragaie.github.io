@@ -3,6 +3,7 @@ import { Playfair_Display, Source_Sans_3 } from "next/font/google";
 import "./globals.css";
 import ThemeProvider from "@/components/theme-provider";
 import StructuredData from "@/components/structuredData";
+import Script from "next/script";
 
 // --------------------
 // Font Configuration
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
   generator: "Mina Youaness",
   applicationName: "Mina Youaness Resume",
 verification: {
-    google: "wH7dOBP-A1bpU7vR8ZxMFJkSWBlCnCz_923eiLUiCkc",
+    google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION,
   },
   openGraph: {
     title: "Mina Youaness - Full-Stack Developer",
@@ -112,6 +113,19 @@ export default function RootLayout({
           {children}
         </ThemeProvider>
         <StructuredData />
+        {/* Google Analytics */}
+        <Script
+          strategy="afterInteractive"
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID}`}
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID}');
+          `}
+        </Script>
       </body>
     </html>
   );
