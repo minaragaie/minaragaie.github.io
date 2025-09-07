@@ -176,7 +176,8 @@
     "versionControl": [
       "Git",
       "Sequelize",
-      "Flyway"
+      "Flyway",
+      "prisma"
     ],
     "technologies": [
       "WordPress",
