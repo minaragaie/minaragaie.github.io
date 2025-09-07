@@ -1,0 +1,817 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/*
+ * This file contains a set of custom CSS themes inspired by VS Code.
+ * The default theme is "dark", as requested.
+ *
+ * Each theme class defines a complete set of color variables for a consistent look.
+ *
+ * Variables:
+ * --bg-primary: Main background color.
+ * --bg-secondary: Secondary background, often for tabs or panels.
+ * --bg-tertiary: Tertiary background, for sidebars or sub-panels.
+ * --text-primary: Main text color.
+ * --text-secondary: Muted or secondary text color.
+ * --border-color: Border and divider lines.
+ * --accent-color: Primary accent color, often for highlights.
+ *
+ * And also includes VSCode-specific color tokens for direct styling.
+ */
+
+/* ==================================== */
+/* Default (Dark) Theme        */
+/* ==================================== */
+/* 
+:root, body, html {
+  transition: background-color 0.3s ease, color 0.3s ease;
+} */
+
+:root,
+.dark {
+  /* VSCode Dark Theme Colors */
+  --vscode-bg: #1e1e1e;
+  --vscode-sidebar: #252526;
+  --vscode-tab: #2d2d30;
+  --vscode-border: #3e3e42;
+  --vscode-text: #d4d4d4;
+  --vscode-text-muted: #969696;
+  --vscode-blue: #007acc;
+  --vscode-blue-light: #58a6ff;
+  --vscode-green: #4ec9b0;
+  --vscode-yellow: #dcb67a;
+  --vscode-orange: #ce9178;
+  --vscode-purple: #c586c0;
+  --vscode-keyword: #569cd6;
+  --vscode-string: #ce9178;
+  --vscode-comment: #6a9955;
+  --vscode-error: #f44747;
+  --vscode-warning: #ffcc02;
+  --terminal-title-bar: #21262d;
+  --terminal-text: #58a6ff;
+  --terminal-bg: #0d1117;
+  --vscode-sidebar-info: #858585;
+  /* General design tokens */
+  --background: var(--vscode-bg);
+  --foreground: var(--vscode-text);
+  --card: var(--vscode-tab);
+  --card-foreground: var(--vscode-text);
+  --popover: var(--vscode-sidebar);
+  --popover-foreground: var(--vscode-text);
+  --primary: var(--vscode-blue);
+  --primary-foreground: #d4d4d4;
+  --secondary: var(--vscode-sidebar);
+  --secondary-foreground: var(--vscode-text);
+  --muted: var(--vscode-tab);
+  --muted-foreground: var(--vscode-text-muted);
+  --accent: var(--vscode-sidebar);
+  --accent-foreground: var(--vscode-text);
+  --destructive: var(--vscode-error);
+  --destructive-foreground: var(--vscode-text);
+  --border: var(--vscode-border);
+  --input: var(--vscode-tab);
+  --ring: var(--vscode-blue);
+  --chart-1: #569cd6;
+  --chart-2: #dcb67a;
+  --chart-3: #c586c0;
+  --chart-4: #4ec9b0;
+  --chart-5: #ce9178;
+  --radius: 0.625rem;
+  --sidebar: var(--vscode-sidebar);
+  --sidebar-foreground: var(--vscode-text);
+  --sidebar-primary: var(--vscode-blue);
+  --sidebar-primary-foreground: var(--vscode-text);
+  --sidebar-accent: var(--vscode-tab);
+  --sidebar-accent-foreground: var(--vscode-text);
+  --sidebar-border: var(--vscode-border);
+  --sidebar-ring: var(--vscode-blue);
+
+  /* Deprecated tokens - mapped for backward compatibility */
+  --bg-primary: var(--vscode-bg);
+  --bg-secondary: var(--vscode-tab);
+  --bg-tertiary: var(--vscode-sidebar);
+  --text-primary: var(--vscode-text);
+  --text-secondary: var(--vscode-text-muted);
+  --border-color: var(--vscode-border);
+  --accent-color: var(--vscode-blue);
+
+  --certificates-bg-primary: #1e1e1e;
+  --certificates-bg-secondary: #252526;
+  --certificates-bg-tertiary: #2d2d30;
+  --certificates-border-color: #3e3e42;
+  --certificates-text-primary: #d4d4d4;
+  --certificates-text-secondary: #a0a0a0;
+  --certificates-text-accent: #007acc;
+  --certificates-text-code: #569cd6;
+  --certificates-text-string: #ce9178;
+  --certificates-color-green: #28ca42;
+  --certificates-color-yellow: #dcb67a;
+  --certificates-color-cyan: #4ec9b0;
+  --certificates-color-blue: #007acc;
+
+  --projects-bg: #1e1e1e;
+  --projects-border: #3e3e42;
+  --projects-primary: #007acc;
+  --projects-text-white: #ffffff;
+  --projects-text-muted: #d4d4d4;
+  --projects-text-accent-blue: #569cd6;
+  --projects-text-accent-green: #4ec9b0;
+  --projects-text-accent-orange: #ce9178;
+  --projects-card-bg: #2d2d30;
+  --projects-card-border-hover: #3e3e42;
+  --projects-card-bg-hover: #3e3e42;
+  --projects-shadow: 0 4px 12px rgba(0, 122, 204, 0.2);
+
+  --tech-bg: #1e1e1e;
+  --tech-border: #3e3e42;
+  --tech-primary: #007acc;
+  --tech-text-white: #ffffff;
+  --tech-text-muted: #d4d4d4;
+  --tech-text-accent-blue: #569cd6;
+  --tech-text-accent-green: #4ec9b0;
+  --tech-text-accent-orange: #ce9178;
+  --tech-card-bg: #2d2d30;
+  --tech-card-border-hover: #3e3e42;
+  --tech-card-bg-hover: #3e3e42;
+  --tech-shadow: 0 4px 12px rgba(0, 122, 204, 0.2);
+
+  --tree-active-bg: #007acc; /* tech-primary */
+  --tree-active-text: #ffffff; /* tech-text-white */
+  --tree-toggle: #2d2d30; /* tech-card-bg */
+  --tree-toggle-active: #3e3e42; /* tech-card-bg-hover */
+
+  /* Enhanced Sidebar Variables */
+  --sidebar-bg: var(--vscode-sidebar);
+  --sidebar-bg-hover: var(--vscode-tab);
+  --sidebar-bg-active: var(--vscode-blue);
+  --sidebar-text: var(--vscode-text);
+  --sidebar-text-muted: var(--vscode-text-muted);
+  --sidebar-text-active: #ffffff;
+  --sidebar-border: var(--vscode-border);
+  --sidebar-border-active: var(--vscode-blue);
+  --sidebar-icon: var(--vscode-text-muted);
+  --sidebar-icon-active: #ffffff;
+  --sidebar-icon-hover: var(--vscode-text);
+
+  /* Activity Bar Variables */
+  --activity-bar-bg: #2c2c2c;
+  --activity-bar-hover: #2a2d2e;
+  --activity-bar-active: #094771;
+  --activity-bar-text: #858585;
+  --activity-bar-text-active: #ffffff;
+  --activity-bar-border: var(--vscode-border);
+}
+
+/* ==================================== */
+/* Light Theme              */
+/* ==================================== */
+.light {
+  /* VSCode Light Theme Colors */
+  --vscode-bg: #ffffff;
+  --vscode-sidebar: #f3f3f3;
+  --vscode-tab: #e8e8e8;
+  --vscode-border: #d1d1d1;
+  --vscode-text: #333333;
+  --vscode-text-muted: #666666;
+  --vscode-blue: #007acc;
+  --vscode-blue-light: #0059b2;
+  --vscode-green: #17a864;
+  --vscode-yellow: #85850e;
+  --vscode-orange: #cd3131;
+  --vscode-purple: #6969ef;
+  --vscode-keyword: #0000ff;
+  --vscode-string: #a31515;
+  --vscode-comment: #008000;
+  --vscode-error: #cd3131;
+  --vscode-warning: #c25900;
+  --terminal-title-bar: #e8e8e8;
+  --terminal-text: #444444;
+  --terminal-bg: #fafafa;
+
+  /* General design tokens */
+  --background: var(--vscode-bg);
+  --foreground: var(--vscode-text);
+  --card: var(--vscode-tab);
+  --card-foreground: var(--vscode-text);
+  --popover: var(--vscode-sidebar);
+  --popover-foreground: var(--vscode-text);
+  --primary: var(--vscode-blue);
+  --primary-foreground: #ffffff;
+  --secondary: var(--vscode-sidebar);
+  --secondary-foreground: var(--vscode-text);
+  --muted: var(--vscode-tab);
+  --muted-foreground: var(--vscode-text-muted);
+  --accent: var(--vscode-sidebar);
+  --accent-foreground: var(--vscode-text);
+  --destructive: var(--vscode-error);
+  --destructive-foreground: #ffffff;
+  --border: var(--vscode-border);
+  --input: var(--vscode-tab);
+  --ring: var(--vscode-blue);
+  --chart-1: #007acc;
+  --chart-2: #17a864;
+  --chart-3: #85850e;
+  --chart-4: #cd3131;
+  --chart-5: #6969ef;
+  --radius: 0.625rem;
+  --sidebar: var(--vscode-sidebar);
+  --sidebar-foreground: var(--vscode-text);
+  --sidebar-primary: var(--vscode-blue);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: var(--vscode-tab);
+  --sidebar-accent-foreground: var(--vscode-text);
+  --sidebar-border: var(--vscode-border);
+  --sidebar-ring: var(--vscode-blue);
+
+  --certificates-bg-primary: #f8fafc;
+  --certificates-bg-secondary: #ffffff;
+  --certificates-bg-tertiary: #f1f5f9;
+  --certificates-border-color: #e2e8f0;
+  --certificates-text-primary: #0f172a;
+  --certificates-text-secondary: #64748b;
+  --certificates-text-accent: #007acc;
+  --certificates-text-code: #569cd6;
+  --certificates-text-string: #ce9178;
+  --certificates-color-green: #10b981;
+  --certificates-color-yellow: #f59e0b;
+  --certificates-color-cyan: #06b6d4;
+  --certificates-color-blue: #3b82f6;
+
+  --projects-bg: #ffffff;
+  --projects-border: #e0e0e0;
+  --projects-primary: #007acc;
+  --projects-text-white: #000000;
+  --projects-text-muted: #555555;
+  --projects-text-accent-blue: #005fb8;
+  --projects-text-accent-green: #00897b;
+  --projects-text-accent-orange: #d35400;
+  --projects-card-bg: #f9f9f9;
+  --projects-card-border-hover: #cccccc;
+  --projects-card-bg-hover: #f0f0f0;
+  --projects-shadow: 0 4px 12px rgba(0, 122, 204, 0.15);
+
+  --tech-bg: #ffffff;
+  --tech-border: #e5e5e5;
+  --tech-primary: #007acc;
+
+  --tech-text-white: #000000;
+  --tech-text-muted: #4a4a4a;
+  --tech-text-accent-blue: #0451a5;
+  --tech-text-accent-green: #0b8a6a;
+  --tech-text-accent-orange: #a31515;
+
+  --tech-card-bg: #f5f5f5;
+  --tech-card-border-hover: #dcdcdc;
+  --tech-card-bg-hover: #f0f0f0;
+
+  --tech-shadow: 0 4px 12px rgba(0, 122, 204, 0.15);
+
+  --tree-active-bg: #007acc; /* tech-primary */
+  --tree-active-text: #000000; /* tech-text-white */
+  --tree-toggle: #f5f5f5; /* tech-card-bg */
+  --tree-toggle-active: #f0f0f0; /* tech-card-bg-hover */
+
+  /* Enhanced Sidebar Variables for Light Theme */
+  --sidebar-bg: var(--vscode-sidebar);
+  --sidebar-bg-hover: var(--vscode-tab);
+  --sidebar-bg-active: var(--vscode-blue);
+  --sidebar-text: var(--vscode-text);
+  --sidebar-text-muted: var(--vscode-text-muted);
+  --sidebar-text-active: #ffffff;
+  --sidebar-border: var(--vscode-border);
+  --sidebar-border-active: var(--vscode-blue);
+  --sidebar-icon: var(--vscode-text-muted);
+  --sidebar-icon-active: #ffffff;
+  --sidebar-icon-hover: var(--vscode-text);
+
+  /* Activity Bar Variables for Light Theme */
+  --activity-bar-bg: #f3f3f3;
+  --activity-bar-hover: #e8e8e8;
+  --activity-bar-active: #007acc;
+  --activity-bar-text: #666666;
+  --activity-bar-text-active: #ffffff;
+  --activity-bar-border: var(--vscode-border);
+}
+
+/* ==================================== */
+/* High Contrast Theme           */
+/* ==================================== */
+.high-contrast {
+  /* High Contrast Theme Colors */
+  --vscode-bg: #000000;
+  --vscode-sidebar: #000000;
+  --vscode-tab: #1a1a1a;
+  --vscode-border: #ffffff;
+  --vscode-text: #ffffff;
+  --vscode-text-muted: #cccccc;
+  --vscode-blue: #00d4ff;
+  --vscode-blue-light: #00d4ff;
+  --vscode-green: #50ff60;
+  --vscode-yellow: #fffa68;
+  --vscode-orange: #ffb753;
+  --vscode-purple: #c488f2;
+  --vscode-keyword: #00d4ff;
+  --vscode-string: #fffa68;
+  --vscode-comment: #6a9955;
+  --vscode-error: #ff0000;
+  --vscode-warning: #ffcc02;
+
+  --terminal-title-bar: #333333;
+  --terminal-text: #00d4ff;
+  --terminal-bg: #1a1a1a;
+
+  /* General design tokens */
+  --background: var(--vscode-bg);
+  --foreground: var(--vscode-text);
+  --card: var(--vscode-bg);
+  --card-foreground: var(--vscode-text);
+  --popover: var(--vscode-bg);
+  --popover-foreground: var(--vscode-text);
+  --primary: var(--vscode-blue);
+  --primary-foreground: var(--vscode-text);
+  --secondary: var(--vscode-tab);
+  --secondary-foreground: var(--vscode-text);
+  --muted: var(--vscode-tab);
+  --muted-foreground: var(--vscode-text-muted);
+  --accent: var(--vscode-tab);
+  --accent-foreground: var(--vscode-text);
+  --destructive: var(--vscode-error);
+  --destructive-foreground: var(--vscode-text);
+  --border: var(--vscode-border);
+  --input: var(--vscode-tab);
+  --ring: var(--vscode-blue);
+  --chart-1: #00d4ff;
+  --chart-2: #fffa68;
+  --chart-3: #c488f2;
+  --chart-4: #50ff60;
+  --chart-5: #ffb753;
+  --radius: 0.625rem;
+  --sidebar: var(--vscode-sidebar);
+  --sidebar-foreground: var(--vscode-text);
+  --sidebar-primary: var(--vscode-blue);
+  --sidebar-primary-foreground: var(--vscode-text);
+  --sidebar-accent: var(--vscode-tab);
+  --sidebar-accent-foreground: var(--vscode-text);
+  --sidebar-border: var(--vscode-border);
+  --sidebar-ring: var(--vscode-blue);
+
+  --certificates-bg-primary: #000000;
+  --certificates-bg-secondary: #111111;
+  --certificates-bg-tertiary: #222222;
+  --certificates-border-color: #6fc2c9;
+  --certificates-text-primary: #ffffff;
+  --certificates-text-secondary: #dcdcdc;
+  --certificates-text-accent: #00ffff;
+  --certificates-text-code: #569cd6;
+  --certificates-text-string: #ce9178;
+  --certificates-color-green: #28ca42;
+  --certificates-color-yellow: #ffeb02;
+  --certificates-color-cyan: #4ec9b0;
+  --certificates-color-blue: #007acc;
+
+  --projects-bg: #000000;
+  --projects-border: #ffffff;
+  --projects-primary: #ffff00;
+  --projects-text-white: #ffffff;
+  --projects-text-muted: #f2f2f2;
+  --projects-text-accent-blue: #00ffff;
+  --projects-text-accent-green: #00ff00;
+  --projects-text-accent-orange: #ff8000;
+  --projects-card-bg: #000000;
+  --projects-card-border-hover: #ffff00;
+  --projects-card-bg-hover: #1a1a1a;
+  --projects-shadow: 0 0 0 2px #ffff00, 0 0 8px rgba(255, 255, 0, 0.8);
+
+  --tech-bg: #000000;
+  --tech-border: #ffffff;
+  --tech-primary: #ffff00;
+  --tech-text-white: #ffffff;
+  --tech-text-muted: #dcdcdc;
+  --tech-text-accent-blue: #00ffff;
+  --tech-text-accent-green: #00ff00;
+  --tech-text-accent-orange: #ff9900;
+  --tech-card-bg: #1a1a1a;
+  --tech-card-border-hover: #ffffff;
+  --tech-card-bg-hover: #262626;
+  --tech-shadow: 0 0 0 3px #ffff00;
+
+  --tree-active-bg: #ffff00; /* tech-primary */
+  --tree-active-text: #ffffff; /* tech-text-white */
+  --tree-toggle: #1a1a1a; /* tech-card-bg */
+  --tree-toggle-active: #262626;
+
+  /* Fixed Enhanced Sidebar Variables for High Contrast Theme */
+  --sidebar-bg: var(--vscode-sidebar);
+  --sidebar-bg-hover: var(--vscode-tab);
+  --sidebar-bg-active: var(--vscode-blue);
+  --sidebar-text: var(--vscode-text);
+  --sidebar-text-muted: var(--vscode-text-muted);
+  --sidebar-text-active: #000000;
+  --sidebar-border: var(--vscode-border);
+  --sidebar-border-active: var(--vscode-blue);
+  --sidebar-icon: var(--vscode-text-muted);
+  --sidebar-icon-active: #000000;
+  --sidebar-icon-hover: var(--vscode-text);
+
+  /* Activity Bar Variables for High Contrast Theme */
+  --activity-bar-bg: #000000;
+  --activity-bar-hover: #1a1a1a;
+  --activity-bar-active: #ffff00;
+  --activity-bar-text: #cccccc;
+  --activity-bar-text-active: #000000;
+  --activity-bar-border: #ffffff;
+}
+
+/* ==================================== */
+/* Monokai Theme            */
+/* ==================================== */
+.monokai {
+  /* Monokai Theme Colors */
+  --vscode-bg: #272822;
+  --vscode-sidebar: #2f3129;
+  --vscode-tab: #383a2e;
+  --vscode-border: #49483e;
+  --vscode-text: #f8f8f2;
+  --vscode-text-muted: #75715e;
+  --vscode-blue: #66d9ef;
+  --vscode-blue-light: #66d9ef;
+  --vscode-green: #a6e22e;
+  --vscode-yellow: #e6db74;
+  --vscode-orange: #fd971f;
+  --vscode-purple: #ae81ff;
+  --vscode-keyword: #66d9ef;
+  --vscode-string: #e6db74;
+  --vscode-comment: #75715e;
+  --vscode-error: #f92672;
+  --vscode-warning: #fd971f;
+  /* Terminal Colors */
+  --terminal-title-bar: var(--vscode-border);
+  --terminal-text: var(--vscode-blue);
+  --terminal-bg: var(--vscode-tab);
+
+  /* General design tokens */
+  --background: var(--vscode-bg);
+  --foreground: var(--vscode-text);
+  --card: var(--vscode-tab);
+  --card-foreground: var(--vscode-text);
+  --popover: var(--vscode-sidebar);
+  --popover-foreground: var(--vscode-text);
+  --primary: var(--vscode-blue);
+  --primary-foreground: var(--vscode-text);
+  --secondary: var(--vscode-sidebar);
+  --secondary-foreground: var(--vscode-text);
+  --muted: var(--vscode-tab);
+  --muted-foreground: var(--vscode-text-muted);
+  --accent: var(--vscode-sidebar);
+  --accent-foreground: var(--vscode-text);
+  --destructive: var(--vscode-error);
+  --destructive-foreground: var(--vscode-text);
+  --border: var(--vscode-border);
+  --input: var(--vscode-tab);
+  --ring: var(--vscode-blue);
+  --chart-1: #66d9ef;
+  --chart-2: #e6db74;
+  --chart-3: #ae81ff;
+  --chart-4: #a6e22e;
+  --chart-5: #fd971f;
+  --radius: 0.625rem;
+  --sidebar: var(--vscode-sidebar);
+  --sidebar-foreground: var(--vscode-text);
+  --sidebar-primary: var(--vscode-blue);
+  --sidebar-primary-foreground: var(--vscode-text);
+  --sidebar-accent: var(--vscode-tab);
+  --sidebar-accent-foreground: var(--vscode-text);
+  --sidebar-border: var(--vscode-border);
+  --sidebar-ring: var(--vscode-blue);
+
+  --certificates-bg-primary: #272822;
+  --certificates-bg-secondary: #3c3d32;
+  --certificates-bg-tertiary: #4c4d42;
+  --certificates-border-color: #66d9ef;
+  --certificates-text-primary: #f8f8f2;
+  --certificates-text-secondary: #a0a09a;
+  --certificates-text-accent: #66d9ef;
+  --certificates-text-code: #a6e22e;
+  --certificates-text-string: #e6db74;
+  --certificates-color-green: #a6e22e;
+  --certificates-color-yellow: #e6db74;
+  --certificates-color-cyan: #66d9ef;
+  --certificates-color-blue: #66d9ef;
+
+  --projects-bg: #272822;
+  --projects-border: #3e3d32;
+  --projects-primary: #f92672;
+  --projects-text-white: #f8f8f2;
+  --projects-text-muted: #a6e22e;
+  --projects-text-accent-blue: #66d9ef;
+  --projects-text-accent-green: #a6e22e;
+  --projects-text-accent-orange: #fd971f;
+  --projects-card-bg: #2e2f27;
+  --projects-card-border-hover: #75715e;
+  --projects-card-bg-hover: #383830;
+  --projects-shadow: 0 4px 12px rgba(249, 38, 114, 0.3);
+
+  --tech-bg: #272822;
+  --tech-border: #3e3d32;
+  --tech-primary: #f92672;
+  --tech-text-white: #f8f8f2;
+  --tech-text-muted: #75715e;
+  --tech-text-accent-blue: #66d9ef;
+  --tech-text-accent-green: #a6e22e;
+  --tech-text-accent-orange: #fd9900;
+  --tech-card-bg: #3e3d32;
+  --tech-card-border-hover: #75715e;
+  --tech-card-bg-hover: #49483e;
+  --tech-shadow: 0 4px 12px rgba(249, 38, 114, 0.25);
+  --tree-active-bg: #f92672;
+  --tree-active-text: #f8f8f2;
+  --tree-toggle: #3e3d32;
+  --tree-toggle-active: #49483e;
+
+  /* Fixed Enhanced Sidebar Variables for Monokai Theme */
+  --sidebar-bg: var(--vscode-sidebar);
+  --sidebar-bg-hover: var(--vscode-tab);
+  --sidebar-bg-active: var(--vscode-blue);
+  --sidebar-text: var(--vscode-text);
+  --sidebar-text-muted: var(--vscode-text-muted);
+  --sidebar-text-active: var(--vscode-text);
+  --sidebar-border: var(--vscode-border);
+  --sidebar-border-active: var(--vscode-blue);
+  --sidebar-icon: var(--vscode-text-muted);
+  --sidebar-icon-active: var(--vscode-text);
+  --sidebar-icon-hover: var(--vscode-text);
+
+  /* Activity Bar Variables for Monokai Theme */
+  --activity-bar-bg: #2f3129;
+  --activity-bar-hover: #383a2e;
+  --activity-bar-active: #66d9ef;
+  --activity-bar-text: #75715e;
+  --activity-bar-text-active: #272822;
+  --activity-bar-border: var(--vscode-border);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    /* Reduced transition properties for better performance */
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+  body {
+    @apply bg-background text-foreground;
+    /* Prevent layout shifts during theme changes */
+    will-change: background-color, color;
+  }
+}
+
+/* VSCode-themed animations and effects */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes typewriter {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes terminal-cursor {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes code-highlight {
+  0% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: rgba(0, 122, 204, 0.1);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+@keyframes syntax-glow {
+  0%,
+  100% {
+    text-shadow: 0 0 5px currentColor;
+  }
+  50% {
+    text-shadow: 0 0 10px currentColor, 0 0 15px currentColor;
+  }
+}
+
+/* Animation classes */
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.8s ease-out forwards;
+}
+
+.animate-typewriter {
+  animation: typewriter 3s steps(40, end) forwards;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 3px solid var(--vscode-blue);
+  animation-iteration-count: 1;
+}
+
+.terminal-cursor {
+  animation: terminal-cursor 1s infinite;
+}
+
+/* Code syntax highlighting effects */
+.syntax-keyword {
+  color: var(--vscode-keyword);
+  animation: syntax-glow 3s ease-in-out infinite;
+}
+
+.syntax-string {
+  color: var(--vscode-string);
+}
+
+.syntax-comment {
+  color: var(--vscode-comment);
+  font-style: italic;
+}
+
+.syntax-function {
+  color: var(--vscode-yellow);
+}
+
+.syntax-variable {
+  color: var(--vscode-green);
+}
+
+/* VSCode-themed hover effects */
+.vscode-card:hover {
+  background-color: var(--vscode-sidebar);
+  border-color: var(--vscode-blue);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 122, 204, 0.15);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.vscode-tab:hover {
+  background-color: var(--vscode-tab);
+  border-bottom: 2px solid var(--vscode-blue);
+}
+
+.code-block {
+  background: var(--vscode-bg);
+  border: 1px solid var(--vscode-border);
+  border-radius: 6px;
+  font-family: "Fira Code", "Consolas", "Monaco", monospace;
+  position: relative;
+  overflow: hidden;
+}
+
+.code-block::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--vscode-blue), transparent);
+  animation: code-highlight 2s ease-in-out infinite;
+}
+
+/* Print styles for professional resume download */
+@media print {
+  * {
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  button,
+  .terminal-window,
+  .window-controls,
+  nav,
+  footer {
+    display: none !important;
+  }
+
+  body {
+    font-size: var(--base-font-size);
+    line-height: 1.4 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  section {
+    page-break-inside: avoid;
+    margin-bottom: 20pt !important;
+  }
+
+  h1,
+  h2,
+  h3 {
+    page-break-after: avoid;
+    color: #1f2937 !important;
+    margin-bottom: 10pt !important;
+  }
+
+  @page {
+    margin: 0.75in;
+    size: letter;
+  }
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection styling */
+::selection {
+  background: var(--vscode-blue);
+  color: white;
+}
+
+::-moz-selection {
+  background: var(--vscode-blue);
+  color: white;
+}
