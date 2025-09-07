@@ -3,7 +3,6 @@ import { Playfair_Display, Source_Sans_3 } from "next/font/google";
 import "./globals.css";
 import ThemeProvider from "@/components/theme-provider";
 import StructuredData from "@/components/structuredData";
-import { Head } from "next/document";
 
 // --------------------
 // Font Configuration
@@ -31,7 +30,9 @@ export const metadata: Metadata = {
     "Resume of Mina Youaness, Full-Stack Web Developer with 10+ years of experience in Angular, React, Node.js, and scalable web applications.",
   generator: "Mina Youaness",
   applicationName: "Mina Youaness Resume",
-
+verification: {
+    google: "wH7dOBP-A1bpU7vR8ZxMFJkSWBlCnCz_923eiLUiCkc",
+  },
   openGraph: {
     title: "Mina Youaness - Full-Stack Developer",
     description:
