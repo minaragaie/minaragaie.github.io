@@ -26,74 +26,88 @@ export default function ContactSection({ onStatusChange, isVisible = false }: Co
     setTerminalCommands((prev) => [...prev, `[${new Date().toLocaleTimeString()}] ${msg}`])
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    setShowTerminal(true)
-    setTerminalCommands([])
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault()
+  setIsSubmitting(true)
+  setShowTerminal(true)
+  setTerminalCommands([])
 
-    try {
-      onStatusChange?.("Sending message...")
-      addTerminalCommand(`connect --to "Mina Youaness"`)
-      await new Promise((res) => setTimeout(res, 800))
+  const addCmd = (msg: string) =>
+    setTerminalCommands((prev) => [...prev, `[${new Date().toLocaleTimeString()}] ${msg}`])
 
-      addTerminalCommand("[✔] Secure channel established")
-      await new Promise((res) => setTimeout(res, 600))
+  try {
+    onStatusChange?.("Sending message...")
+    addCmd(`connect --to "Mina Youaness"`)
+    await new Promise((res) => setTimeout(res, 800))
 
-      addTerminalCommand("[✔] Handshake completed")
-      await new Promise((res) => setTimeout(res, 500))
+    addCmd("[✔] Secure channel established")
+    await new Promise((res) => setTimeout(res, 600))
 
-      addTerminalCommand("[✔] Contact form initialized")
-      await new Promise((res) => setTimeout(res, 500))
+    addCmd("[✔] Handshake completed")
+    await new Promise((res) => setTimeout(res, 500))
 
-      onStatusChange?.("Encrypting message...")
-      addTerminalCommand(`[✔] Encrypting message from <${formData.email}>...`)
-      await new Promise((res) => setTimeout(res, 700))
+    addCmd("[✔] Contact form initialized")
+    await new Promise((res) => setTimeout(res, 500))
 
-      onStatusChange?.("Transmitting...")
-      addTerminalCommand("[✔] Transmitting data packets...")
-      await new Promise((res) => setTimeout(res, 600))
+    onStatusChange?.("Encrypting message...")
+    addCmd(`[✔] Encrypting message from <${formData.email}>...`)
+    await new Promise((res) => setTimeout(res, 700))
 
-      addTerminalCommand("[✔] Signal received by Mina's inbox")
-      await new Promise((res) => setTimeout(res, 500))
+    onStatusChange?.("Transmitting...")
+    addCmd("[✔] Transmitting data packets...")
+    await new Promise((res) => setTimeout(res, 600))
 
-      const response = await fetch("/api/contact", {
+    addCmd("[✔] Signal received by Mina's inbox")
+    await new Promise((res) => setTimeout(res, 500))
+
+    // FETCH BACKEND
+    const response = await fetch(
+      "https://resume-backend-service.vercel.app/api/send-email",
+      {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
-      })
-      const data = await response.json()
-
-      if (response.ok && !data.error) {
-        onStatusChange?.("Message sent successfully!")
-        addTerminalCommand("------------------------------------------")
-        addTerminalCommand(`👋 Hello ${formData.name} (<${formData.email}>)`)
-        addTerminalCommand("   Welcome to my terminal. Your message has successfully")
-        addTerminalCommand("   reached Mina Youaness.")
-        addTerminalCommand("")
-        addTerminalCommand("   ⚡ Transmission complete. Mina will review your request")
-        addTerminalCommand("      and get back to you as soon as possible.")
-        addTerminalCommand("")
-        addTerminalCommand("------------------------------------------")
-        await new Promise((res) => setTimeout(res, 1000))
-        addTerminalCommand("exit")
-        addTerminalCommand("Session closed. Thank you for reaching out!")
-
-        setFormData({ name: "", email: "", message: "" })
-        setTimeout(() => onStatusChange?.("Ready for next challenge"), 5000)
-      } else {
-        throw new Error("Failed to send message")
       }
-    } catch (error) {
-      onStatusChange?.("Failed to send message - Please try again")
-      addTerminalCommand("✗ Error: Failed to send message")
-      addTerminalCommand("✗ Please try again or contact directly")
-      setTimeout(() => onStatusChange?.("Ready for next challenge"), 5000)
-    } finally {
-      setIsSubmitting(false)
-      addTerminalCommand("Process completed.")
+    )
+
+    // safely parse JSON
+    const data = await response.json().catch(() => ({}))
+
+    if (!response.ok || data.error) {
+      throw new Error(data.error || `HTTP ${response.status}`)
     }
+
+    // SUCCESS
+    onStatusChange?.("Message sent successfully!")
+    addCmd("------------------------------------------")
+    addCmd(`👋 Hello ${formData.name} (<${formData.email}>)`)
+    addCmd("   Welcome to my terminal. Your message has successfully")
+    addCmd("   reached Mina Youaness.")
+    addCmd("")
+    addCmd("   ⚡ Transmission complete. Mina will review your request")
+    addCmd("      and get back to you as soon as possible.")
+    addCmd("")
+    addCmd("------------------------------------------")
+    await new Promise((res) => setTimeout(res, 1000))
+    addCmd("exit")
+    addCmd("Session closed. Thank you for reaching out!")
+
+    setFormData({ name: "", email: "", message: "" })
+    setTimeout(() => onStatusChange?.("Ready for next challenge"), 5000)
+  } catch (error: any) {
+    // CAPTURE ALL ERRORS
+    const msg = error?.message || "Unknown error"
+    onStatusChange?.("Failed to send message - See terminal for details")
+    addCmd(`✗ Error: ${msg}`)
+    addCmd("✗ Please try again or contact directly")
+    setTimeout(() => onStatusChange?.("Ready for next challenge"), 5000)
+  } finally {
+    setIsSubmitting(false)
+    addCmd("Process completed.")
   }
+}
+
+
 
   return (
     <div
