@@ -4,6 +4,7 @@ import { Download, Mail, Phone, MapPin, Linkedin, ExternalLink } from "lucide-re
 import { Button } from "@/components/ui/button"
 import jsPDF from "jspdf"
 import TerminalWindow from "@/components/TerminalWindow"
+import DownloadPDFResume from "./downloadResume"
 
 // NOTE: The jspdf library is an external dependency that must be loaded via a <script> tag from a CDN
 // in your HTML for the download functionality to work. We are removing the direct import to resolve the compilation error.
@@ -86,19 +87,13 @@ export default function HeroSection({ isVisible }: HeroSectionProps) {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-            <Button
-              className="bg-gradient-to-r from-[#007acc] to-[#0086d4] hover:from-[#005a9e] hover:to-[#006bb3] text-white shadow-lg hover:shadow-xl border border-[#007acc]/20"
-              size="lg"
-              onClick={handleDownloadResume}
-            >
-              <Download className="w-4 h-4 mr-2" />
-              Download Resume
-            </Button>
+           
+            <DownloadPDFResume />
+            {/* DownloadPDFResume */}
             <Button
               variant="outline"
               size="lg"
-              className="border-2 border-[#007acc] text-[#007acc] hover:bg-[#007acc] hover:text-white bg-transparent/80 backdrop-blur-sm shadow-md hover:shadow-lg"
-            >
+              className="border-2 border-[#007acc] text-[#007acc] hover:bg-[#007acc] hover:text-white bg-transparent/80 backdrop-blur-sm shadow-md hover:shadow-lg">
               <ExternalLink className="w-4 h-4 mr-2" />
               View Portfolio
             </Button>
