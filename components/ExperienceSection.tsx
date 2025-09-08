@@ -87,7 +87,7 @@ export default function ExperienceSection({ isVisible }: ExperienceSectionProps)
                       {(exp.achievements || []).map((achievement, achIndex) => (
                         <li key={achIndex} className="flex items-start gap-1 sm:gap-2 text-[var(--text-primary)] text-xs sm:text-sm">
                           <CheckCircle className="w-4 h-4 text-[var(--vscode-green)] mt-0.5 flex-shrink-0" />
-                          <span className="truncate">{achievement}</span>
+                          <span className="break-words">{achievement}</span>
                         </li>
                       ))}
                     </ul>

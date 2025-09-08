@@ -189,7 +189,7 @@ export default function CertificationsSection({ isVisible = false }: Certificati
                       {cert.pathway && cert.pathway.length > 0 && (
                         <Button
                           size="sm"
-                          className="bg-gradient-to-r from-[#dcb67a]/10 to-[#dcb67a]/5 hover:from-[#dcb67a] hover:to-[#f0c674] text-[#dcb67a] hover:text-black border-2 border-[#dcb67a]/30 hover:border-[#dcb67a] transition-all shadow-md hover:shadow-lg backdrop-blur-sm text-xs px-2 py-1 h-auto"
+                          className="bg-gradient-to-r from-[var(--certificates-color-yellow)]/10 to-[var(--certificates-color-yellow)]/5 hover:from-[var(--certificates-color-yellow)] hover:to-[#f0c674] text-[var(--certificates-color-yellow)] hover:text-black border-2 border-[var(--certificates-color-yellow)]/30 hover:border-[var(--certificates-color-yellow)] transition-all shadow-md hover:shadow-lg backdrop-blur-sm text-xs px-2 py-1 h-auto"
                           onClick={() => toggleCardFlip(index)}
                         >
                           <RotateCcw className="w-3 h-3 sm:mr-2" />
@@ -239,7 +239,7 @@ export default function CertificationsSection({ isVisible = false }: Certificati
                       <Button
                       size="sm"
                       variant="ghost"
-                      className="text-[#dcb67a] hover:bg-[#dcb67a]/10 p-1 sm:p-2"
+                      className="text-[var(--certificates-color-yellow)] hover:bg-[var(--certificates-color-yellow)]/10 p-1 sm:p-2"
                       onClick={() => toggleCardFlip(index)}
                     >
                       <RotateCcw className="w-3 h-3 sm:w-4 sm:h-4" />

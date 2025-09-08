@@ -42,7 +42,7 @@
   --vscode-yellow: #dcb67a;
   --vscode-orange: #ce9178;
   --vscode-purple: #c586c0;
-  --vscode-keyword: #569cd6;
+  --vscode-keyword: var(--vscode-blue);
   --vscode-string: #ce9178;
   --vscode-comment: #6a9955;
   --vscode-error: #f44747;
@@ -71,7 +71,7 @@
   --border: var(--vscode-border);
   --input: var(--vscode-tab);
   --ring: var(--vscode-blue);
-  --chart-1: #569cd6;
+  --chart-1: var(--vscode-blue);
   --chart-2: #dcb67a;
   --chart-3: #c586c0;
   --chart-4: #4ec9b0;
@@ -100,9 +100,9 @@
   --certificates-bg-tertiary: #2d2d30;
   --certificates-border-color: #3e3e42;
   --certificates-text-primary: #d4d4d4;
-  --certificates-text-secondary: #a0a0a0;
+  --certificates-text-secondary: var(--vscode-text-muted);
   --certificates-text-accent: #007acc;
-  --certificates-text-code: #569cd6;
+  --certificates-text-code: var(--vscode-blue);
   --certificates-text-string: #ce9178;
   --certificates-color-green: #28ca42;
   --certificates-color-yellow: #dcb67a;
@@ -114,7 +114,7 @@
   --projects-primary: #007acc;
   --projects-text-white: #ffffff;
   --projects-text-muted: #d4d4d4;
-  --projects-text-accent-blue: #569cd6;
+  --projects-text-accent-blue: var(--vscode-blue);
   --projects-text-accent-green: #4ec9b0;
   --projects-text-accent-orange: #ce9178;
   --projects-card-bg: #2d2d30;
@@ -127,7 +127,7 @@
   --tech-primary: #007acc;
   --tech-text-white: #ffffff;
   --tech-text-muted: #d4d4d4;
-  --tech-text-accent-blue: #569cd6;
+  --tech-text-accent-blue: var(--vscode-blue);
   --tech-text-accent-green: #4ec9b0;
   --tech-text-accent-orange: #ce9178;
   --tech-card-bg: #2d2d30;
@@ -167,16 +167,16 @@
 /* ==================================== */
 .light {
   /* Ayu Light Theme Colors */
-  --vscode-bg: #fafafa;
-  --vscode-sidebar: #f5f5f5;
-  --vscode-tab: #ffffff;
-  --vscode-border: #e6e6e6;
-  --vscode-text: #585b70;
-  --vscode-text-muted: #a0a0a0;
-  --vscode-blue: #6e9eff;
+  --vscode-bg: #ffffff;
+  --vscode-sidebar: #f3f3f3;
+  --vscode-tab: #e8e8e8;
+  --vscode-border: #d1d1d1;
+  --vscode-text: #333333;
+  --vscode-text-muted: var(--vscode-text-muted);
+  --vscode-blue: #007acc;
   --vscode-blue-light: #9fcfff;
-  --vscode-green: #9ece6a;
-  --vscode-yellow: #f7df6c;
+  --vscode-green: #17a864;
+  --vscode-yellow: #85850e;
   --vscode-orange: #f28779;
   --vscode-purple: #d4bfff;
   --vscode-keyword: #ff5874;
@@ -228,22 +228,22 @@
   --certificates-bg-tertiary: #f0f0f0;
   --certificates-border-color: #e6e6e6;
   --certificates-text-primary: #585b70;
-  --certificates-text-secondary: #a0a0a0;
-  --certificates-text-accent: #6e9eff;
-  --certificates-text-code: #d4bfff;
-  --certificates-text-string: #ffb454;
+  --certificates-text-secondary: var(--vscode-text-muted);
+  --certificates-text-accent: var(--vscode-blue);
+  --certificates-text-code: var(--vscode-blue);
+  --certificates-text-string: #ce9178;
   --certificates-color-green: #9ece6a;
-  --certificates-color-yellow: #f7df6c;
-  --certificates-color-cyan: #67d9f7;
-  --certificates-color-blue: #6e9eff;
+  --certificates-color-yellow: #f59e0b;
+  --certificates-color-cyan: var(--vscode-green);
+  --certificates-color-blue:var(--vscode-blue);
 
   --projects-bg: #ffffff;
   --projects-border: #e6e6e6;
-  --projects-primary: #6e9eff;
+  --projects-primary: var(--vscode-blue);
   --projects-text-white: #000000;
-  --projects-text-muted: #a0a0a0;
-  --projects-text-accent-blue: #6e9eff;
-  --projects-text-accent-green: #9ece6a;
+  --projects-text-muted: var(--vscode-text-muted);
+  --projects-text-accent-blue: var(--vscode-blue);
+  --projects-text-accent-green: var(--vscode-green);
   --projects-text-accent-orange: #f28779;
   --projects-card-bg: #f5f5f5;
   --projects-card-border-hover: #e6e6e6;
@@ -252,18 +252,18 @@
 
   --tech-bg: #ffffff;
   --tech-border: #e6e6e6;
-  --tech-primary: #6e9eff;
+  --tech-primary: var(--vscode-blue);
   --tech-text-white: #000000;
-  --tech-text-muted: #a0a0a0;
-  --tech-text-accent-blue: #6e9eff;
-  --tech-text-accent-green: #9ece6a;
+  --tech-text-muted: var(--vscode-text-muted);
+  --tech-text-accent-blue: var(--vscode-blue);
+  --tech-text-accent-green:var(--vscode-green);
   --tech-text-accent-orange: #f28779;
   --tech-card-bg: #f5f5f5;
   --tech-card-border-hover: #e6e6e6;
   --tech-card-bg-hover: #ffffff;
   --tech-shadow: 0 4px 12px rgba(110, 158, 255, 0.15);
 
-  --tree-active-bg: #6e9eff;
+  --tree-active-bg: var(--vscode-blue);
   --tree-active-text: #ffffff;
   --tree-toggle: #f5f5f5;
   --tree-toggle-active: #ffffff;
@@ -283,7 +283,7 @@
 
   --activity-bar-bg: #f5f5f5;
   --activity-bar-hover: #ffffff;
-  --activity-bar-active: #6e9eff;
+  --activity-bar-active: var(--vscode-blue);
   --activity-bar-text: #a0a0a0;
   --activity-bar-text-active: #ffffff;
   --activity-bar-border: var(--vscode-border);
@@ -358,8 +358,8 @@
   --certificates-border-color: #6fc2c9;
   --certificates-text-primary: #ffffff;
   --certificates-text-secondary: #dcdcdc;
-  --certificates-text-accent: #00ffff;
-  --certificates-text-code: #569cd6;
+  --certificates-text-accent: var(--vscode-blue);
+  --certificates-text-code: var(--vscode-blue);
   --certificates-text-string: #ce9178;
   --certificates-color-green: #28ca42;
   --certificates-color-yellow: #ffeb02;
@@ -371,8 +371,8 @@
   --projects-primary: #ffff00;
   --projects-text-white: #ffffff;
   --projects-text-muted: #f2f2f2;
-  --projects-text-accent-blue: #00ffff;
-  --projects-text-accent-green: #00ff00;
+  --projects-text-accent-blue: var(--vscode-blue);
+  --projects-text-accent-green: var(--vscode-green);
   --projects-text-accent-orange: #ff8000;
   --projects-card-bg: #000000;
   --projects-card-border-hover: #ffff00;
@@ -384,8 +384,8 @@
   --tech-primary: #ffff00;
   --tech-text-white: #ffffff;
   --tech-text-muted: #dcdcdc;
-  --tech-text-accent-blue: #00ffff;
-  --tech-text-accent-green: #00ff00;
+  --tech-text-accent-blue: var(--vscode-blue);
+  --tech-text-accent-green: var(--vscode-green);
   --tech-text-accent-orange: #ff9900;
   --tech-card-bg: #1a1a1a;
   --tech-card-border-hover: #ffffff;

@@ -93,8 +93,12 @@ export default function TechnologiesSection({ isVisible }: TechnologiesSectionPr
 
           <div className="space-y-3">
             <div className="bg-[var(--tech-card-bg)] rounded p-3 mb-4">
-              <code className="text-xs text-[var(--tech-text-accent-blue)] font-mono">
-                {category.name.toLowerCase().replace(/\s+/g, "")}: [
+              <code className="text-xs text-[var(--tech-text-accent-blue)] font-mono break-words">
+                {category.name.toLowerCase()
+                .replace(/&/g, "and")
+                .replace(/\s+(.)/g, (_, c) => c.toUpperCase())
+                .replace(/\s+/g, "")
+                .replace(/^(.)/, (_, c) => c.toLowerCase())}: [
               </code>
             </div>
 
