@@ -11,6 +11,7 @@ interface TerminalWindowProps {
   isProcessing?: boolean
   autoCloseAfter?: number
   onClose?: () => void
+  inputEnabled?: boolean
 }
 
 export default function TerminalWindow({
@@ -21,8 +22,10 @@ export default function TerminalWindow({
   isProcessing = false,
   autoCloseAfter = 5000,
   onClose,
+  inputEnabled = false,
 }: TerminalWindowProps) {
-  const [terminalText, setTerminalText] = useState("")
+  const [terminalText, setTerminalText] = useState("Welcome to the shortcut terminal!\n\n")
+  const [currentInput, setCurrentInput] = useState("")
   const [showCursor, setShowCursor] = useState(true)
   const [finished, setFinished] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -64,7 +67,7 @@ export default function TerminalWindow({
     }
   }, [terminalCommands])
 
-  // Typing effect + cursor blinking
+  // Typing + cursor blinking
   useEffect(() => {
     const stopTyping = typeTerminal()
     const cursorInterval =
@@ -78,7 +81,7 @@ export default function TerminalWindow({
     }
   }, [typeTerminal, cursorBlinkSpeed])
 
-  // Auto-close logic
+  // Auto-close
   useEffect(() => {
     if (finished && !isProcessing && autoCloseAfter > 0) {
       const timer = setTimeout(() => onClose?.(), autoCloseAfter)
@@ -86,27 +89,51 @@ export default function TerminalWindow({
     }
   }, [finished, isProcessing, autoCloseAfter, onClose])
 
-  // Auto-scroll to bottom whenever terminalText changes
+  // Auto-scroll
   useEffect(() => {
     if (containerRef.current) {
       containerRef.current.scrollTop = containerRef.current.scrollHeight
     }
-  }, [terminalText, isProcessing])
+  }, [terminalText, isProcessing, currentInput])
+
+  // Listen for typing
+  useEffect(() => {
+    if (!inputEnabled) return
+   
+    const handleKey = (e: KeyboardEvent) => {
+       e.preventDefault()
+      if (e.key === "Backspace") {
+        setCurrentInput((prev) => prev.slice(0, -1))
+      } else if (e.key === "Enter") {
+        // Append command to terminal text with newline
+        setTerminalText((prev) => prev + `> ${currentInput}\n`)
+        setCurrentInput("") // clear input
+      } else if (e.key.length === 1) {
+        setCurrentInput((prev) => prev + e.key)
+      }
+    }
+
+    window.addEventListener("keydown", handleKey)
+    return () => window.removeEventListener("keydown", handleKey)
+  }, [inputEnabled, currentInput])
 
   return (
     <div className="bg-[var(--terminal-bg)] rounded-lg border border-[var(--vscode-border)] overflow-hidden">
-      {/* Terminal Header */}
+      {/* Header */}
       <div className="bg-[var(--terminal-title-bar)] px-4 py-2 flex items-center gap-2 border-b border-[var(--vscode-border)]">
         <Terminal className="w-4 h-4 text-[var(--vscode-text-muted)]" />
         <span className="text-sm text-[var(--vscode-text-muted)]">{title}</span>
         <div className="ml-auto flex gap-1">
-          <div className="w-3 h-3 bg-[var(--vscode-error)] rounded-full"></div>
+          <div
+            className="w-3 h-3 bg-[var(--vscode-error)] rounded-full cursor-pointer"
+            onClick={onClose}
+          ></div>
           <div className="w-3 h-3 bg-[var(--vscode-warning)] rounded-full"></div>
           <div className="w-3 h-3 bg-[var(--vscode-green)] rounded-full"></div>
         </div>
       </div>
 
-      {/* Terminal Content */}
+      {/* Content */}
       <div
         ref={containerRef}
         className={`p-4 font-mono text-sm overflow-y-auto ${height} text-[var(--terminal-text)]`}
@@ -119,7 +146,16 @@ export default function TerminalWindow({
               <span>Processing...</span>
             </div>
           )}
-          {showCursor && cursorBlinkSpeed > 0 && (
+          {/* Render the prompt + current input + cursor at the end */}
+          {inputEnabled && (
+            <>
+              <span>&gt; {currentInput}</span>
+              <span className="bg-[var(--terminal-bg)] text-[var(--terminal-text)]">
+                {showCursor ? "█" : ""}
+              </span>
+            </>
+          )}
+          {!inputEnabled && showCursor && (
             <span className="bg-[var(--terminal-bg)] text-[var(--terminal-text)]">█</span>
           )}
         </pre>

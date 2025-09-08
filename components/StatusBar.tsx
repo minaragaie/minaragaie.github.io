@@ -1,6 +1,7 @@
 "use client"
 
 import { GitBranch, Coffee, X } from "lucide-react"
+import ShortcutTerminal from "./ShortcutTerminal"
 
 interface StatusBarProps {
   status?: string
@@ -26,10 +27,11 @@ export default function StatusBar({
 
 
   return (
+    <div className="fixed flex flex-col bottom-0 left-0 right-0 z-50">
     <div
-      className={`fixed bottom-0 left-0 right-0 bg-[#2d2d30] border-t border-[#3e3e42] px-4 py-3 flex items-center justify-between text-sm z-50`}
+      className={`bg-[#2d2d30] border-t border-[#3e3e42] px-4 py-3 flex items-center justify-between text-sm z-50`}
     >
-      <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4">
         <div className="flex items-center gap-2">
           <GitBranch className="w-4 h-4 text-[#4ec9b0]" />
           <span className="text-[#d4d4d4] font-mono">main</span>
@@ -49,6 +51,11 @@ export default function StatusBar({
         </div>
       </div>
       <div className="text-[#d4d4d4] font-mono">© 2025 Mina Youaness</div>
+      
+      
+    </div>
+     {/* adding the shortcut component here so it can listen for shortcuts anywhere */}
+      <ShortcutTerminal shortcutKey="Y" commands={["Welcome to the shortcut terminal!"]} />
     </div>
   )
 }
