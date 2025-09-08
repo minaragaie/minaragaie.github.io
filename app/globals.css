@@ -166,26 +166,26 @@
 /* Light Theme              */
 /* ==================================== */
 .light {
-  /* VSCode Light Theme Colors */
-  --vscode-bg: #ffffff;
-  --vscode-sidebar: #f3f3f3;
-  --vscode-tab: #e8e8e8;
-  --vscode-border: #d1d1d1;
-  --vscode-text: #333333;
-  --vscode-text-muted: #666666;
-  --vscode-blue: #007acc;
-  --vscode-blue-light: #0059b2;
-  --vscode-green: #17a864;
-  --vscode-yellow: #85850e;
-  --vscode-orange: #cd3131;
-  --vscode-purple: #6969ef;
-  --vscode-keyword: #0000ff;
-  --vscode-string: #a31515;
-  --vscode-comment: #008000;
-  --vscode-error: #cd3131;
-  --vscode-warning: #c25900;
-  --terminal-title-bar: #e8e8e8;
-  --terminal-text: #444444;
+  /* Ayu Light Theme Colors */
+  --vscode-bg: #fafafa;
+  --vscode-sidebar: #f5f5f5;
+  --vscode-tab: #ffffff;
+  --vscode-border: #e6e6e6;
+  --vscode-text: #585b70;
+  --vscode-text-muted: #a0a0a0;
+  --vscode-blue: #6e9eff;
+  --vscode-blue-light: #9fcfff;
+  --vscode-green: #9ece6a;
+  --vscode-yellow: #f7df6c;
+  --vscode-orange: #f28779;
+  --vscode-purple: #d4bfff;
+  --vscode-keyword: #ff5874;
+  --vscode-string: #ffb454;
+  --vscode-comment: #787b80;
+  --vscode-error: #f44747;
+  --vscode-warning: #ffcc66;
+  --terminal-title-bar: #ffffff;
+  --terminal-text: #585b70;
   --terminal-bg: #fafafa;
 
   /* General design tokens */
@@ -208,11 +208,11 @@
   --border: var(--vscode-border);
   --input: var(--vscode-tab);
   --ring: var(--vscode-blue);
-  --chart-1: #007acc;
-  --chart-2: #17a864;
-  --chart-3: #85850e;
-  --chart-4: #cd3131;
-  --chart-5: #6969ef;
+  --chart-1: var(--vscode-blue);
+  --chart-2: var(--vscode-green);
+  --chart-3: var(--vscode-yellow);
+  --chart-4: var(--vscode-orange);
+  --chart-5: var(--vscode-purple);
   --radius: 0.625rem;
   --sidebar: var(--vscode-sidebar);
   --sidebar-foreground: var(--vscode-text);
@@ -223,55 +223,52 @@
   --sidebar-border: var(--vscode-border);
   --sidebar-ring: var(--vscode-blue);
 
-  --certificates-bg-primary: #f8fafc;
+  --certificates-bg-primary: #f5f5f5;
   --certificates-bg-secondary: #ffffff;
-  --certificates-bg-tertiary: #f1f5f9;
-  --certificates-border-color: #e2e8f0;
-  --certificates-text-primary: #0f172a;
-  --certificates-text-secondary: #64748b;
-  --certificates-text-accent: #007acc;
-  --certificates-text-code: #569cd6;
-  --certificates-text-string: #ce9178;
-  --certificates-color-green: #10b981;
-  --certificates-color-yellow: #f59e0b;
-  --certificates-color-cyan: #06b6d4;
-  --certificates-color-blue: #3b82f6;
+  --certificates-bg-tertiary: #f0f0f0;
+  --certificates-border-color: #e6e6e6;
+  --certificates-text-primary: #585b70;
+  --certificates-text-secondary: #a0a0a0;
+  --certificates-text-accent: #6e9eff;
+  --certificates-text-code: #d4bfff;
+  --certificates-text-string: #ffb454;
+  --certificates-color-green: #9ece6a;
+  --certificates-color-yellow: #f7df6c;
+  --certificates-color-cyan: #67d9f7;
+  --certificates-color-blue: #6e9eff;
 
   --projects-bg: #ffffff;
-  --projects-border: #e0e0e0;
-  --projects-primary: #007acc;
+  --projects-border: #e6e6e6;
+  --projects-primary: #6e9eff;
   --projects-text-white: #000000;
-  --projects-text-muted: #555555;
-  --projects-text-accent-blue: #005fb8;
-  --projects-text-accent-green: #00897b;
-  --projects-text-accent-orange: #d35400;
-  --projects-card-bg: #f9f9f9;
-  --projects-card-border-hover: #cccccc;
-  --projects-card-bg-hover: #f0f0f0;
-  --projects-shadow: 0 4px 12px rgba(0, 122, 204, 0.15);
+  --projects-text-muted: #a0a0a0;
+  --projects-text-accent-blue: #6e9eff;
+  --projects-text-accent-green: #9ece6a;
+  --projects-text-accent-orange: #f28779;
+  --projects-card-bg: #f5f5f5;
+  --projects-card-border-hover: #e6e6e6;
+  --projects-card-bg-hover: #ffffff;
+  --projects-shadow: 0 4px 12px rgba(110, 158, 255, 0.15);
 
   --tech-bg: #ffffff;
-  --tech-border: #e5e5e5;
-  --tech-primary: #007acc;
-
+  --tech-border: #e6e6e6;
+  --tech-primary: #6e9eff;
   --tech-text-white: #000000;
-  --tech-text-muted: #4a4a4a;
-  --tech-text-accent-blue: #0451a5;
-  --tech-text-accent-green: #0b8a6a;
-  --tech-text-accent-orange: #a31515;
-
+  --tech-text-muted: #a0a0a0;
+  --tech-text-accent-blue: #6e9eff;
+  --tech-text-accent-green: #9ece6a;
+  --tech-text-accent-orange: #f28779;
   --tech-card-bg: #f5f5f5;
-  --tech-card-border-hover: #dcdcdc;
-  --tech-card-bg-hover: #f0f0f0;
+  --tech-card-border-hover: #e6e6e6;
+  --tech-card-bg-hover: #ffffff;
+  --tech-shadow: 0 4px 12px rgba(110, 158, 255, 0.15);
 
-  --tech-shadow: 0 4px 12px rgba(0, 122, 204, 0.15);
+  --tree-active-bg: #6e9eff;
+  --tree-active-text: #ffffff;
+  --tree-toggle: #f5f5f5;
+  --tree-toggle-active: #ffffff;
 
-  --tree-active-bg: #007acc; /* tech-primary */
-  --tree-active-text: #000000; /* tech-text-white */
-  --tree-toggle: #f5f5f5; /* tech-card-bg */
-  --tree-toggle-active: #f0f0f0; /* tech-card-bg-hover */
-
-  /* Enhanced Sidebar Variables for Light Theme */
+  /* Sidebar & Activity Bar */
   --sidebar-bg: var(--vscode-sidebar);
   --sidebar-bg-hover: var(--vscode-tab);
   --sidebar-bg-active: var(--vscode-blue);
@@ -284,14 +281,14 @@
   --sidebar-icon-active: #ffffff;
   --sidebar-icon-hover: var(--vscode-text);
 
-  /* Activity Bar Variables for Light Theme */
-  --activity-bar-bg: #f3f3f3;
-  --activity-bar-hover: #e8e8e8;
-  --activity-bar-active: #007acc;
-  --activity-bar-text: #666666;
+  --activity-bar-bg: #f5f5f5;
+  --activity-bar-hover: #ffffff;
+  --activity-bar-active: #6e9eff;
+  --activity-bar-text: #a0a0a0;
   --activity-bar-text-active: #ffffff;
   --activity-bar-border: var(--vscode-border);
 }
+
 
 /* ==================================== */
 /* High Contrast Theme           */
