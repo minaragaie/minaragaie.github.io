@@ -1,13 +1,16 @@
 "use client"
 
 import { GitBranch, Coffee, X } from "lucide-react"
-import ShortcutTerminal from "./ShortcutTerminal"
+import TerminalWindow from "./TerminalWindow"
 
 interface StatusBarProps {
   status?: string
   isVisible?: boolean
   onStatusChange?: (status: string) => void
   sidebarCollapsed?: boolean
+  terminalOpen?: boolean
+  onCloseTerminal?: () => void
+  terminalCommands?: string[]
 }
 
 export default function StatusBar({
@@ -15,6 +18,9 @@ export default function StatusBar({
   isVisible = true,
   onStatusChange,
   sidebarCollapsed = false,
+  terminalOpen = false,
+  onCloseTerminal,
+  terminalCommands = [],
 }: StatusBarProps) {
   if (!isVisible) return null
 
@@ -25,37 +31,45 @@ export default function StatusBar({
   const showCloseButton =
     status !== "Ready for next challenge" && !status.includes("Ready") && !status.includes("challenge")
 
-
   return (
     <div className="fixed flex flex-col bottom-0 left-0 right-0 z-50">
-    <div
-      className={`bg-[#2d2d30] border-t border-[#3e3e42] px-4 py-3 flex items-center justify-between text-sm z-50`}
-    >
+      <div className="bg-[#2d2d30] border-t border-[#3e3e42] px-4 py-3 flex items-center justify-between text-sm z-50">
         <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2">
-          <GitBranch className="w-4 h-4 text-[#4ec9b0]" />
-          <span className="text-[#d4d4d4] font-mono">main</span>
+          <div className="flex items-center gap-2">
+            <GitBranch className="w-4 h-4 text-[#4ec9b0]" />
+            <span className="text-[#d4d4d4] font-mono">main</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Coffee className="w-4 h-4 text-[#dcb67a]" />
+            <span className="text-[#d4d4d4] font-mono">{status}</span>
+            {showCloseButton && (
+              <button
+                onClick={handleCloseStatus}
+                className="ml-2 p-1 hover:bg-[#3e3e42] rounded transition-colors"
+                title="Dismiss message"
+              >
+                <X className="w-3 h-3 text-[#d4d4d4] hover:text-white" />
+              </button>
+            )}
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <Coffee className="w-4 h-4 text-[#dcb67a]" />
-          <span className="text-[#d4d4d4] font-mono">{status}</span>
-          {showCloseButton && (
-            <button
-              onClick={handleCloseStatus}
-              className="ml-2 p-1 hover:bg-[#3e3e42] rounded transition-colors"
-              title="Dismiss message"
-            >
-              <X className="w-3 h-3 text-[#d4d4d4] hover:text-white" />
-            </button>
-          )}
-        </div>
+        <div className="text-[#d4d4d4] font-mono">© 2025 Mina Youaness</div>
       </div>
-      <div className="text-[#d4d4d4] font-mono">© 2025 Mina Youaness</div>
-      
-      
-    </div>
-     {/* adding the shortcut component here so it can listen for shortcuts anywhere */}
-      <ShortcutTerminal shortcutKey="Y" commands={["Welcome to the shortcut terminal!"]} />
+
+      {terminalOpen && (
+        <div className="w-full z-50 transition-all duration-300">
+          <TerminalWindow
+            commands={terminalCommands}
+            isProcessing={false}
+            onClose={onCloseTerminal}
+            cursorBlinkSpeed={400}
+            height="h-64"
+            title="Shortcut Terminal"
+            autoCloseAfter={0}
+            inputEnabled={true}
+          />
+        </div>
+      )}
     </div>
   )
 }
