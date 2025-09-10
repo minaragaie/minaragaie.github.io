@@ -17,17 +17,17 @@ const tabs: Tab[] = [
   {
     id: "mina",
     label: "mina-youaness-resume.tsx",
-    icon: <FileCode className="w-4 h-4" aria-hidden="true" />,
+    icon: <FileCode className="w-4 h-4" aria-hidden="true" />
   },
   {
     id: "signin",
     label: "signin.md",
-    icon: <FileText className="w-4 h-4" aria-hidden="true" />,
+    icon: <FileText className="w-4 h-4" aria-hidden="true" />
   },
   {
     id: "github",
     label: "GitHub Activity",
-    icon: <Github className="w-4 h-4" aria-hidden="true" />,
+    icon: <Github className="w-4 h-4" aria-hidden="true" />
   },
 ]
 
@@ -44,8 +44,8 @@ const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange, onTabClose }) =
                 id !== "github" ? "border-r border-[var(--vscode-border,#333)]" : ""
               } ${
                 isActive
-                  ? "bg-[var(--vscode-tab-activeBackground,#1e1e1e)] text-[var(--vscode-text)]"
-                  : "bg-[var(--bg-secondary)] text-[var(--vscode-tab-inactiveForeground,#888)] hover:text-[var(--vscode-text,#ccc)]"
+                  ? "bg-[var(--sidebar-bg-hover)] text-[var(--vscode-text)]"
+                  : "bg-[var(--bg-secondary)] text-[var(--vscode-tab-inactiveForeground,#888)] hover:text-[var(--vscode-text)]"
               }`}
               onClick={() => onTabChange(id)}
             >
