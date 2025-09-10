@@ -14,6 +14,8 @@ import Sidebar from "@/components/Sidebar"
 import Header from "@/components/Header"
 import SignInShortcut from "@/components/SignInShortcut"
 import GitHubActivity from "@/components/GitHubActivity"
+import AdminPage from "./admin/page"
+import router from "next/router"
 
 export default function Resume() {
   const [isLoading, setIsLoading] = useState(true)
@@ -21,6 +23,8 @@ export default function Resume() {
   const [status, setStatus] = useState("Ready for next challenge")
   const [sidebarCollapsed, setSidebarCollapsed] = useState(true)
   const [terminalOpen, setTerminalOpen] = useState(false)
+  const [terminalCommands, setTerminalCommands] = useState<string[]>(["Initializing admin sign-in... Please enter your password."])
+  const [isAdmin, setIsAdmin] = useState(false)
   const [animationStates, setAnimationStates] = useState({
     hero: true,
     projects: false,
@@ -30,6 +34,25 @@ export default function Resume() {
     certifications: false,
     contact: false,
   })
+
+  const handleCommand = (cmd: string) => {
+    if (cmd.toLowerCase().startsWith("password ")) {
+      const entered = cmd.split(" ")[1]
+      if (entered === "admin123") {
+        setIsAdmin(true)
+        setStatus("Admin access granted ✅")
+        setTerminalCommands((prev) => [...prev, "Access granted. Welcome, Admin."])
+        router.push("/admin") // ✅ redirect to /admin
+      } else {
+        setIsAdmin(false)
+        setStatus("Incorrect password ❌")
+        setTerminalCommands((prev) => [...prev, "Incorrect password. Try again."])
+      }
+    } else {
+      setTerminalCommands((prev) => [...prev, `Unknown command: ${cmd}`])
+    }
+  }
+
 
   useEffect(() => {
     if (isLoading) return
@@ -92,7 +115,18 @@ export default function Resume() {
             )}
             
     
-              {activeTab === "signin" && <SignInShortcut onTrigger={() => setTerminalOpen(true)} />}
+                {activeTab === "signin" && (
+                isAdmin ? (
+                  <AdminPage />
+                ) : (
+                  <SignInShortcut
+                    onTrigger={() => {
+                      setTerminalOpen(true)
+                      setTerminalCommands((prev) => [...prev, "Password:"])
+                    }}
+                  />
+                )
+              )}
               {activeTab === "github" && <GitHubActivity username="minaragaie" />}
 
           </main>
@@ -103,9 +137,15 @@ export default function Resume() {
         sidebarCollapsed={sidebarCollapsed} 
         terminalOpen={terminalOpen} 
         onCloseTerminal={() => setTerminalOpen(false)}
-        terminalCommands={["Welcome to the shortcut terminal!"]}
-
-      />
+        terminalCommands={terminalCommands}
+        onCommand={(cmd) => {
+            if (cmd === "admin123") {
+              setStatus("Access granted. Welcome, Admin.")
+            } else {
+              setStatus("Access denied. Try again.")
+            }
+          }}
+        />
     </div>
   )
 }

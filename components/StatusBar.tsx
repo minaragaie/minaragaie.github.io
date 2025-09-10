@@ -11,6 +11,7 @@ interface StatusBarProps {
   terminalOpen?: boolean
   onCloseTerminal?: () => void
   terminalCommands?: string[]
+  onCommand?: (cmd: string) => void
 }
 
 export default function StatusBar({
@@ -21,6 +22,7 @@ export default function StatusBar({
   terminalOpen = false,
   onCloseTerminal,
   terminalCommands = [],
+  onCommand
 }: StatusBarProps) {
   if (!isVisible) return null
 
@@ -67,6 +69,8 @@ export default function StatusBar({
             title="Shortcut Terminal"
             autoCloseAfter={0}
             inputEnabled={true}
+              onCommand={onCommand}
+
           />
         </div>
       )}

@@ -12,6 +12,7 @@ interface TerminalWindowProps {
   autoCloseAfter?: number
   onClose?: () => void
   inputEnabled?: boolean
+  onCommand?: (cmd: string) => void
 }
 
 export default function TerminalWindow({
@@ -23,6 +24,7 @@ export default function TerminalWindow({
   autoCloseAfter = 5000,
   onClose,
   inputEnabled = false,
+  onCommand
 }: TerminalWindowProps) {
   const [terminalText, setTerminalText] = useState("Welcome to the shortcut terminal!\n\n")
   const [currentInput, setCurrentInput] = useState("")
@@ -107,6 +109,9 @@ export default function TerminalWindow({
       } else if (e.key === "Enter") {
         // Append command to terminal text with newline
         setTerminalText((prev) => prev + `> ${currentInput}\n`)
+        if (currentInput.trim() !== "") {
+        onCommand?.(currentInput.trim())
+  }
         setCurrentInput("") // clear input
       } else if (e.key.length === 1) {
         setCurrentInput((prev) => prev + e.key)
