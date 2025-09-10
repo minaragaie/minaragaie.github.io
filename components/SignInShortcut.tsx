@@ -8,7 +8,7 @@ interface SignInShortcutProps {
 }
 
 
-export default function SignInShortcut({ shortcutKey = "Y", onTrigger }: SignInShortcutProps) {
+export default function SignInShortcut({ shortcutKey = "A", onTrigger }: SignInShortcutProps) {
   useEffect(() => {
     const handleShortcut = (e: KeyboardEvent) => {
       const isMac = navigator.platform.toUpperCase().includes("MAC")
