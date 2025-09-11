@@ -6,13 +6,15 @@ import { Button } from "@/components/ui/button"
 import { Mail, Phone, MapPin, Linkedin, Send, MessageSquare } from "lucide-react"
 import resumeData from "@/data/resume.json"
 import TerminalWindow from "./TerminalWindow"
+import { useStatusBar } from "@/context/StatusBarContext"
 
 interface ContactSectionProps {
-  onStatusChange?: (status: string) => void
   isVisible?: boolean
 }
 
-export default function ContactSection({ onStatusChange, isVisible = false }: ContactSectionProps) {
+export default function ContactSection({ isVisible = false }: ContactSectionProps) {
+    const { setStatus } = useStatusBar()
+
   const [formData, setFormData] = useState({ name: "", email: "", message: "" })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [terminalCommands, setTerminalCommands] = useState<string[]>([])
@@ -36,7 +38,7 @@ const handleSubmit = async (e: React.FormEvent) => {
     setTerminalCommands((prev) => [...prev, `[${new Date().toLocaleTimeString()}] ${msg}`])
 
   try {
-    onStatusChange?.("Sending message...")
+    setStatus?.("Sending message...")
     addCmd(`connect --to "Mina Youaness"`)
     await new Promise((res) => setTimeout(res, 800))
 
@@ -49,11 +51,11 @@ const handleSubmit = async (e: React.FormEvent) => {
     addCmd("[✔] Contact form initialized")
     await new Promise((res) => setTimeout(res, 500))
 
-    onStatusChange?.("Encrypting message...")
+    setStatus?.("Encrypting message...")
     addCmd(`[✔] Encrypting message from <${formData.email}>...`)
     await new Promise((res) => setTimeout(res, 700))
 
-    onStatusChange?.("Transmitting...")
+    setStatus?.("Transmitting...")
     addCmd("[✔] Transmitting data packets...")
     await new Promise((res) => setTimeout(res, 600))
 
@@ -78,7 +80,7 @@ const handleSubmit = async (e: React.FormEvent) => {
     }
 
     // SUCCESS
-    onStatusChange?.("Message sent successfully!")
+    setStatus?.("Message sent successfully!")
     addCmd("------------------------------------------")
     addCmd(`👋 Hello ${formData.name} (<${formData.email}>)`)
     addCmd("   Welcome to my terminal. Your message has successfully")
@@ -93,14 +95,14 @@ const handleSubmit = async (e: React.FormEvent) => {
     addCmd("Session closed. Thank you for reaching out!")
 
     setFormData({ name: "", email: "", message: "" })
-    setTimeout(() => onStatusChange?.("Ready for next challenge"), 5000)
+    setTimeout(() => setStatus?.("Ready for next challenge"), 5000)
   } catch (error: any) {
     // CAPTURE ALL ERRORS
     const msg = error?.message || "Unknown error"
-    onStatusChange?.("Failed to send message - See terminal for details")
+    setStatus?.("Failed to send message - See terminal for details")
     addCmd(`✗ Error: ${msg}`)
     addCmd("✗ Please try again or contact directly")
-    setTimeout(() => onStatusChange?.("Ready for next challenge"), 5000)
+    setTimeout(() => setStatus?.("Ready for next challenge"), 5000)
   } finally {
     setIsSubmitting(false)
     addCmd("Process completed.")

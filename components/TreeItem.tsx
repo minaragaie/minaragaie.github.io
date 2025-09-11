@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import type { LucideIcon } from "lucide-react"
 import { ChevronRight, ChevronDown } from "lucide-react"
 import { slugify } from "@/lib/utils"
@@ -55,21 +54,21 @@ export default function TreeItem({
         } ${className}`}
       >
         {isDirectory && (
-          <button
+          <div
             onClick={handleCollapseClick}
-            className="flex-shrink-0 hover:bg-[#3e3e42] rounded p-0.5 transition-colors"
+            className="flex-shrink-0 hover:bg-[#3e3e42] rounded p-0.5 transition-colors cursor-pointer"
+            role="button"
+            aria-label={isExpanded ? "Collapse directory" : "Expand directory"}
           >
-            {isExpanded ? (
-              <ChevronDown size={12} className="w-3 h-3" />
-            ) : (
-              <ChevronRight size={12} className="w-3 h-3" />
-            )}
-          </button>
+            {isExpanded ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
+          </div>
         )}
+
         <Icon size={14} className="w-3.5 h-3.5 flex-shrink-0" style={{ color }} />
-        <span>{name}</span>
+        <span className="truncate">{name}</span>
         {isActive && showActiveIndicator && <div className="ml-auto w-1 h-1 bg-white rounded-full"></div>}
       </button>
+
       {isDirectory && isExpanded && children && <div className="ml-4">{children}</div>}
     </div>
   )

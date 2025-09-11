@@ -1,9 +1,9 @@
-import type { Metadata, Viewport } from "next";
-import { Playfair_Display, Source_Sans_3 } from "next/font/google";
-import "./globals.css";
-import ThemeProvider from "@/components/theme-provider";
-import StructuredData from "@/components/structuredData";
-import Script from "next/script";
+import type { Metadata } from "next"
+import { Playfair_Display, Source_Sans_3 } from "next/font/google"
+import "./globals.css"
+import ThemeProvider from "@/components/theme-provider"
+import StructuredData from "@/components/structuredData"
+import ClientLayout from "@/components/ClientLayout"
 
 // --------------------
 // Font Configuration
@@ -13,14 +13,14 @@ const playfair = Playfair_Display({
   display: "swap",
   variable: "--font-playfair",
   weight: ["400", "600", "700"],
-});
+})
 
 const sourceSans = Source_Sans_3({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-source-sans",
   weight: ["400", "500", "600"],
-});
+})
 
 // --------------------
 // Metadata
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     "Resume of Mina Youaness, Full-Stack Web Developer with 10+ years of experience in Angular, React, Node.js, and scalable web applications.",
   generator: "Mina Youaness",
   applicationName: "Mina Youaness Resume",
-verification: {
+  verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION,
   },
   openGraph: {
@@ -59,7 +59,6 @@ verification: {
     ],
     apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
   },
-
   keywords: [
     "Mina Youaness",
     "Full-Stack Developer",
@@ -75,60 +74,22 @@ verification: {
     "Software Engineer",
     "Web Applications",
   ],
-
   authors: [{ name: "Mina Youaness", url: "https://minaragaie.github.io/" }],
   creator: "Mina Youaness",
-};
-
-// --------------------
-// Viewport Configuration
-// --------------------
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
-  viewportFit: "cover",
-};
-
+}
 
 // --------------------
 // Root Layout
 // --------------------
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      className={`${playfair.variable} ${sourceSans.variable}`}
-      suppressHydrationWarning
-    >
-      <head>
-        {/* Google Analytics */}
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
-          strategy="afterInteractive"
-        />
-        <Script id="gtag-init" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
-          `}
-        </Script>
-      </head>
-    {/* JSON-LD Structured Data - Placed directly in the HTML without `next/head` */}
+    <html lang="en" className={`${playfair.variable} ${sourceSans.variable}`} suppressHydrationWarning>
       <body className="font-sans antialiased transition-colors duration-300 bg-[var(--bg-primary)] text-[var(--text-primary)]">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
-
-          {children}
+          <ClientLayout>{children}</ClientLayout>
         </ThemeProvider>
-        <StructuredData />      
+        <StructuredData />
       </body>
     </html>
-  );
+  )
 }

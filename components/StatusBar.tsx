@@ -2,36 +2,26 @@
 
 import { GitBranch, Coffee, X } from "lucide-react"
 import TerminalWindow from "./TerminalWindow"
+import { useStatusBar } from "@/context/StatusBarContext"
 
-interface StatusBarProps {
-  status?: string
-  isVisible?: boolean
-  onStatusChange?: (status: string) => void
-  sidebarCollapsed?: boolean
-  terminalOpen?: boolean
-  onCloseTerminal?: () => void
-  terminalCommands?: string[]
-  onCommand?: (cmd: string) => void
-}
-
-export default function StatusBar({
-  status = "Ready for next challenge",
-  isVisible = true,
-  onStatusChange,
-  sidebarCollapsed = false,
-  terminalOpen = false,
-  onCloseTerminal,
-  terminalCommands = [],
-  onCommand
-}: StatusBarProps) {
-  if (!isVisible) return null
+export default function StatusBar() {
+  const {
+    status,
+    setStatus,
+    terminalOpen,
+    closeTerminal,
+    terminalCommands,
+    addCommand,
+  } = useStatusBar()
 
   const handleCloseStatus = () => {
-    onStatusChange?.("Ready for next challenge")
+    setStatus("Ready for next challenge")
   }
 
   const showCloseButton =
-    status !== "Ready for next challenge" && !status.includes("Ready") && !status.includes("challenge")
+    status !== "Ready for next challenge" &&
+    !status.includes("Ready") &&
+    !status.includes("challenge")
 
   return (
     <div className="fixed flex flex-col bottom-0 left-0 right-0 z-50">
@@ -63,14 +53,13 @@ export default function StatusBar({
           <TerminalWindow
             commands={terminalCommands}
             isProcessing={false}
-            onClose={onCloseTerminal}
+            onClose={closeTerminal}
             cursorBlinkSpeed={400}
             height="h-64"
             title="Shortcut Terminal"
             autoCloseAfter={0}
             inputEnabled={true}
-              onCommand={onCommand}
-
+            onCommand={(cmd: string) => addCommand(cmd)}
           />
         </div>
       )}

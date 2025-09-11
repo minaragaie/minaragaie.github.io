@@ -1,24 +1,21 @@
-import React, { useState } from "react"
+"use client"
+import React, { useState, useRef } from "react"
 import { FileCode, X, Github, FileText } from "lucide-react"
-import { DndProvider, useDrag, useDrop, DragSourceMonitor } from "react-dnd"
+import { DndProvider, useDrag, useDrop } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
-
-interface HeaderProps {
-  activeTab: "mina" | "signin" | "github"
-  onTabChange: (tab: "mina" | "signin" | "github") => void
-  onTabClose?: (tab: "mina" | "signin" | "github") => void
-}
+import { usePathname, useRouter } from "next/navigation"
 
 interface Tab {
   id: "mina" | "signin" | "github"
   label: string
   icon: React.ReactNode
+  path: string
 }
 
 const initialTabs: Tab[] = [
-  { id: "mina", label: "mina-youaness-resume.tsx", icon: <FileCode className="w-4 h-4" aria-hidden="true" /> },
-  { id: "signin", label: "signin.md", icon: <FileText className="w-4 h-4" aria-hidden="true" /> },
-  { id: "github", label: "GitHub Activity", icon: <Github className="w-4 h-4" aria-hidden="true" /> },
+  { id: "mina", label: "mina-youaness-resume.tsx", icon: <FileCode className="w-4 h-4" />, path: "/" },
+  { id: "signin", label: "signin.md", icon: <FileText className="w-4 h-4" />, path: "/signin" },
+  { id: "github", label: "GitHub Activity", icon: <Github className="w-4 h-4" />, path: "/github" },
 ]
 
 const TAB_TYPE = "TAB"
@@ -28,12 +25,12 @@ interface DraggableTabProps {
   index: number
   moveTab: (fromIndex: number, toIndex: number) => void
   isActive: boolean
-  onTabChange: (id: Tab["id"]) => void
+  onNavigate: (path: string) => void
   onTabClose?: (id: Tab["id"]) => void
 }
 
-const DraggableTab: React.FC<DraggableTabProps> = ({ tab, index, moveTab, isActive, onTabChange, onTabClose }) => {
-  const ref = React.useRef<HTMLDivElement>(null)
+const DraggableTab: React.FC<DraggableTabProps> = ({ tab, index, moveTab, isActive, onNavigate, onTabClose }) => {
+  const ref = useRef<HTMLDivElement>(null)
 
   const [, drop] = useDrop({
     accept: TAB_TYPE,
@@ -78,7 +75,7 @@ const DraggableTab: React.FC<DraggableTabProps> = ({ tab, index, moveTab, isActi
           : "bg-[var(--bg-secondary)] text-[var(--vscode-tab-inactiveForeground,#888)] hover:text-[var(--vscode-text)]"
       }`}
       style={{ opacity: isDragging ? 0.5 : 1 }}
-      onClick={() => onTabChange(tab.id)}
+      onClick={() => onNavigate(tab.path)}
     >
       {tab.icon}
       <span className="whitespace-nowrap text-sm sm:text-base">{tab.label}</span>
@@ -100,7 +97,9 @@ const DraggableTab: React.FC<DraggableTabProps> = ({ tab, index, moveTab, isActi
   )
 }
 
-const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange, onTabClose }) => {
+const Header: React.FC = () => {
+  const pathname = usePathname()
+  const router = useRouter()
   const [tabs, setTabs] = useState<Tab[]>(initialTabs)
 
   const moveTab = (fromIndex: number, toIndex: number) => {
@@ -120,9 +119,9 @@ const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange, onTabClose }) =
               tab={tab}
               index={index}
               moveTab={moveTab}
-              isActive={activeTab === tab.id}
-              onTabChange={onTabChange}
-              onTabClose={onTabClose}
+              isActive={pathname === tab.path}
+              onNavigate={(path) => router.push(path)}
+              onTabClose={(id) => setTabs((prev) => prev.filter((t) => t.id !== id))}
             />
           ))}
         </div>
