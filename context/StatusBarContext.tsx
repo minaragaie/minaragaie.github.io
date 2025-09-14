@@ -21,10 +21,12 @@ export const StatusBarProvider = ({ children }: { children: ReactNode }) => {
   const [terminalCommands, setTerminalCommands] = useState<string[]>([])
 
   const openTerminal = () => setTerminalOpen(true)
-  const closeTerminal = () => setTerminalOpen(false)
+    const closeTerminal = () => {
+    setTerminalOpen(false);
+    setTerminalCommands([]);
+  };
 
-  const addCommand = (cmd: string) =>
-    setTerminalCommands((prev) => [...prev, `[${new Date().toLocaleTimeString()}] ${cmd}`])
+  const addCommand = (cmd: string) =>  setTerminalCommands(prev => prev.includes(cmd) ? prev : [...prev, cmd])
 
   return (
     <StatusBarContext.Provider
