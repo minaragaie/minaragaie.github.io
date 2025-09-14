@@ -9,7 +9,7 @@ interface ExperienceSectionProps {
 
 export default function ExperienceSection({ isVisible }: ExperienceSectionProps) {
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-4 lg:px-8">
+    <div className="max-w-6xl mx-auto lg:px-8">
       {/* Section header */}
       <div className="text-center mb-8 sm:mb-12">
         <h2 className="text-xl sm:text-3xl font-bold mb-2 sm:mb-4 text-[var(--text-primary)]">
