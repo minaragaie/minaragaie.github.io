@@ -72,9 +72,14 @@ export default function HeroSection({ isVisible }: HeroSectionProps) {
               <MapPin className="w-4 h-4 text-[var(--vscode-green)]" />
               <span>Voorhees, NJ</span>
             </div>
-            <div className="flex items-center gap-2 p-3 rounded bg-[var(--card)] hover:bg-[var(--popover)] transition-all">
+            <div
+              className="flex items-center gap-2 p-3 rounded bg-[var(--card)] hover:bg-[var(--popover)] transition-all cursor-pointer"
+              onClick={() => {
+                document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })
+              }}
+            >
               <Phone className="w-4 h-4 text-[var(--vscode-green)]" />
-              <span>609.839.3558</span>
+              <span>Request a Call</span>
             </div>
             <div className="flex items-center gap-2 p-3 rounded bg-[var(--card)] hover:bg-[var(--popover)] transition-all">
               <Mail className="w-4 h-4 text-[var(--vscode-green)]" />
