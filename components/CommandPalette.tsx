@@ -191,11 +191,11 @@ export default function CommandPalette({ onNavigate, onClose }: CommandPalettePr
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-start justify-center pt-20">
-      <div className="bg-[#252526] border border-[#3e3e42] rounded-lg shadow-2xl w-full max-w-2xl mx-4">
+    <div className="fixed inset-0 bg-black/30 backdrop-blur-md z-50 flex items-start justify-center pt-20">
+      <div className="bg-[var(--sidebar-bg)]/90 backdrop-blur-xl border border-[var(--sidebar-border)]/50 rounded-lg shadow-2xl w-full max-w-2xl mx-4 glass">
         {/* Header */}
-        <div className="flex items-center gap-3 p-4 border-b border-[#3e3e42]">
-          <Search size={16} className="text-[#858585]" />
+        <div className="flex items-center gap-3 p-4 border-b border-[var(--sidebar-border)]">
+          <Search size={16} className="text-[var(--sidebar-text-muted)]" />
           <input
             ref={inputRef}
             type="text"
@@ -206,15 +206,15 @@ export default function CommandPalette({ onNavigate, onClose }: CommandPalettePr
             }}
             onKeyDown={handleKeyDown}
             placeholder="Search resume content or type > for commands..."
-            className="flex-1 bg-transparent text-[#cccccc] placeholder-[#858585] outline-none text-sm"
+            className="flex-1 bg-transparent text-[var(--sidebar-text)] placeholder-[var(--sidebar-text-muted)] outline-none text-sm"
           />
-          <div className="text-xs text-[#858585]">
-            <kbd className="px-1.5 py-0.5 bg-[#3e3e42] rounded text-xs">Esc</kbd>
+          <div className="text-xs text-[var(--sidebar-text-muted)]">
+            <kbd className="px-1.5 py-0.5 bg-[var(--sidebar-hover)] rounded text-xs">Esc</kbd>
           </div>
         </div>
 
         {/* Results */}
-        <div className="max-h-96 overflow-y-auto">
+        <div className="max-h-96 overflow-y-auto scrollbar-thin">
           {results.length > 0 ? (
             <div className="p-2">
               {results.map((result, index) => {
@@ -226,22 +226,22 @@ export default function CommandPalette({ onNavigate, onClose }: CommandPalettePr
                     key={`${result.id}-${index}`}
                     onClick={() => handleSelect(result)}
                     className={`w-full flex items-center gap-3 p-3 rounded-md text-left transition-colors ${
-                      isSelected ? "bg-[#094771] text-white" : "text-[#cccccc] hover:bg-[#2a2d2e]"
+                      isSelected ? "bg-[var(--vscode-blue)] text-white" : "text-[var(--sidebar-text)] hover:bg-[var(--sidebar-hover)]"
                     }`}
                   >
                     <Icon size={16} style={{ color: result.color }} />
                     <div className="flex-1 min-w-0">
                       <div className="text-sm font-medium truncate">{result.title}</div>
-                      <div className="text-xs text-[#858585] truncate">{result.description}</div>
+                      <div className="text-xs text-[var(--sidebar-text-muted)] truncate">{result.description}</div>
                     </div>
-                    <div className="text-xs text-[#858585] bg-[#3e3e42] px-2 py-1 rounded">{result.category}</div>
-                    <ChevronRight size={12} className="text-[#858585]" />
+                    <div className="text-xs text-[var(--sidebar-text-muted)] bg-[var(--sidebar-hover)] px-2 py-1 rounded">{result.category}</div>
+                    <ChevronRight size={12} className="text-[var(--sidebar-text-muted)]" />
                   </button>
                 )
               })}
             </div>
           ) : (
-            <div className="p-8 text-center text-[#858585]">
+            <div className="p-8 text-center text-[var(--sidebar-text-muted)]">
               <Search size={32} className="mx-auto mb-3 opacity-50" />
               <div className="text-sm">No results found</div>
               <div className="text-xs mt-1">Try searching for skills, companies, or certifications</div>
@@ -250,18 +250,18 @@ export default function CommandPalette({ onNavigate, onClose }: CommandPalettePr
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between p-3 border-t border-[#3e3e42] text-xs text-[#858585]">
+        <div className="flex items-center justify-between p-3 border-t border-[var(--sidebar-border)] text-xs text-[var(--sidebar-text-muted)]">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1">
-              <kbd className="px-1.5 py-0.5 bg-[#3e3e42] rounded">↑↓</kbd>
+              <kbd className="px-1.5 py-0.5 bg-[var(--sidebar-hover)] rounded">↑↓</kbd>
               <span>Navigate</span>
             </div>
             <div className="flex items-center gap-1">
-              <kbd className="px-1.5 py-0.5 bg-[#3e3e42] rounded">Enter</kbd>
+              <kbd className="px-1.5 py-0.5 bg-[var(--sidebar-hover)] rounded">Enter</kbd>
               <span>Select</span>
             </div>
             <div className="flex items-center gap-1">
-              <kbd className="px-1.5 py-0.5 bg-[#3e3e42] rounded text-xs">{shortcutKey}</kbd>
+              <kbd className="px-1.5 py-0.5 bg-[var(--sidebar-hover)] rounded text-xs">{shortcutKey}</kbd>
               <span>Open</span>
             </div>
           </div>

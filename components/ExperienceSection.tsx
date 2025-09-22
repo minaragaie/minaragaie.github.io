@@ -3,11 +3,9 @@ import { Calendar, MapPin, ArrowDown, Briefcase, CheckCircle } from "lucide-reac
 import { Badge } from "@/components/ui/badge"
 import resumeData from "@/data/resume.json"
 
-interface ExperienceSectionProps {
-  isVisible: boolean
-}
+interface ExperienceSectionProps {}
 
-export default function ExperienceSection({ isVisible }: ExperienceSectionProps) {
+export default function ExperienceSection({}: ExperienceSectionProps) {
   return (
     <div className="max-w-6xl mx-auto lg:px-8">
       {/* Section header */}
@@ -33,11 +31,7 @@ export default function ExperienceSection({ isVisible }: ExperienceSectionProps)
 
               {/* Step card */}
               <div
-                className={`bg-[var(--bg-tertiary)] border border-[var(--border-color)] rounded-lg p-3 sm:p-6 hover:border-[var(--vscode-blue)] transition-all duration-700 hover:shadow-lg hover:shadow-[var(--vscode-blue)]/10 transform relative ${
-                  isVisible
-                    ? "translate-x-0 opacity-100"
-                    : "opacity-0 sm:translate-x-12"
-                }`}
+                className="bg-[var(--bg-tertiary)] border border-[var(--border-color)] rounded-lg p-3 sm:p-6 hover:border-[var(--vscode-blue)] transition-all duration-700 hover:shadow-lg hover:shadow-[var(--vscode-blue)]/10 transform relative translate-x-0 opacity-100"
                 style={{
                   transitionDelay: `${index * 300}ms`,
                   transitionProperty: "transform, opacity",

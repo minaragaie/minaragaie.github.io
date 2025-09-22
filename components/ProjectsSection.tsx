@@ -1,4 +1,5 @@
 "use client"
+import { memo, useMemo } from "react"
 import { Building2, Users, GraduationCap, Stethoscope, Calendar, MessageCircle } from "lucide-react"
 
 const recentProjects = [
@@ -64,18 +65,82 @@ const recentProjects = [
   },
 ]
 
-interface ProjectsSectionProps {
-  isVisible: boolean
-}
+const ProjectCard = memo(({ project, index }: { project: any, index: number }) => {
+  const Icon = project.icon
+  
+  return (
+    <div
+      className="
+        bg-[var(--projects-bg)] 
+        border border-[var(--projects-border)] 
+        rounded-lg p-6 
+        hover:border-[var(--projects-primary)] 
+        hover:shadow-[var(--projects-shadow)] 
+        transition-all duration-700 transform
+        hover:scale-105
+        translate-y-0 opacity-100 scale-100
+      "
+      style={{ transitionDelay: `${index * 100}ms` }}
+    >
+      <div className="flex items-center gap-3 mb-4 transition-all duration-500 translate-x-0 opacity-100">
+        <div
+          className={`p-2 bg-gradient-to-br ${project.color} rounded transition-transform duration-300 hover:rotate-12`}
+        >
+          <Icon className="w-5 h-5" style={{ color: "var(--projects-text-white)" }} />
+        </div>
+        <div>
+          <h3 className="font-semibold text-sm" style={{ color: "var(--projects-text-white)" }}>
+            {project.name}
+          </h3>
+          <div className="flex items-center gap-2">
+            <span className="text-xs" style={{ color: "var(--projects-text-accent-green)" }}>
+              {project.status}
+            </span>
+            <span className="text-xs" style={{ color: "var(--projects-text-muted)" }}>
+              • {project.year}
+            </span>
+          </div>
+        </div>
+      </div>
 
-export default function ProjectsSection({ isVisible }: ProjectsSectionProps) {
+      <div
+        className="rounded p-3 mb-4 transition-all duration-500 bg-[var(--projects-card-bg)] translate-y-0 opacity-100"
+      >
+        <p className="text-xs leading-relaxed" style={{ color: "var(--projects-text-muted)" }}>
+          {project.description}
+        </p>
+      </div>
+
+      <div
+        className="space-y-2 transition-all duration-500 translate-y-0 opacity-100"
+      >
+        <h4 className="text-xs font-medium" style={{ color: "var(--projects-text-accent-blue)" }}>
+          Technologies:
+        </h4>
+        <div className="flex flex-wrap gap-1">
+          {project.technologies.map((tech: string, techIndex: number) => (
+            <span
+              key={tech}
+              className="text-xs px-2 py-1 rounded border transition-all duration-500 translate-x-0 opacity-100 scale-100"
+              style={{ transitionDelay: `${techIndex * 50}ms` }}
+            >
+              {tech}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+})
+
+ProjectCard.displayName = 'ProjectCard'
+
+const ProjectsSection = memo(() => {
+  const memoizedProjects = useMemo(() => recentProjects, [])
+
   return (
     <div className="max-w-6xl mx-auto">
-      <div
-        className={`text-center mb-16 transition-all duration-1000 ${
-          isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-        }`}
-      >
+      <div className="text-center mb-16 transition-all duration-1000 translate-y-0 opacity-100">
         <h2 className="text-4xl font-bold mb-4" style={{ color: "var(--projects-text-white)" }}>
           <span className="font-mono" style={{ color: "var(--projects-text-accent-blue)" }}>
             const
@@ -91,87 +156,17 @@ export default function ProjectsSection({ isVisible }: ProjectsSectionProps) {
         </p>
       </div>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {recentProjects.map((project, projectIndex) => {
-          const Icon = project.icon
-          return (
-
-            
-            <div
+        {memoizedProjects.map((project, projectIndex) => (
+            <ProjectCard
               key={project.name}
-              className={`
-                bg-[var(--projects-bg)] 
-                border border-[var(--projects-border)] 
-                rounded-lg p-6 
-                hover:border-[var(--projects-primary)] 
-                hover:shadow-[var(--projects-shadow)] 
-                transition-all duration-700 transform
-                hover:scale-105
-                ${isVisible ? "translate-y-0 opacity-100 scale-100" : "translate-y-8 opacity-0 scale-95"}
-              `}
-            >
-
-              <div
-                className={`flex items-center gap-3 mb-4 transition-all duration-500 ${
-                  isVisible ? "translate-x-0 opacity-100" : "translate-x-4 opacity-0"
-                }`}
-              >
-                <div
-                  className={`p-2 bg-gradient-to-br ${project.color} rounded transition-transform duration-300 hover:rotate-12`}
-                >
-                  <Icon className="w-5 h-5" style={{ color: "var(--projects-text-white)" }} />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-sm" style={{ color: "var(--projects-text-white)" }}>
-                    {project.name}
-                  </h3>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs" style={{ color: "var(--projects-text-accent-green)" }}>
-                      {project.status}
-                    </span>
-                    <span className="text-xs" style={{ color: "var(--projects-text-muted)" }}>
-                      • {project.year}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div
-                className={`rounded p-3 mb-4 transition-all duration-500 bg-[var(--projects-card-bg)] ${
-                  isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-                }`}
-              >
-                <p className="text-xs leading-relaxed" style={{ color: "var(--projects-text-muted)" }}>
-                  {project.description}
-                </p>
-              </div>
-
-              <div
-                className={`space-y-2 transition-all duration-500 ${
-                  isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-                }`}
-              >
-                <h4 className="text-xs font-medium" style={{ color: "var(--projects-text-accent-blue)" }}>
-                  Technologies:
-                </h4>
-                <div className="flex flex-wrap gap-1">
-                  {project.technologies.map((tech, techIndex) => (
-                    <span
-                      key={tech}
-                      className={`text-xs px-2 py-1 rounded border transition-all duration-500 ${
-                        isVisible ? "translate-x-0 opacity-100 scale-100" : "translate-x-4 opacity-0 scale-95"
-                      }`}
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )
-        })}
+              project={project}
+              index={projectIndex}
+            />
+        ))}
       </div>
     </div>
   )
+})
 
-    
-}
+ProjectsSection.displayName = 'ProjectsSection'
+export default ProjectsSection

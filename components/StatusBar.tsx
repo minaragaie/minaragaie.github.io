@@ -2,7 +2,10 @@
 
 import { GitBranch, Coffee, X } from "lucide-react"
 import TerminalWindow from "./TerminalWindow"
+import AuthTerminal from "./AuthTerminal"
 import { useStatusBar } from "@/context/StatusBarContext"
+import { useAuth } from "@/context/AuthContext"
+import { useRouter } from "next/navigation"
 
 export default function StatusBar() {
   const {
@@ -13,10 +16,25 @@ export default function StatusBar() {
     terminalCommands,
     addCommand,
   } = useStatusBar()
+  
+  const {
+    showAuthTerminal,
+    openAuthTerminal,
+    closeAuthTerminal,
+    login,
+  } = useAuth()
+  
+  const router = useRouter()
 
   const handleCloseStatus = () => {
     setStatus("Ready for next challenge")
   }
+
+  const handleLogin = (username: string) => {
+    login(username)
+    router.push('/admin')
+  }
+
 
   const showCloseButton =
     status !== "Ready for next challenge" &&
@@ -24,8 +42,8 @@ export default function StatusBar() {
     !status.includes("challenge")
 
   return (
-    <div className="fixed flex flex-col bottom-0 left-0 right-0 z-50">
-      <div className="bg-[#2d2d30] border-t border-[#3e3e42] px-4 py-3 flex items-center justify-between text-sm z-50">
+    <div className="flex flex-col">
+      <div className="bg-[#2d2d30] border-t border-[#3e3e42] px-4 py-3 flex items-center justify-between text-sm flex-shrink-0">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
             <GitBranch className="w-4 h-4 text-[#4ec9b0]" />
@@ -60,6 +78,15 @@ export default function StatusBar() {
             autoCloseAfter={0}
             inputEnabled={true}
             onCommand={(cmd: string) => addCommand(cmd)}
+          />
+        </div>
+      )}
+
+      {showAuthTerminal && (
+        <div className="w-full z-50 transition-all duration-300">
+          <AuthTerminal
+            onLogin={handleLogin}
+            onClose={closeAuthTerminal}
           />
         </div>
       )}

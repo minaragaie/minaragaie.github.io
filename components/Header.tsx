@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useRef } from "react"
+import React, { useState, useRef, memo, useCallback } from "react"
 import { FileCode, X, Github, FileText } from "lucide-react"
 import { DndProvider, useDrag, useDrop } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
@@ -29,8 +29,17 @@ interface DraggableTabProps {
   onTabClose?: (id: Tab["id"]) => void
 }
 
-const DraggableTab: React.FC<DraggableTabProps> = ({ tab, index, moveTab, isActive, onNavigate, onTabClose }) => {
+const DraggableTab: React.FC<DraggableTabProps> = memo(({ tab, index, moveTab, isActive, onNavigate, onTabClose }) => {
   const ref = useRef<HTMLDivElement>(null)
+
+  const handleNavigate = useCallback(() => {
+    onNavigate(tab.path)
+  }, [onNavigate, tab.path])
+
+  const handleTabClose = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation()
+    onTabClose?.(tab.id)
+  }, [onTabClose, tab.id])
 
   const [, drop] = useDrop({
     accept: TAB_TYPE,
@@ -75,7 +84,7 @@ const DraggableTab: React.FC<DraggableTabProps> = ({ tab, index, moveTab, isActi
           : "bg-[var(--bg-secondary)] text-[var(--vscode-tab-inactiveForeground,#888)] hover:text-[var(--vscode-text)]"
       }`}
       style={{ opacity: isDragging ? 0.5 : 1 }}
-      onClick={() => onNavigate(tab.path)}
+      onClick={handleNavigate}
     >
       {tab.icon}
       <span className="whitespace-nowrap text-sm sm:text-base">{tab.label}</span>
@@ -84,10 +93,7 @@ const DraggableTab: React.FC<DraggableTabProps> = ({ tab, index, moveTab, isActi
         <div className="ml-2 w-2 h-2 bg-[var(--vscode-text)] rounded-full" role="status" aria-label="File synced" />
       ) : (
         <button
-          onClick={(e) => {
-            e.stopPropagation()
-            onTabClose?.(tab.id)
-          }}
+          onClick={handleTabClose}
           className="ml-2 text-xs opacity-50 hover:opacity-100"
         >
           <X className="w-3 h-3" />
@@ -95,23 +101,35 @@ const DraggableTab: React.FC<DraggableTabProps> = ({ tab, index, moveTab, isActi
       )}
     </div>
   )
-}
+})
 
-const Header: React.FC = () => {
+DraggableTab.displayName = 'DraggableTab'
+
+const Header: React.FC = memo(() => {
   const pathname = usePathname()
   const router = useRouter()
   const [tabs, setTabs] = useState<Tab[]>(initialTabs)
 
-  const moveTab = (fromIndex: number, toIndex: number) => {
-    const updated = Array.from(tabs)
-    const [moved] = updated.splice(fromIndex, 1)
-    updated.splice(toIndex, 0, moved)
-    setTabs(updated)
-  }
+  const moveTab = useCallback((fromIndex: number, toIndex: number) => {
+    setTabs(prev => {
+      const updated = Array.from(prev)
+      const [moved] = updated.splice(fromIndex, 1)
+      updated.splice(toIndex, 0, moved)
+      return updated
+    })
+  }, [])
+
+  const handleNavigate = useCallback((path: string) => {
+    router.push(path)
+  }, [router])
+
+  const handleTabClose = useCallback((id: Tab["id"]) => {
+    setTabs(prev => prev.filter(t => t.id !== id))
+  }, [])
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="fixed w-full bg-[var(--vscode-sidebar)] border-b border-[var(--vscode-border)] flex items-center gap-2 flex-shrink-0 transition-colors duration-300 z-[9999] overflow-x-auto scrollbar-hide">
+      <div className="w-full bg-[var(--vscode-sidebar)] border-b border-[var(--vscode-border)] flex items-center gap-2 flex-shrink-0 transition-colors duration-300 z-10 overflow-x-auto scrollbar-hide">
         <div className="flex items-center flex-nowrap min-w-max">
           {tabs.map((tab, index) => (
             <DraggableTab
@@ -120,14 +138,15 @@ const Header: React.FC = () => {
               index={index}
               moveTab={moveTab}
               isActive={pathname === tab.path}
-              onNavigate={(path) => router.push(path)}
-              onTabClose={(id) => setTabs((prev) => prev.filter((t) => t.id !== id))}
+              onNavigate={handleNavigate}
+              onTabClose={handleTabClose}
             />
           ))}
         </div>
       </div>
     </DndProvider>
   )
-}
+})
 
+Header.displayName = 'Header'
 export default Header

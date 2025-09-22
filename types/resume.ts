@@ -49,4 +49,4 @@ export interface ResumeData {
   additionalInfo: string
 }
 
-export type Theme =  "dark" | "light" | "high-contrast" | "monokai"
+export type Theme =  "dark" | "light" | "high-contrast" | "monokai" | "devtool"

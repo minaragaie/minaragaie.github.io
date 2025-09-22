@@ -13,6 +13,17 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  // Bundle analyzer (uncomment to analyze bundle)
+  // webpack: (config, { isServer }) => {
+  //   if (!isServer) {
+  //     config.resolve.fallback = {
+  //       ...config.resolve.fallback,
+  //       fs: false,
+  //       path: false,
+  //     }
+  //   }
+  //   return config
+  // },
 };
 
 export default nextConfig;

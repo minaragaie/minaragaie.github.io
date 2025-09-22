@@ -14,7 +14,7 @@ export default function ThemeProvider({ children, ...props }: ThemeProviderProps
       const savedTheme = (localStorage.getItem("theme") || "dark") as Theme
       const savedFont = (localStorage.getItem("fontSize") || "medium") as FontSize
 
-      const validThemes = ["dark", "light", "high-contrast", "monokai"]
+      const validThemes = ["dark", "light", "high-contrast", "monokai", "devtool"]
       document.documentElement.className = document.documentElement.className
         .split(" ")
         .filter((cls) => !validThemes.includes(cls))
@@ -32,7 +32,7 @@ export default function ThemeProvider({ children, ...props }: ThemeProviderProps
 
     const handleThemeChange = () => {
       const currentTheme = localStorage.getItem("theme") || "dark"
-      const validThemes = ["dark", "light", "high-contrast", "monokai"]
+      const validThemes = ["dark", "light", "high-contrast", "monokai", "devtool"]
 
       // Force update document class
       requestAnimationFrame(() => {

@@ -137,12 +137,12 @@ export default function SkillsMarketplace({ onNavigate }: SkillsMarketplaceProps
   return (
     <div className="flex flex-col">
       {/* Header */}
-      <div className="h-9 bg-[#252526] flex items-center px-3 text-xs text-[var(--vscode-text-muted)] font-medium border-b border-[#3e3e42] uppercase tracking-wide">
+      <div className="h-9 bg-[var(--sidebar-bg)] flex items-center px-3 text-xs text-[var(--sidebar-text)] font-medium border-b border-[var(--sidebar-border)] uppercase tracking-wide">
         Extensions
       </div>
 
       {/* Search and Filter */}
-      <div className="p-3 border-b border-[#3e3e42] space-y-2">
+      <div className="p-3 border-b border-[var(--sidebar-border)] space-y-2">
         <div className="relative">
           <Search size={14} className="absolute left-2 top-2 text-[var(--vscode-sidebar-info)]" />
           <input
@@ -150,14 +150,14 @@ export default function SkillsMarketplace({ onNavigate }: SkillsMarketplaceProps
             placeholder="Search skills..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-8 pr-3 py-1.5 bg-[#3e3e42] text-xs text-[var(--vscode-text-muted)] rounded border-none outline-none focus:bg-[#4e4e4e]"
+            className="w-full pl-8 pr-3 py-1.5 bg-[var(--sidebar-hover)] text-xs text-[var(--sidebar-text)] rounded border-none outline-none focus:bg-[var(--sidebar-hover-active)]"
           />
         </div>
 
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
-          className="w-full px-2 py-1.5 bg-[#3e3e42] text-xs text-[var(--vscode-text-muted)] rounded border-none outline-none focus:bg-[#4e4e4e]"
+          className="w-full px-2 py-1.5 bg-[var(--sidebar-hover)] text-xs text-[var(--sidebar-text)] rounded border-none outline-none focus:bg-[var(--sidebar-hover-active)]"
         >
           {categories.map((cat) => (
             <option key={cat} value={cat}>
@@ -168,20 +168,20 @@ export default function SkillsMarketplace({ onNavigate }: SkillsMarketplaceProps
       </div>
 
       {/* Extensions List */}
-      <div className="max-h-80 overflow-y-auto p-2 space-y-2">
+      <div className="max-h-80 overflow-y-auto p-2 space-y-2 scrollbar-thin">
         {filteredExtensions.map((extension) => (
           <div
             key={extension.id}
             onClick={() => handleExtensionClick(extension)}
-            className="p-3 bg-[#2a2d2e] hover:bg-[#3e3e42] rounded cursor-pointer transition-colors border border-transparent hover:border-[#007acc]/30"
+            className="p-3 bg-[var(--sidebar-bg)] hover:bg-[var(--sidebar-hover)] rounded cursor-pointer transition-colors border border-transparent hover:border-[var(--vscode-blue)]/30"
           >
             <div className="flex items-start gap-3">
               <div className="text-lg">{extension.icon}</div>
 
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
-                  <h3 className="text-sm font-medium text-[var(--vscode-text-muted)] truncate">{extension.name}</h3>
-                  {extension.verified && <CheckCircle size={12} className="text-[#007acc] flex-shrink-0" />}
+                  <h3 className="text-sm font-medium text-[var(--sidebar-text)] truncate">{extension.name}</h3>
+                  {extension.verified && <CheckCircle size={12} className="text-[var(--vscode-blue)] flex-shrink-0" />}
                 </div>
 
                 <p className="text-xs text-[var(--vscode-sidebar-info)] mb-2 line-clamp-2">{extension.description}</p>
@@ -192,7 +192,7 @@ export default function SkillsMarketplace({ onNavigate }: SkillsMarketplaceProps
                       <Star
                         key={i}
                         size={10}
-                        className={i < extension.rating ? "text-[#ffd700] fill-current" : "text-[#3e3e42]"}
+                        className={i < extension.rating ? "text-[var(--vscode-yellow)] fill-current" : "text-[var(--sidebar-hover)]"}
                       />
                     ))}
                     <span className="ml-1">{extension.rating}</span>
@@ -206,7 +206,7 @@ export default function SkillsMarketplace({ onNavigate }: SkillsMarketplaceProps
 
                 <div className="flex items-center justify-between mt-2">
                   <span className="text-xs text-[var(--vscode-sidebar-info)]">{extension.publisher}</span>
-                  <span className="text-xs text-[#007acc]">{extension.version}</span>
+                  <span className="text-xs text-[var(--vscode-blue)]">{extension.version}</span>
                 </div>
               </div>
             </div>
@@ -215,13 +215,13 @@ export default function SkillsMarketplace({ onNavigate }: SkillsMarketplaceProps
       </div>
 
       {/* Footer Stats */}
-      <div className="p-3 border-t border-[#3e3e42] bg-[#252526]">
+      <div className="p-3 border-t border-[var(--sidebar-border)] bg-[var(--sidebar-bg)]">
         <div className="text-xs text-[var(--vscode-sidebar-info)] space-y-1">
           <div className="flex items-center justify-between">
             <span>{filteredExtensions.length} skills available</span>
-            <span className="text-[#007acc]">All installed ✓</span>
+            <span className="text-[var(--vscode-blue)]">All installed ✓</span>
           </div>
-          <div className="text-[#6a6a6a]">Marketplace updated: Recently</div>
+          <div className="text-[var(--sidebar-text-muted)]">Marketplace updated: Recently</div>
         </div>
       </div>
     </div>

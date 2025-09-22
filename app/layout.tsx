@@ -4,6 +4,7 @@ import "./globals.css"
 import ThemeProvider from "@/components/theme-provider"
 import StructuredData from "@/components/structuredData"
 import ClientLayout from "@/components/ClientLayout"
+import PerformanceMonitor from "@/components/PerformanceMonitor"
 
 // --------------------
 // Font Configuration
@@ -87,6 +88,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="font-sans antialiased transition-colors duration-300 bg-[var(--bg-primary)] text-[var(--text-primary)]">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <ClientLayout>{children}</ClientLayout>
+          <PerformanceMonitor />
         </ThemeProvider>
         <StructuredData />
       </body>

@@ -218,7 +218,7 @@ export default function CareerGitHistory({ onNavigate }: CareerGitHistoryProps) 
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-2">
+      <div className="flex-1 overflow-y-auto p-2 scrollbar-thin">
         <div className="space-y-1">
           {commits.slice(0, 8).map((commit, index) => (
             <div key={commit.hash} className="group">

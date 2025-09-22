@@ -8,11 +8,9 @@ import resumeData from "@/data/resume.json"
 import TerminalWindow from "./TerminalWindow"
 import { useStatusBar } from "@/context/StatusBarContext"
 
-interface ContactSectionProps {
-  isVisible?: boolean
-}
+interface ContactSectionProps {}
 
-export default function ContactSection({ isVisible = false }: ContactSectionProps) {
+export default function ContactSection({}: ContactSectionProps) {
     const { setStatus } = useStatusBar()
 
   const [formData, setFormData] = useState({ name: "", email: "", message: "" })
@@ -113,7 +111,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
   return (
     <div
-      className={`transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+      className="transition-all duration-700 opacity-100 translate-y-0"
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
@@ -157,8 +155,40 @@ const handleSubmit = async (e: React.FormEvent) => {
                 <ContactItem
                   icon={<Phone className="w-5 h-5 text-[var(--vscode-green)]" />}
                   label="phone"
-                  value={resumeData.personalInfo.phone}
+                  value={
+                    <button
+                      onClick={() => {
+                      const formEl = document.getElementById("contact")
+                      if (formEl) {
+                        formEl.scrollIntoView({ behavior: "smooth" })
+
+                        // Grab the textarea
+                        const form = document.getElementById("contact-form")
+                        if (form) {
+                          form.classList.add("blink-border")
+                          setTimeout(() => form.classList.remove("blink-border"), 2000)
+                        }
+
+                        const textarea = formEl.querySelector("textarea[name='message']") as HTMLTextAreaElement
+                        if (textarea) {
+                          // Add blink border
+                          textarea.classList.add("blink-border")
+                          setTimeout(() => textarea.classList.remove("blink-border"), 2000)
+
+                          // Autofill "Request a call"
+                          textarea.value = "Request a call"
+                          textarea.dispatchEvent(new Event("input", { bubbles: true }))
+                        }
+
+                      }
+                    }}
+                      className="text-[#007acc] hover:text-[#4ec9b0] transition-colors underline"
+                    >
+                      Request a Call
+                    </button>
+                  }
                 />
+
                 {/* Location */}
                 <ContactItem
                   icon={<MapPin className="w-5 h-5 text-[var(--vscode-green)]" />}
@@ -202,13 +232,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
           {/* Contact Form */}
           <div
-            className="rounded-lg p-6 sm:p-8"
-            style={{
-              backgroundColor: "var(--vscode-bg)",
-              borderColor: "var(--vscode-border)",
-              border: "1px solid",
-            }}
-          >
+            className="rounded-lg p-6 sm:p-8 border border-[var(--vscode-border)] bg-[var(--vscode-bg)]">
             <h3
               className="text-lg sm:text-xl font-bold mb-4 sm:mb-6 flex items-center gap-3"
               style={{ color: "var(--text-primary)" }}

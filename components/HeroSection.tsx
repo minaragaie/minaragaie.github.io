@@ -1,41 +1,43 @@
 "use client"
 
+import { memo, useCallback } from "react"
 import { Download, Mail, Phone, MapPin, Linkedin, ExternalLink } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import jsPDF from "jspdf"
 import TerminalWindow from "@/components/TerminalWindow"
 import DownloadPDFResume from "./downloadResume"
+import Image from "next/image"
 
 // NOTE: The jspdf library is an external dependency that must be loaded via a <script> tag from a CDN
 // in your HTML for the download functionality to work. We are removing the direct import to resolve the compilation error.
 
-interface HeroSectionProps {
-  isVisible: boolean
-}
-
-export default function HeroSection({ isVisible }: HeroSectionProps) {
-
-  const handleDownloadResume = () => {
-    const doc = new jsPDF()
-    doc.text("Mina Youaness - Full Stack Developer", 10, 10)
-    doc.save("resume.pdf")
-  }
+const HeroSection = memo(() => {
+  const handleDownloadResume = useCallback(() => {
+    // Dynamic import for jsPDF to reduce initial bundle size
+    import('jspdf').then(({ default: jsPDF }) => {
+      const doc = new jsPDF()
+      doc.text("Mina Youaness - Full Stack Developer", 10, 10)
+      doc.save("resume.pdf")
+    })
+  }, [])
 
 
   return (
     <div className="relative overflow-hidden">
       <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
         {/* Left side - Info */}
-        <div
-          className={`transition-all duration-1000 ${isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"}`}
-        >
+        <div className="transition-all duration-1000 animate-fade-in-up">
           <div className="flex flex-row md:flex-row items-center gap-6 mb-8">
             <div className="relative group">
               <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-[var(--vscode-blue)] p-1 bg-gradient-to-br from-[var(--vscode-blue)] to-[var(--vscode-green)]">
-                <img
+                <Image
                   src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1753407168559-PCWiZjGAS8MtQhjaIJJBeSTHaxePdY.jpeg"
                   alt="Mina Youaness - Full Stack Developer"
+                  width={96}
+                  height={96}
                   className="w-full h-full rounded-full object-cover grayscale hover:grayscale-0 transition-all duration-300"
+                  priority
+                  placeholder="blur"
+                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
                 />
               </div>
               <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-[#28ca42] rounded-full border-2 border-[#1e1e1e] flex items-center justify-center">
@@ -120,4 +122,7 @@ export default function HeroSection({ isVisible }: HeroSectionProps) {
       </div>
     </div>
   )
-}
+})
+
+HeroSection.displayName = 'HeroSection'
+export default HeroSection

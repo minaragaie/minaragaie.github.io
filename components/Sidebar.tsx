@@ -179,12 +179,12 @@ export default function Sidebar({ currentSection, onSectionClick, isCollapsed, o
   ]
 
   return (
-    <>
-      {!isCollapsed && <div className="inset-0 bg-black bg-opacity-50 z-30 md:hidden" onClick={onToggle} />}
-
-      {/* Activity Bar */}
-      <div className="w-12 h-full bg-[var(--activity-bar-bg)] border-r border-[var(--activity-bar-border)] flex flex-col z-50 min-h-screen">
-        <div className="flex flex-col py-2">
+    <div className="relative h-full">
+      {/* Sidebar Container */}
+      <div className={`${isCollapsed ? 'w-12' : 'w-full'} h-full flex transition-all duration-300 ease-in-out flex-shrink-0`}>
+        {/* Activity Bar */}
+        <div className="w-12 h-full bg-[var(--activity-bar-bg)] border-r border-[var(--activity-bar-border)] flex flex-col z-20">
+          <div className="flex flex-col py-2">
           {sidebarTabs.map((tab) => {
             const Icon = tab.icon
             const isActive = activeTab === tab.id
@@ -193,10 +193,13 @@ export default function Sidebar({ currentSection, onSectionClick, isCollapsed, o
                 key={tab.id}
                 onClick={() => {
                   setActiveTab(tab.id)
-                  if (tab.id === "explorer" && activeTab === "explorer") onToggle()
-                  if (isCollapsed) onToggle()
+                  if (isCollapsed) {
+                    onToggle() // Open sidebar if collapsed
+                  } else if (activeTab === tab.id) {
+                    onToggle() // Close sidebar if clicking the same active tab
+                  }
                 }}
-                className={`w-12 h-12 flex items-center justify-center transition-colors relative group ${
+                className={`w-12 h-12 flex items-center justify-center transition-all duration-200 relative group rounded mx-1 my-0.5 ${
                   isActive && !isCollapsed
                     ? "text-[var(--activity-bar-text-active)] bg-[var(--activity-bar-active)]"
                     : "text-[var(--activity-bar-text)] hover:text-[var(--activity-bar-text-active)] hover:bg-[var(--activity-bar-hover)]"
@@ -214,7 +217,7 @@ export default function Sidebar({ currentSection, onSectionClick, isCollapsed, o
           <div className="mt-auto mb-2">
             <button
               onClick={onToggle}
-              className="w-12 h-12 flex items-center justify-center text-[var(--activity-bar-text)] hover:text-[var(--activity-bar-text-active)] hover:bg-[var(--activity-bar-hover)] transition-colors"
+              className="w-12 h-12 flex items-center justify-center text-[var(--activity-bar-text)] hover:text-[var(--activity-bar-text-active)] hover:bg-[var(--activity-bar-hover)] transition-all duration-200 rounded mx-1 my-0.5"
               title={isCollapsed ? "Show Sidebar" : "Hide Sidebar"}
             >
               <ChevronRight className={`transition-transform duration-200 ${isCollapsed ? "rotate-0" : "rotate-180"}`} size={16} />
@@ -224,10 +227,11 @@ export default function Sidebar({ currentSection, onSectionClick, isCollapsed, o
       </div>
 
       {/* Sidebar Panel */}
-      {!isCollapsed && (
-        <div className="w-64 bg-[var(--sidebar-bg)] border-r border-[var(--sidebar-border)] transition-all duration-300 z-40 min-h-screen fixed left-12 top-0 md:relative md:left-0 max-w-[calc(100vw-3rem)] overflow-x-hidden">
+      <div className={`w-64 bg-[var(--sidebar-bg)] border-r border-[var(--sidebar-border)] flex flex-col h-full transition-all duration-300 ease-in-out transform ${
+        isCollapsed ? '-translate-x-full opacity-0 w-0' : 'translate-x-0 opacity-100'
+      }`}>
           <div className="md:hidden absolute top-2 right-2 z-50">
-            <button onClick={onToggle} className="w-8 h-8 flex items-center justify-center text-[var(--activity-bar-text)] hover:text-[var(--activity-bar-text-active)] hover:bg-[var(--activity-bar-hover)] rounded transition-colors">
+            <button onClick={onToggle} className="w-8 h-8 flex items-center justify-center text-[var(--activity-bar-text)] hover:text-[var(--activity-bar-text-active)] hover:bg-[var(--activity-bar-hover)] rounded transition-all duration-200">
               <X size={16} />
             </button>
           </div>
@@ -237,7 +241,7 @@ export default function Sidebar({ currentSection, onSectionClick, isCollapsed, o
               <div className="h-9 bg-[var(--sidebar-bg)] flex items-center px-3 text-xs text-[var(--sidebar-text)] font-medium border-b border-[var(--sidebar-border)] uppercase tracking-wide">
                 Explorer
               </div>
-              <div className="p-2 overflow-y-auto max-h-[calc(100vh-8rem)]">
+                    <div className="p-2 overflow-y-auto flex-1 sidebar-scrollbar">
                 <div className="mb-2">
                   <button
                     onClick={() => setIsExplorerOpen(!isExplorerOpen)}
@@ -293,28 +297,14 @@ export default function Sidebar({ currentSection, onSectionClick, isCollapsed, o
             </>
           )}
 
-          {activeTab === "search" && <SearchTab shortcutKey={shortcutKey} onNavigate={scrollToSection} />}
-          {activeTab === "git" && <CareerGitHistory onNavigate={scrollToSection} />}
-          {activeTab === "extensions" && <SkillsMarketplace onNavigate={scrollToSection} />}
-          {activeTab === "settings" && <RecruiterDashboard onNavigate={scrollToSection} />}
-        </div>
-      )}
-
-      {showCommandPalette && <CommandPalette onNavigate={scrollToSection} onClose={() => setShowCommandPalette(false)} />}
-    </>
-  )
-}
-
-// Optional: Extracted SearchTab component for clarity
-function SearchTab({ shortcutKey, onNavigate }: { shortcutKey: string; onNavigate: (id: string) => void }) {
-  return (
-    <div className="max-h-[calc(100vh-8rem)] flex flex-col">
+          {activeTab === "search" && (
+    <div className="flex flex-col h-full">
       <div className="h-9 bg-[var(--sidebar-bg)] flex items-center px-3 text-xs text-[var(--sidebar-text)] font-medium border-b border-[var(--sidebar-border)] uppercase tracking-wide">
         Search
       </div>
-      <div className="p-4 flex-1">
+                    <div className="p-4 flex-1 sidebar-scrollbar">
         <button
-          onClick={() => onNavigate("projects")}
+                  onClick={() => scrollToSection("projects")}
           className="w-full flex items-center gap-3 p-3 bg-[var(--sidebar-hover)] hover:bg-[var(--sidebar-hover-active)] rounded-md transition-colors text-left"
         >
           <Search size={16} className="text-[var(--sidebar-text)]" />
@@ -324,6 +314,24 @@ function SearchTab({ shortcutKey, onNavigate }: { shortcutKey: string; onNavigat
           </div>
         </button>
       </div>
+            </div>
+          )}
+          {activeTab === "git" && (
+            <CareerGitHistory onNavigate={scrollToSection} />
+          )}
+          
+          {activeTab === "extensions" && (
+            <SkillsMarketplace onNavigate={scrollToSection} />
+          )}
+          
+          {activeTab === "settings" && (
+            <RecruiterDashboard onNavigate={scrollToSection} />
+          )}
+        </div>
+      </div>
+
+      {showCommandPalette && <CommandPalette onNavigate={scrollToSection} onClose={() => setShowCommandPalette(false)} />}
     </div>
   )
 }
+

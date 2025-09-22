@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useMemo, useCallback, useRef } from "react"
+import { useState, useEffect, useMemo, useCallback, useRef, memo } from "react"
 import { Terminal } from "lucide-react"
 
 interface TerminalWindowProps {
@@ -15,7 +15,7 @@ interface TerminalWindowProps {
   onCommand?: (cmd: string) => void
 }
 
-export default function TerminalWindow({
+const TerminalWindow = memo(({
   title = "Terminal",
   commands,
   height = "h-64",
@@ -25,7 +25,7 @@ export default function TerminalWindow({
   onClose,
   inputEnabled = false,
   onCommand
-}: TerminalWindowProps) {
+}: TerminalWindowProps) => {
   const [terminalText, setTerminalText] = useState("Welcome to the shortcut terminal!\n\n")
   const [currentInput, setCurrentInput] = useState("")
   const [showCursor, setShowCursor] = useState(true)
@@ -141,7 +141,7 @@ export default function TerminalWindow({
       {/* Content */}
       <div
         ref={containerRef}
-        className={`p-4 font-mono text-sm overflow-y-auto ${height} text-[var(--terminal-text)]`}
+        className={`p-4 font-mono text-sm overflow-y-auto ${height} text-[var(--terminal-text)] scrollbar-thin`}
       >
         <pre className="whitespace-pre-wrap">
           {terminalText}
@@ -167,4 +167,7 @@ export default function TerminalWindow({
       </div>
     </div>
   )
-}
+})
+
+TerminalWindow.displayName = 'TerminalWindow'
+export default TerminalWindow

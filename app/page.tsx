@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { memo } from "react"
 import HeroSection from "@/components/HeroSection"
 import ProjectsSection from "@/components/ProjectsSection"
 import ExperienceSection from "@/components/ExperienceSection"
@@ -8,58 +8,76 @@ import TechnologiesSection from "@/components/TechnologiesSection"
 import EducationSection from "@/components/EducationSection"
 import CertificationsSection from "@/components/CertificationsSection"
 import ContactSection from "@/components/ContactSection"
+import ScrollAnimatedSection from "@/components/ScrollAnimatedSection"
 
-export default function Resume() {
-  const [animationStates, setAnimationStates] = useState({
-    hero: true,
-    projects: false,
-    experience: false,
-    technologies: false,
-    education: false,
-    certifications: false,
-    contact: false,
-  })
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const sectionId = entry.target.id as keyof typeof animationStates
-          if (entry.isIntersecting) {
-            setAnimationStates((prev) => ({ ...prev, [sectionId]: true }))
-          }
-        })
-      },
-      { threshold: 0.1, rootMargin: "-10% 0px -10% 0px" }
-    )
-    const sections = document.querySelectorAll("section[id]")
-    sections.forEach((section) => observer.observe(section))
-    return () => observer.disconnect()
-  }, [])
-
+const Resume = memo(() => {
   return (
-    <main className="flex-1 flex flex-col overflow-y-auto transition-all duration-300">
-      <section id="hero" className="py-20 px-4 md:px-8 bg-[var(--bg-primary)]">
-        <HeroSection isVisible={animationStates.hero} />
+    <div className="flex flex-col transition-all duration-300">
+      <section 
+        id="hero" 
+        className="py-20 px-4 md:px-8 bg-[var(--bg-primary)] devtool-section-primary"
+      >
+        <ScrollAnimatedSection animationType="fade" delay={200}>
+          <HeroSection />
+        </ScrollAnimatedSection>
       </section>
-      <section id="projects" className="py-20 px-4 md:px-8 bg-[var(--bg-secondary)]">
-        <ProjectsSection isVisible={animationStates.projects} />
+
+      <section 
+        id="projects" 
+        className="py-20 px-4 md:px-8 bg-[var(--bg-secondary)] devtool-section-secondary"
+      >
+        <ScrollAnimatedSection animationType="slideUp" delay={100}>
+          <ProjectsSection />
+        </ScrollAnimatedSection>
       </section>
-      <section id="experience" className="py-20 px-4 md:px-8 bg-[var(--bg-primary)]">
-        <ExperienceSection isVisible={animationStates.experience} />
+
+      <section 
+        id="experience" 
+        className="py-20 px-4 md:px-8 bg-[var(--bg-primary)] devtool-section-primary"
+      >
+        <ScrollAnimatedSection animationType="slideLeft" delay={150}>
+          <ExperienceSection />
+        </ScrollAnimatedSection>
       </section>
-      <section id="technologies" className="py-20 px-4 md:px-8 bg-[var(--bg-secondary)]">
-        <TechnologiesSection isVisible={animationStates.technologies} />
+
+      <section 
+        id="technologies" 
+        className="py-20 px-4 md:px-8 bg-[var(--bg-secondary)] devtool-section-secondary"
+      >
+        <ScrollAnimatedSection animationType="scale" delay={100}>
+          <TechnologiesSection />
+        </ScrollAnimatedSection>
       </section>
-      <section id="education" className="py-20 px-4 md:px-8 bg-[var(--bg-primary)]">
-        <EducationSection isVisible={animationStates.education} />
+
+      <section 
+        id="education" 
+        className="py-20 px-4 md:px-8 bg-[var(--bg-primary)] devtool-section-primary"
+      >
+        <ScrollAnimatedSection animationType="slideRight" delay={200}>
+          <EducationSection />
+        </ScrollAnimatedSection>
       </section>
-      <section id="certifications" className="py-20 px-4 md:px-8 bg-[var(--bg-secondary)]">
-        <CertificationsSection isVisible={animationStates.certifications} />
+
+      <section 
+        id="certifications" 
+        className="py-20 px-4 md:px-8 bg-[var(--bg-secondary)] devtool-section-secondary"
+      >
+        <ScrollAnimatedSection animationType="slideUp" delay={100}>
+          <CertificationsSection />
+        </ScrollAnimatedSection>
       </section>
-      <section id="contact" className="py-20 px-4 md:px-8 bg-[var(--bg-primary)]">
-        <ContactSection isVisible={animationStates.contact} />
+
+      <section 
+        id="contact" 
+        className="py-20 px-4 md:px-8 bg-[var(--bg-primary)] devtool-section-primary"
+      >
+        <ScrollAnimatedSection animationType="scale" delay={300}>
+          <ContactSection />
+        </ScrollAnimatedSection>
       </section>
-    </main>
+    </div>
   )
-}
+})
+
+Resume.displayName = 'Resume'
+export default Resume

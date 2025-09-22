@@ -16,11 +16,9 @@ interface Certificate {
   pathway?: Certificate[];
 }
 
-interface CertificationsSectionProps {
-  isVisible?: boolean;
-}
+interface CertificationsSectionProps {}
 
-export default function CertificationsSection({ isVisible = false }: CertificationsSectionProps) {
+export default function CertificationsSection({}: CertificationsSectionProps) {
   const [selectedCert, setSelectedCert] = useState<Certificate | null>(null);
   const [currentPathwayIndex, setCurrentPathwayIndex] = useState(0);
   const [flippedCards, setFlippedCards] = useState<Set<number>>(new Set());
@@ -125,9 +123,7 @@ export default function CertificationsSection({ isVisible = false }: Certificati
         {(resumeData.certifications as Certificate[]).map((cert, index) => (
           <div
             key={index}
-            className={`flex transition-all duration-700 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
+            className="flex transition-all duration-700 opacity-100 translate-y-0"
             style={{
               transitionDelay: `${index * 200}ms`,
               perspective: "1000px",

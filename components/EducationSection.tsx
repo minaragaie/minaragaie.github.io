@@ -1,11 +1,9 @@
 import { resumeData } from "@/lib/resume-data"
 import { GraduationCap, Calendar, Building } from "lucide-react"
 
-interface EducationSectionProps {
-  isVisible: boolean
-}
+interface EducationSectionProps {}
 
-export default function EducationSection({ isVisible }: EducationSectionProps) {
+export default function EducationSection({}: EducationSectionProps) {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Header */}
@@ -24,9 +22,7 @@ export default function EducationSection({ isVisible }: EducationSectionProps) {
         {resumeData.education.map((edu, index) => (
           <div
             key={index}
-            className={`rounded-lg p-6 sm:p-8 border transition-all duration-300 group ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
+            className="rounded-lg p-6 sm:p-8 border transition-all duration-300 group opacity-100 translate-y-0"
             style={{
               backgroundColor: "var(--card)",
               borderColor: "var(--vscode-border)",

@@ -62,7 +62,7 @@ function ThemeSettings() {
     setIsChanging(true)
 
     try {
-      const validThemes = ["dark", "light", "high-contrast", "monokai"]
+      const validThemes = ["dark", "light", "high-contrast", "monokai", "devtool"]
       requestAnimationFrame(() => {
         document.documentElement.className = document.documentElement.className
           .split(" ")
@@ -89,6 +89,7 @@ function ThemeSettings() {
     { value: "light", label: "Light", desc: "Clean light theme" },
     { value: "high-contrast", label: "High Contrast", desc: "Enhanced accessibility" },
     { value: "monokai", label: "Monokai", desc: "Popular developer theme" },
+    { value: "devtool", label: "DevTool", desc: "Professional dev tools theme" },
   ]
 
   return (
@@ -245,7 +246,7 @@ export default function RecruiterDashboard({ onNavigate }: RecruiterDashboardPro
       </div>
 
       {/* Body */}
-      <div className="flex-1 min-h-0 overflow-y-auto">
+      <div className="flex-1 min-h-0 overflow-y-auto scrollbar-thin">
         {SETTINGS_SECTIONS.map((section) => {
           const Icon = section.icon
           const isExpanded = expandedSections.includes(section.id)
