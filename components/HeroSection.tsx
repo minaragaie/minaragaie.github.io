@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import TerminalWindow from "@/components/TerminalWindow"
 import DownloadPDFResume from "./downloadResume"
 import Image from "next/image"
+import { config } from "@/lib/config"
 
 // NOTE: The jspdf library is an external dependency that must be loaded via a <script> tag from a CDN
 // in your HTML for the download functionality to work. We are removing the direct import to resolve the compilation error.

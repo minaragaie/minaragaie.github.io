@@ -88,7 +88,8 @@ export default function CommandPalette({ onNavigate, onClose }: CommandPalettePr
     })
 
     // Skills search
-    Object.entries(staticResumeData.skills).forEach(([category, skills]) => {
+    if (staticResumeData?.skills) {
+      Object.entries(staticResumeData.skills).forEach(([category, skills]) => {
       if (query === "" || category.toLowerCase().includes(query.toLowerCase())) {
         results.push({
           id: `skills-${category}`,
@@ -116,9 +117,11 @@ export default function CommandPalette({ onNavigate, onClose }: CommandPalettePr
         }
       })
     })
+    }
 
     // Experience search
-    staticResumeData.experience.forEach((exp) => {
+    if (staticResumeData?.experience) {
+      staticResumeData.experience.forEach((exp) => {
       if (
         query === "" ||
         (exp.company && exp.company.toLowerCase().includes(query.toLowerCase())) ||
@@ -136,9 +139,11 @@ export default function CommandPalette({ onNavigate, onClose }: CommandPalettePr
         })
       }
     })
+    }
 
     // Certifications search
-    staticResumeData.certifications.forEach((cert, index) => {
+    if (staticResumeData?.certifications) {
+      staticResumeData.certifications.forEach((cert, index) => {
       if (
         query === "" ||
         (cert.name && cert.name.toLowerCase().includes(query.toLowerCase())) ||
@@ -155,6 +160,7 @@ export default function CommandPalette({ onNavigate, onClose }: CommandPalettePr
         })
       }
     })
+    }
 
     return results.slice(0, 10) // Limit results
   }

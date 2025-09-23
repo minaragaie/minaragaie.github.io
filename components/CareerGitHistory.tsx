@@ -57,7 +57,8 @@ export default function CareerGitHistory({ onNavigate }: CareerGitHistoryProps) 
     })
 
     // Experience commits
-    staticResumeData.experience.forEach((exp, index) => {
+    if (staticResumeData?.experience) {
+      staticResumeData.experience.forEach((exp: any, index: number) => {
       const startDate = parseResumeDate(exp.startDate)
       commits.push({
         hash: `${Math.random().toString(36).substr(2, 7)}`,
@@ -87,6 +88,7 @@ export default function CareerGitHistory({ onNavigate }: CareerGitHistoryProps) 
         })
       }
     })
+    }
 
     // Skill merges
     const skillMergeDates = {
@@ -98,7 +100,8 @@ export default function CareerGitHistory({ onNavigate }: CareerGitHistoryProps) 
       methodologies: "2018-11-12",
       standards: "2021-07-18",
     }
-    Object.entries(staticResumeData.skills).forEach(([category, skills]) => {
+    if (staticResumeData?.skills) {
+      Object.entries(staticResumeData.skills).forEach(([category, skills]) => {
       commits.push({
         hash: `${Math.random().toString(36).substr(2, 7)}`,
         message: `merge: integrated ${category} expertise into main skillset`,
@@ -112,12 +115,14 @@ export default function CareerGitHistory({ onNavigate }: CareerGitHistoryProps) 
         branch: `feature/${category}`,
       })
     })
+    }
 
     // Certification commits
     const certificationDates = [
       "2018-03-15", "2019-08-22", "2020-11-10", "2021-05-18", "2022-09-25", "2023-12-08", "2024-06-15", "2020-01-20",
     ]
-    staticResumeData.certifications.forEach((cert, index) => {
+    if (staticResumeData?.certifications) {
+      staticResumeData.certifications.forEach((cert: any, index: number) => {
       commits.push({
         hash: `${Math.random().toString(36).substr(2, 7)}`,
         message: `docs: earned ${cert.name} certification`,
@@ -131,6 +136,7 @@ export default function CareerGitHistory({ onNavigate }: CareerGitHistoryProps) 
         branch: "certifications",
       })
     })
+    }
 
     return commits.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
   }
