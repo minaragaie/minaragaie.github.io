@@ -1,11 +1,26 @@
 "use client"
 import { Calendar, MapPin, ArrowDown, Briefcase, CheckCircle } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
-import resumeData from "@/data/resume.json"
+interface ResumeData {
+  experience: Array<{
+    id: number
+    company: string
+    title: string
+    startDate: string
+    endDate: string
+    description: string
+    technologies: string[]
+    type?: string
+    achievements?: string[]
+  }>
+}
 
-interface ExperienceSectionProps {}
+interface ExperienceSectionProps {
+  resumeData: ResumeData
+}
 
-export default function ExperienceSection({}: ExperienceSectionProps) {
+export default function ExperienceSection({ resumeData }: ExperienceSectionProps) {
+
   return (
     <div className="max-w-6xl mx-auto lg:px-8">
       {/* Section header */}

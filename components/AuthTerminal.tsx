@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback, memo } from "react"
 import { Terminal, Shield, Eye, EyeOff } from "lucide-react"
 
 interface AuthTerminalProps {
-  onLogin: (username: string) => void
+  onLogin: (username: string, password: string) => Promise<boolean>
   onClose: () => void
 }
 
@@ -25,11 +25,7 @@ const AuthTerminal = memo(function AuthTerminal({ onLogin, onClose }: AuthTermin
   const inputRef = useRef<HTMLInputElement>(null)
   const initializedRef = useRef(false)
 
-  // Dummy credentials
-  const DUMMY_CREDENTIALS = {
-    username: 'mina',
-    password: 'pass!100'
-  }
+  // Authentication will be handled by backend
 
   // Initialize terminal with welcome message and start authentication
   useEffect(() => {
@@ -130,28 +126,34 @@ const AuthTerminal = memo(function AuthTerminal({ onLogin, onClose }: AuthTermin
         setAuthState('authenticating')
         setCurrentInput('')
         
-        // Simulate authentication delay
-        setTimeout(() => {
-          if (username === DUMMY_CREDENTIALS.username && enteredPassword === DUMMY_CREDENTIALS.password) {
-            setTerminalText(prev => prev + '✓ Authentication successful!\n')
-            setTerminalText(prev => prev + 'Welcome, ' + username + '!\n')
-            setTerminalText(prev => prev + 'Redirecting to admin panel...\n')
-            setAuthState('success')
-            
-            setTimeout(() => {
-              onLogin(username)
-            }, 1500)
-          } else {
-            setTerminalText(prev => prev + '✗ Authentication failed!\n')
-            setTerminalText(prev => prev + 'Invalid username or password.\n')
-            setTerminalText(prev => prev + 'Please try again.\n\n')
+        // Authenticate with backend
+        onLogin(username, enteredPassword)
+          .then(success => {
+            if (success) {
+              setTerminalText(prev => prev + '✓ Authentication successful!\n')
+              setTerminalText(prev => prev + 'Welcome, ' + username + '!\n')
+              setTerminalText(prev => prev + 'Redirecting to admin panel...\n')
+              setAuthState('success')
+            } else {
+              setTerminalText(prev => prev + '✗ Authentication failed!\n')
+              setTerminalText(prev => prev + 'Invalid username or password.\n')
+              setTerminalText(prev => prev + 'Please try again.\n\n')
+              setTerminalText(prev => prev + 'Username: ')
+              setAuthState('username')
+              setUsername('')
+              setPassword('')
+              setCurrentInput('')
+            }
+          })
+          .catch(() => {
+            setTerminalText(prev => prev + '✗ Authentication error!\n')
+            setTerminalText(prev => prev + 'Network error. Please try again.\n\n')
             setTerminalText(prev => prev + 'Username: ')
             setAuthState('username')
             setUsername('')
             setPassword('')
             setCurrentInput('')
-          }
-        }, 2000)
+          })
       } else if (e.key === 'Backspace') {
         setCurrentInput(prev => (prev || '').slice(0, -1))
       } else if (e.key.length === 1) {

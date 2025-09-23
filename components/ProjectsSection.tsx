@@ -135,7 +135,15 @@ const ProjectCard = memo(({ project, index }: { project: any, index: number }) =
 
 ProjectCard.displayName = 'ProjectCard'
 
-const ProjectsSection = memo(() => {
+interface ResumeData {
+  projects: any[]
+}
+
+interface ProjectsSectionProps {
+  resumeData: ResumeData
+}
+
+const ProjectsSection = memo(({ resumeData }: ProjectsSectionProps) => {
   const memoizedProjects = useMemo(() => recentProjects, [])
 
   return (

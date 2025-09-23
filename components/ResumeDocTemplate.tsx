@@ -1,5 +1,5 @@
 import React from 'react';
-import resumeData from '@/data/resume.json';
+// This component will receive resumeData as a prop
 
 // Define the types for your resume data to enable proper type-checking
 interface Skills {
@@ -77,7 +77,11 @@ const highlightWords = (text: string, wordsToHighlight: any[]) => {
   });
 };
 
-const ResumeDocTemplate = () => {
+interface ResumeDocTemplateProps {
+  resumeData: any; // You can define a proper type here
+}
+
+const ResumeDocTemplate = ({ resumeData }: ResumeDocTemplateProps) => {
   const { personalInfo, highlights, experience, skills, education, certifications, additionalInfo } = resumeData;
 
   return (

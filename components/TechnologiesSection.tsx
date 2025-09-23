@@ -1,50 +1,66 @@
 "use client"
 import { Code, Database, Globe, Wrench, Shield, Zap } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
-import resumeData from "@/data/resume.json"
 
-const techCategories = [
-  {
-    name: "Languages",
-    icon: Code,
-    color: "from-blue-400 to-cyan-500",
-    items: resumeData.skills.languages,
-  },
-  {
-    name: "Frameworks",
-    icon: Globe,
-    color: "from-green-400 to-emerald-500",
-    items: resumeData.skills.frameworks,
-  },
-  {
-    name: "Databases",
-    icon: Database,
-    color: "from-purple-400 to-violet-500",
-    items: resumeData.skills.databases,
-  },
-  {
-    name: "Tools & Technologies",
-    icon: Wrench,
-    color: "from-orange-400 to-red-500",
-    items: [...resumeData.skills.technologies, ...resumeData.skills.versionControl],
-  },
-  {
-    name: "Methodologies",
-    icon: Zap,
-    color: "from-yellow-400 to-orange-500",
-    items: resumeData.skills.methodologies,
-  },
-  {
-    name: "Standards & Best Practices",
-    icon: Shield,
-    color: "from-indigo-400 to-blue-500",
-    items: resumeData.skills.standards,
-  },
-]
+interface ResumeData {
+  skills: {
+    languages: string[]
+    frameworks: string[]
+    databases: string[]
+    technologies: string[]
+    versionControl: string[]
+    methodologies: string[]
+    standards: string[]
+  }
+}
 
-interface TechnologiesSectionProps {}
+interface TechnologiesSectionProps {
+  resumeData: ResumeData
+}
 
-export default function TechnologiesSection({}: TechnologiesSectionProps) {
+// This will be defined inside the component
+
+
+export default function TechnologiesSection({ resumeData }: TechnologiesSectionProps) {
+  const techCategories = [
+    {
+      name: "Languages",
+      icon: Code,
+      color: "from-blue-400 to-cyan-500",
+      items: resumeData.skills.languages,
+    },
+    {
+      name: "Frameworks",
+      icon: Globe,
+      color: "from-green-400 to-emerald-500",
+      items: resumeData.skills.frameworks,
+    },
+    {
+      name: "Databases",
+      icon: Database,
+      color: "from-purple-400 to-violet-500",
+      items: resumeData.skills.databases,
+    },
+    {
+      name: "Tools & Technologies",
+      icon: Wrench,
+      color: "from-orange-400 to-red-500",
+      items: [...resumeData.skills.technologies, ...resumeData.skills.versionControl],
+    },
+    {
+      name: "Methodologies",
+      icon: Zap,
+      color: "from-yellow-400 to-orange-500",
+      items: resumeData.skills.methodologies,
+    },
+    {
+      name: "Standards & Best Practices",
+      icon: Shield,
+      color: "from-indigo-400 to-blue-500",
+      items: resumeData.skills.standards,
+    },
+  ]
+
   return (
     <div className="max-w-6xl mx-auto">
   <div className="text-center mb-16">

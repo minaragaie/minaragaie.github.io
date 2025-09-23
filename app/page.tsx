@@ -9,8 +9,42 @@ import EducationSection from "@/components/EducationSection"
 import CertificationsSection from "@/components/CertificationsSection"
 import ContactSection from "@/components/ContactSection"
 import ScrollAnimatedSection from "@/components/ScrollAnimatedSection"
+import { useResumeData } from "@/hooks/useResumeData"
 
 const Resume = memo(() => {
+  const { resumeData, loading, error } = useResumeData()
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading resume data...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <p className="text-red-500">Error loading resume data: {error}</p>
+          <p className="text-gray-600 mt-2">Please try refreshing the page</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!resumeData) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <p className="text-gray-600">No resume data available</p>
+        </div>
+      </div>
+    )
+  }
   return (
     <div className="flex flex-col transition-all duration-300">
       <section 
@@ -18,7 +52,7 @@ const Resume = memo(() => {
         className="py-20 px-4 md:px-8 bg-[var(--bg-primary)] devtool-section-primary"
       >
         <ScrollAnimatedSection animationType="fade" delay={200}>
-          <HeroSection />
+          <HeroSection resumeData={resumeData} />
         </ScrollAnimatedSection>
       </section>
 
@@ -27,7 +61,7 @@ const Resume = memo(() => {
         className="py-20 px-4 md:px-8 bg-[var(--bg-secondary)] devtool-section-secondary"
       >
         <ScrollAnimatedSection animationType="slideUp" delay={100}>
-          <ProjectsSection />
+          <ProjectsSection resumeData={resumeData} />
         </ScrollAnimatedSection>
       </section>
 
@@ -36,7 +70,7 @@ const Resume = memo(() => {
         className="py-20 px-4 md:px-8 bg-[var(--bg-primary)] devtool-section-primary"
       >
         <ScrollAnimatedSection animationType="slideLeft" delay={150}>
-          <ExperienceSection />
+          <ExperienceSection resumeData={resumeData} />
         </ScrollAnimatedSection>
       </section>
 
@@ -45,7 +79,7 @@ const Resume = memo(() => {
         className="py-20 px-4 md:px-8 bg-[var(--bg-secondary)] devtool-section-secondary"
       >
         <ScrollAnimatedSection animationType="scale" delay={100}>
-          <TechnologiesSection />
+          <TechnologiesSection resumeData={resumeData} />
         </ScrollAnimatedSection>
       </section>
 
@@ -54,7 +88,7 @@ const Resume = memo(() => {
         className="py-20 px-4 md:px-8 bg-[var(--bg-primary)] devtool-section-primary"
       >
         <ScrollAnimatedSection animationType="slideRight" delay={200}>
-          <EducationSection />
+          <EducationSection resumeData={resumeData} />
         </ScrollAnimatedSection>
       </section>
 
@@ -63,7 +97,7 @@ const Resume = memo(() => {
         className="py-20 px-4 md:px-8 bg-[var(--bg-secondary)] devtool-section-secondary"
       >
         <ScrollAnimatedSection animationType="slideUp" delay={100}>
-          <CertificationsSection />
+          <CertificationsSection resumeData={resumeData} />
         </ScrollAnimatedSection>
       </section>
 
@@ -72,7 +106,7 @@ const Resume = memo(() => {
         className="py-20 px-4 md:px-8 bg-[var(--bg-primary)] devtool-section-primary"
       >
         <ScrollAnimatedSection animationType="scale" delay={300}>
-          <ContactSection />
+          <ContactSection resumeData={resumeData} />
         </ScrollAnimatedSection>
       </section>
     </div>

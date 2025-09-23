@@ -4,13 +4,27 @@ import type React from "react"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Mail, Phone, MapPin, Linkedin, Send, MessageSquare } from "lucide-react"
-import resumeData from "@/data/resume.json"
 import TerminalWindow from "./TerminalWindow"
 import { useStatusBar } from "@/context/StatusBarContext"
 
-interface ContactSectionProps {}
+interface ResumeData {
+  personalInfo: {
+    name: string
+    email: string
+    phone: string
+    location: string
+    linkedin: string
+    github: string
+    website: string
+    summary: string
+  }
+}
 
-export default function ContactSection({}: ContactSectionProps) {
+interface ContactSectionProps {
+  resumeData: ResumeData
+}
+
+export default function ContactSection({ resumeData }: ContactSectionProps) {
     const { setStatus } = useStatusBar()
 
   const [formData, setFormData] = useState({ name: "", email: "", message: "" })

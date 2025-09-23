@@ -1,9 +1,19 @@
-import { resumeData } from "@/lib/resume-data"
 import { GraduationCap, Calendar, Building } from "lucide-react"
 
-interface EducationSectionProps {}
+interface ResumeData {
+  education: Array<{
+    degree: string
+    institution: string
+    year: string
+    gpa: string
+  }>
+}
 
-export default function EducationSection({}: EducationSectionProps) {
+interface EducationSectionProps {
+  resumeData: ResumeData
+}
+
+export default function EducationSection({ resumeData }: EducationSectionProps) {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Header */}

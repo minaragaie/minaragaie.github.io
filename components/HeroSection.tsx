@@ -10,15 +10,55 @@ import Image from "next/image"
 // NOTE: The jspdf library is an external dependency that must be loaded via a <script> tag from a CDN
 // in your HTML for the download functionality to work. We are removing the direct import to resolve the compilation error.
 
-const HeroSection = memo(() => {
-  const handleDownloadResume = useCallback(() => {
-    // Dynamic import for jsPDF to reduce initial bundle size
-    import('jspdf').then(({ default: jsPDF }) => {
-      const doc = new jsPDF()
-      doc.text("Mina Youaness - Full Stack Developer", 10, 10)
-      doc.save("resume.pdf")
-    })
-  }, [])
+interface ResumeData {
+  personalInfo: {
+    name: string
+    email: string
+    phone: string
+    location: string
+    linkedin: string
+    github: string
+    website: string
+    summary: string
+  }
+}
+
+interface HeroSectionProps {
+  resumeData: ResumeData
+}
+
+const HeroSection = memo(({ resumeData }: HeroSectionProps) => {
+  const handleDownloadResume = useCallback(async () => {
+    try {
+      // Call the backend PDF generation endpoint
+      const response = await fetch(`${config.API_BASE_URL}/api/generate-pdf`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({}) // Empty body since we fetch data from API
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to generate PDF')
+      }
+
+      // Create blob and download
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `${resumeData.personalInfo.name.replace(/\s+/g, '_')}_Resume_${new Date().getFullYear()}.pdf`
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(url)
+      document.body.removeChild(a)
+    } catch (error) {
+      console.error('Error generating PDF:', error)
+      // Fallback to simple alert
+      alert('Failed to generate PDF. Please try again.')
+    }
+  }, [resumeData.personalInfo.name])
 
 
   return (
@@ -31,7 +71,7 @@ const HeroSection = memo(() => {
               <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-[var(--vscode-blue)] p-1 bg-gradient-to-br from-[var(--vscode-blue)] to-[var(--vscode-green)]">
                 <Image
                   src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1753407168559-PCWiZjGAS8MtQhjaIJJBeSTHaxePdY.jpeg"
-                  alt="Mina Youaness - Full Stack Developer"
+                  alt={`${resumeData.personalInfo.name} - Full Stack Developer`}
                   width={96}
                   height={96}
                   className="w-full h-full rounded-full object-cover grayscale hover:grayscale-0 transition-all duration-300"
@@ -48,7 +88,7 @@ const HeroSection = memo(() => {
               <div className="text-[var(--vscode-keyword)] text-sm mb-1 font-mono">// Full Stack Developer</div>
               <h1 className="text-4xl md:text-5xl font-bold text-[var(--vscode-text)] mb-1">
                 <span className="text-[var(--vscode-green)]">const</span> <span className="text-[var(--vscode-keyword)]">developer</span>{" "}
-                <span className="text-[var(--vscode-text)]">=</span> <span className="text-[var(--vscode-string)]">"Mina Youaness"</span>
+                <span className="text-[var(--vscode-text)]">=</span> <span className="text-[var(--vscode-string)]">"{resumeData.personalInfo.name}"</span>
               </h1>
               <div className="h-1 w-32 bg-gradient-to-r from-[var(--vscode-blue)] to-[var(--vscode-green)] rounded-full"></div>
             </div>
@@ -111,7 +151,7 @@ const HeroSection = memo(() => {
           title="Hero Terminal"
           commands={[
               "$ whoami",
-              "> Mina Youaness - Full Stack Developer",
+              `> ${resumeData.personalInfo.name} - Full Stack Developer`,
               "$ cat experience.txt",
               "> 10+ years of innovative web development",
               "$ ls skills/",

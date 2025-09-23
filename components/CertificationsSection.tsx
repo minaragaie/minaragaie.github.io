@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Award, CheckCircle, Clock, ExternalLink, RotateCcw, Sun, Moon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import resumeData from "@/data/resume.json";
 import { Button } from "./ui/button";
 
 interface Certificate {
@@ -16,9 +15,26 @@ interface Certificate {
   pathway?: Certificate[];
 }
 
-interface CertificationsSectionProps {}
+interface ResumeData {
+  certifications: Array<{
+    name: string
+    issuer: string
+    icon: string
+    status: string
+    description: string
+    color: string
+    skills: string[]
+    verify: string
+    pathway: any[]
+  }>
+  additionalInfo?: string
+}
 
-export default function CertificationsSection({}: CertificationsSectionProps) {
+interface CertificationsSectionProps {
+  resumeData: ResumeData
+}
+
+export default function CertificationsSection({ resumeData }: CertificationsSectionProps) {
   const [selectedCert, setSelectedCert] = useState<Certificate | null>(null);
   const [currentPathwayIndex, setCurrentPathwayIndex] = useState(0);
   const [flippedCards, setFlippedCards] = useState<Set<number>>(new Set());

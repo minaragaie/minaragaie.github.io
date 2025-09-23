@@ -21,6 +21,16 @@ import {
 } from "lucide-react"
 
 import { staticResumeData } from "@/lib/resume-data"
+
+// Type for static resume data
+interface StaticResumeData {
+  experience?: Array<{ id: number; company: string; degree?: string }>
+  education?: Array<{ degree: string }>
+  certifications?: Array<{ name: string }>
+}
+
+// Cast staticResumeData to the proper type
+const resumeData = staticResumeData as StaticResumeData | null
 import { slugify } from "@/lib/utils"
 import TreeItem from "./TreeItem"
 import CommandPalette from "./CommandPalette"
@@ -95,7 +105,7 @@ export default function Sidebar({ currentSection, onSectionClick, isCollapsed, o
       children: projectsChildren,
     })
 
-    const experienceChildren = staticResumeData.experience.map((exp) => ({
+    const experienceChildren = (resumeData?.experience || []).map((exp: any) => ({
       id: `experience-${exp.id}`,
       name: `${slugify(exp.company.toLowerCase())}.ts`,
       icon: Briefcase,
@@ -112,7 +122,7 @@ export default function Sidebar({ currentSection, onSectionClick, isCollapsed, o
       children: experienceChildren,
     })
 
-    const educationChildren = staticResumeData.education.map((edu, idx) => ({
+    const educationChildren = (resumeData?.education || []).map((edu: any, idx: any) => ({
       id: `education-${idx}`,
       name: `${slugify((edu.degree || "unknown-degree").toLowerCase())}.ts`,
       icon: GraduationCap,
@@ -129,7 +139,7 @@ export default function Sidebar({ currentSection, onSectionClick, isCollapsed, o
       children: educationChildren,
     })
 
-    const certificationsChildren = staticResumeData.certifications.map((cert, idx) => ({
+    const certificationsChildren = (resumeData?.certifications || []).map((cert: any, idx: any) => ({
       id: `certifications-${idx}`,
       name: `${slugify((cert.name || "unknown-certificate").toLowerCase())}.ts`,
       icon: Award,
@@ -160,7 +170,7 @@ export default function Sidebar({ currentSection, onSectionClick, isCollapsed, o
       const [parent, idxOrName] = sectionId.split("-")
       if (parent === "projects") targetId = "projects"
       if (parent === "certifications") {
-        const cert = staticResumeData.certifications[Number(idxOrName)]
+        const cert = resumeData?.certifications?.[Number(idxOrName)]
         if (cert) targetId = `cert-${cert.name.toLowerCase().replace(/[^a-z0-9]/g, "-")}`
       }
     }

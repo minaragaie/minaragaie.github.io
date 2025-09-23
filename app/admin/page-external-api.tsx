@@ -11,7 +11,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Plus, Trash2, Save, Edit, X, LogOut, User, Briefcase, GraduationCap, Award, Code, Terminal, Database, Settings, Activity, Search, Download, Upload, Eye, Clock, CheckCircle, AlertCircle, Info, BarChart3, Keyboard, Zap } from "lucide-react"
 import { useAuth } from "@/context/AuthContext"
 
-import { config } from "@/lib/config"
+// External API base URL
+const API_BASE_URL = "https://resume-backend-service-9e1iv8rr1-minaragaie89-8717s-projects.vercel.app"
 
 interface ResumeData {
   personalInfo: {
@@ -94,7 +95,7 @@ export default function AdminPageExternalAPI() {
   useEffect(() => {
     const loadResumeData = async () => {
       try {
-        const response = await fetch(`${config.API_BASE_URL}${config.ENDPOINTS.RESUME}`)
+        const response = await fetch(`${API_BASE_URL}/api/admin-resume`)
         if (response.ok) {
           const result = await response.json()
           if (result.success) {
@@ -192,7 +193,7 @@ export default function AdminPageExternalAPI() {
     
     setSaving(true)
     try {
-      const response = await fetch(`${config.API_BASE_URL}${config.ENDPOINTS.RESUME}`, {
+      const response = await fetch(`${API_BASE_URL}/api/admin-resume`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -228,7 +229,7 @@ export default function AdminPageExternalAPI() {
   // Individual CRUD operations using external API
   const deleteExperience = async (id: number) => {
     try {
-      const response = await fetch(`${config.API_BASE_URL}${config.ENDPOINTS.EXPERIENCE}?id=${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/admin-experience?id=${id}`, {
         method: 'DELETE',
       })
       
@@ -236,7 +237,7 @@ export default function AdminPageExternalAPI() {
         const result = await response.json()
         if (result.success) {
           // Reload data to reflect changes
-          const loadResponse = await fetch(`${config.API_BASE_URL}${config.ENDPOINTS.RESUME}`)
+          const loadResponse = await fetch(`${API_BASE_URL}/api/admin/resume`)
           if (loadResponse.ok) {
             const loadResult = await loadResponse.json()
             if (loadResult.success) {
@@ -258,7 +259,7 @@ export default function AdminPageExternalAPI() {
 
   const deleteEducation = async (index: number) => {
     try {
-      const response = await fetch(`${config.API_BASE_URL}${config.ENDPOINTS.EDUCATION}?index=${index}`, {
+      const response = await fetch(`${API_BASE_URL}/api/admin-education?index=${index}`, {
         method: 'DELETE',
       })
       
@@ -266,7 +267,7 @@ export default function AdminPageExternalAPI() {
         const result = await response.json()
         if (result.success) {
           // Reload data to reflect changes
-          const loadResponse = await fetch(`${config.API_BASE_URL}${config.ENDPOINTS.RESUME}`)
+          const loadResponse = await fetch(`${API_BASE_URL}/api/admin/resume`)
           if (loadResponse.ok) {
             const loadResult = await loadResponse.json()
             if (loadResult.success) {
@@ -288,7 +289,7 @@ export default function AdminPageExternalAPI() {
 
   const deleteCertification = async (index: number) => {
     try {
-      const response = await fetch(`${config.API_BASE_URL}${config.ENDPOINTS.CERTIFICATIONS}?index=${index}`, {
+      const response = await fetch(`${API_BASE_URL}/api/admin-certifications?index=${index}`, {
         method: 'DELETE',
       })
       
@@ -296,7 +297,7 @@ export default function AdminPageExternalAPI() {
         const result = await response.json()
         if (result.success) {
           // Reload data to reflect changes
-          const loadResponse = await fetch(`${config.API_BASE_URL}${config.ENDPOINTS.RESUME}`)
+          const loadResponse = await fetch(`${API_BASE_URL}/api/admin/resume`)
           if (loadResponse.ok) {
             const loadResult = await loadResponse.json()
             if (loadResult.success) {
@@ -322,7 +323,7 @@ export default function AdminPageExternalAPI() {
     }
 
     try {
-      const response = await fetch(`${config.API_BASE_URL}${config.ENDPOINTS.RESUME}`, {
+      const response = await fetch(`${API_BASE_URL}/api/admin-resume`, {
         method: 'DELETE',
       })
       
@@ -330,7 +331,7 @@ export default function AdminPageExternalAPI() {
         const result = await response.json()
         if (result.success) {
           // Reload data to reflect changes
-          const loadResponse = await fetch(`${config.API_BASE_URL}${config.ENDPOINTS.RESUME}`)
+          const loadResponse = await fetch(`${API_BASE_URL}/api/admin/resume`)
           if (loadResponse.ok) {
             const loadResult = await loadResponse.json()
             if (loadResult.success) {
@@ -466,7 +467,7 @@ export default function AdminPageExternalAPI() {
                   <div className="space-y-3 text-[#8b949e]">
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-[#4ec9b0] rounded-full"></div>
-                      <span>API Base URL: <code className="bg-[#21262d] px-2 py-1 rounded text-[#4ec9b0]">{config.API_BASE_URL}</code></span>
+                      <span>API Base URL: <code className="bg-[#21262d] px-2 py-1 rounded text-[#4ec9b0]">{API_BASE_URL}</code></span>
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-[#4ec9b0] rounded-full"></div>

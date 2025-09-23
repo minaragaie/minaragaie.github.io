@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import ResumeDocTemplate from "./ResumeDocTemplate";
 import { Button } from "./ui/button";
 import { Download } from "lucide-react";
-import ReactDOMServer from "react-dom/server";
+import { config } from "@/lib/config";
 
 export default function DownloadPDFResume() {
   const [isLoading, setIsLoading] = useState(false);
@@ -13,20 +12,14 @@ export default function DownloadPDFResume() {
     setIsLoading(true);
 
     try {
-      const templateHtmlString = ReactDOMServer.renderToString(<ResumeDocTemplate />);
-
-      const response = await fetch(
-        "https://resume-backend-service.vercel.app/api/generate-pdf",
-        
-        {
-          method: "POST",
-          headers: { 
-            "Content-Type": "application/json",
-            "Authorization": "Bearer <YOUR_VERSEL_OIDC_TOKEN>" // <-- add your token here
-          },
-          body: JSON.stringify({ html: templateHtmlString }),
-        }
-      );
+      // Call the new backend PDF generation endpoint
+      const response = await fetch(`${config.API_BASE_URL}${config.ENDPOINTS.GENERATE_PDF}`, {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({}) // Empty body since backend fetches data from API
+      });
 
       if (!response.ok) throw new Error("Failed to generate PDF");
 
@@ -34,7 +27,7 @@ export default function DownloadPDFResume() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "Mina_Ragaie_Resume.pdf";
+      a.download = `Mina_Youaness_Resume_${new Date().getFullYear()}.pdf`;
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -42,7 +35,7 @@ export default function DownloadPDFResume() {
     } catch (err) {
       console.error(err);
       alert(
-        "Error generating PDF. Make sure the backend is deployed, CORS is enabled, and you have a valid token."
+        "Error generating PDF. Please try again or check if the backend service is running."
       );
     } finally {
       setIsLoading(false);
