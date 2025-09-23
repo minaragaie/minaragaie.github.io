@@ -30,9 +30,8 @@ export default function StatusBar() {
     setStatus("Ready for next challenge")
   }
 
-  const handleLogin = (username: string) => {
-    login(username)
-    router.push('/admin')
+  const handleLogin = (username: string, password: string) => {
+    return login(username, password)
   }
 
 
