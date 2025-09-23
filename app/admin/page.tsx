@@ -148,21 +148,52 @@ export default function AdminPage() {
   }, [])
 
   const saveResumeData = async () => {
+    if (!resumeData) return
+    
     setSaving(true)
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    setSaving(false)
-    setLastSaved(new Date())
-    setHasUnsavedChanges(false)
-    // In a real app, you would save to your backend here
+    try {
+      const response = await fetch('/api/admin/save', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(resumeData),
+      })
+      
+      if (response.ok) {
+        setLastSaved(new Date())
+        setHasUnsavedChanges(false)
+        console.log('Resume data saved successfully!')
+        
+        // Show success message
+        alert('Resume data saved successfully! Changes will be reflected on the home page.')
+      } else {
+        console.error('Failed to save resume data')
+      }
+    } catch (error) {
+      console.error('Error saving resume data:', error)
+    } finally {
+      setSaving(false)
+    }
   }
 
   // Auto-save detection
   useEffect(() => {
-    if (resumeData) {
+    if (resumeData && !saving) {
       setHasUnsavedChanges(true)
     }
-  }, [resumeData])
+  }, [resumeData, saving])
+
+  // Auto-save after user stops typing
+  useEffect(() => {
+    if (!hasUnsavedChanges || saving) return
+
+    const autoSaveTimer = setTimeout(() => {
+      saveResumeData()
+    }, 2000) // Auto-save after 2 seconds of inactivity
+
+    return () => clearTimeout(autoSaveTimer)
+  }, [hasUnsavedChanges, saving])
 
   // Keyboard shortcuts
   useEffect(() => {
