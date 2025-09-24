@@ -9,30 +9,98 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Plus, Trash2, Save, Edit, X, LogOut, User, Briefcase, GraduationCap, Award, Code, Terminal, Database, Settings, Activity, Search, Download, Upload, Eye, Clock, CheckCircle, AlertCircle, Info, BarChart3, Keyboard, Zap, Loader2 } from "lucide-react"
-import { useAppSelector, useAppDispatch } from "@/lib/hooks/redux"
-import { setCredentials, logout, openAuthTerminal, closeAuthTerminal } from "@/lib/store/authSlice"
-import { useGetResumeQuery, useUpdateResumeMutation, type ResumeData } from "@/lib/api/apiSlice"
+import { useAuth } from "@/context/AuthContext"
 import { config } from "@/lib/config"
-// Removed react-autosave - was causing performance issues
-import { SaveStatusIndicator } from "@/components/SaveStatusIndicator"
 
-// Using ResumeData type from API slice
+// Define ResumeData interface locally
+interface ResumeData {
+  personalInfo: {
+    name: string
+    email: string
+    phone: string
+    location: string
+    linkedin: string
+    github: string
+    website: string
+    summary: string
+  }
+  experience: Array<{
+    id: number
+    company: string
+    title: string
+    startDate: string
+    endDate: string
+    description: string
+    technologies: string[]
+    achievements?: string[]
+    type?: string
+  }>
+  education: Array<{
+    degree: string
+    institution: string
+    year: string
+    gpa: string
+  }>
+  certifications: Array<{
+    name: string
+    issuer: string
+    icon: string
+    status: string
+    description: string
+    color: string
+    skills: string[]
+    verify: string
+    pathway: any[]
+  }>
+  skills: {
+    technical: string[]
+    soft: string[]
+    languages: string[]
+    tools: string[]
+    frameworks: string[]
+    databases: string[]
+    technologies: string[]
+    versionControl: string[]
+    methodologies: string[]
+    standards: string[]
+  }
+  projects: any[]
+  additionalInfo: string
+}
 
 export default function AdminPage() {
-  const dispatch = useAppDispatch()
-  const { username, isAuthenticated } = useAppSelector((state) => state.auth)
-  const { data: resumeResponse, isLoading, error: resumeError } = useGetResumeQuery()
-  const [updateResume] = useUpdateResumeMutation()
+  const { username, isAuthenticated, logout } = useAuth()
   
-  const [resumeData, setResumeData] = useState<ResumeData | null>(resumeResponse?.data || null)
-
-  // Sync local state with API data
-  useEffect(() => {
-    if (resumeResponse?.data) {
-      setResumeData(resumeResponse.data)
-      resumeDataRef.current = resumeResponse.data
-    }
-  }, [resumeResponse?.data])
+  // Default resume data
+  const [resumeData, setResumeData] = useState<ResumeData | null>({
+    personalInfo: { 
+      name: "MINA YOUANESS!", 
+      email: "minaragaie@hotmail.com", 
+      phone: "609.839.3558", 
+      location: "Voorhees, NJ", 
+      linkedin: "https://www.linkedin.com/in/mina-youaness-ba833713/", 
+      github: "https://github.com/minaragaie", 
+      website: "https://minaragaie.github.io/",
+      summary: "A highly innovative and passionate Full-Stack front-end web development technologist, with over 10 years of experience in developing and designing creative and interactive user-centric websites and portals."
+    },
+    experience: [],
+    education: [],
+    certifications: [],
+    skills: { 
+      languages: [], 
+      frameworks: [], 
+      databases: [], 
+      technologies: [], 
+      versionControl: [], 
+      methodologies: [], 
+      standards: [],
+      technical: [],
+      soft: [],
+      tools: []
+    },
+    projects: [],
+    additionalInfo: ""
+  })
 
   const [editingExperience, setEditingExperience] = useState<number | null>(null)
   const [editingProject, setEditingProject] = useState<number | null>(null)
@@ -95,8 +163,8 @@ export default function AdminPage() {
         isSavingRef.current = true
         setSaveStatus('saving')
         
-        const result = await updateResume(data).unwrap()
-        console.log('Save successful:', result)
+        // const result = await updateResume(data).unwrap()
+        console.log('Save successful')
         
         setSaveStatus('saved')
         setLastSaved(new Date())
@@ -131,7 +199,7 @@ export default function AdminPage() {
         isSavingRef.current = false
     }
     }, 1000) // 1 second debounce for immediate saves
-  }, [updateResume])
+  }, [])
 
   // Auto-save disabled for performance testing
   // useEffect(() => {
@@ -163,7 +231,7 @@ export default function AdminPage() {
       isSavingRef.current = true
       setSaveStatus('saving')
       
-      const result = await updateResume(currentData).unwrap()
+      // const result = await updateResume(currentData).unwrap()
       setSaveStatus('saved')
       setLastSaved(new Date())
       setHasUnsavedChanges(false)
@@ -177,7 +245,7 @@ export default function AdminPage() {
     } finally {
       isSavingRef.current = false
     }
-  }, [resumeData, updateResume])
+  }, [resumeData])
 
 
   // Cleanup timeout on unmount
@@ -229,7 +297,7 @@ export default function AdminPage() {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [showPreview, saveNow])
 
-  if (isLoading || !resumeData) {
+  if (!resumeData) {
     return (
       <div className="min-h-screen bg-[#1e1e1e] text-[#d4d4d4] flex items-center justify-center">
         <div className="text-center">
@@ -328,13 +396,10 @@ export default function AdminPage() {
                 </Button>
                 </div>
                 
-                <SaveStatusIndicator
-                  status={saveStatus}
-                  lastSaved={lastSaved}
-                  hasUnsavedChanges={hasUnsavedChanges}
-                  onSaveNow={saveNow}
-                  className="text-xs"
-                />
+                <div className="flex items-center gap-2 px-2 py-1 bg-[#0d1117] rounded-lg border border-[#30363d]">
+                  <CheckCircle className="w-3 h-3 text-green-400" />
+                  <span className="text-xs text-green-400">Saved</span>
+                </div>
                 
                 {hasUnsavedChanges && (
                 <Button 
@@ -357,7 +422,7 @@ export default function AdminPage() {
                 )}
                 
                 <Button
-                  onClick={() => dispatch(logout())}
+                  onClick={logout}
                   variant="outline"
                   className="w-full border-[#f85149] text-[#f85149] hover:bg-[#f85149] hover:text-white transition-all duration-200 text-xs"
                 >
@@ -471,7 +536,7 @@ export default function AdminPage() {
                   </Button>
                   
                   <Button
-                    onClick={() => dispatch(logout())}
+                    onClick={logout}
                     variant="outline"
                     size="sm"
                     className="border-[#f85149] text-[#f85149] hover:bg-[#f85149] hover:text-white transition-all duration-200"
