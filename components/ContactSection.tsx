@@ -172,33 +172,12 @@ const handleSubmit = async (e: React.FormEvent) => {
                   value={
                     <button
                       onClick={() => {
-                      const formEl = document.getElementById("contact")
-                      if (formEl) {
-                        formEl.scrollIntoView({ behavior: "smooth" })
-
-                        // Grab the textarea
-                        const form = document.getElementById("contact-form")
-                        if (form) {
-                          form.classList.add("blink-border")
-                          setTimeout(() => form.classList.remove("blink-border"), 2000)
-                        }
-
-                        const textarea = formEl.querySelector("textarea[name='message']") as HTMLTextAreaElement
-                        if (textarea) {
-                          // Add blink border
-                          textarea.classList.add("blink-border")
-                          setTimeout(() => textarea.classList.remove("blink-border"), 2000)
-
-                          // Autofill "Request a call"
-                          textarea.value = "Request a call"
-                          textarea.dispatchEvent(new Event("input", { bubbles: true }))
-                        }
-
-                      }
-                    }}
+                        // Open calendar booking in new tab
+                        window.open('https://calendly.com/minayouaness/30min', '_blank')
+                      }}
                       className="text-[#007acc] hover:text-[#4ec9b0] transition-colors underline"
                     >
-                      Request a Call
+                      Book a Call
                     </button>
                   }
                 />

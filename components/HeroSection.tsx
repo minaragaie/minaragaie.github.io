@@ -118,11 +118,12 @@ const HeroSection = memo(({ resumeData }: HeroSectionProps) => {
             <div
               className="flex items-center gap-2 p-3 rounded bg-[var(--card)] hover:bg-[var(--popover)] transition-all cursor-pointer"
               onClick={() => {
-                document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })
+                // Open calendar booking in new tab
+                window.open('https://calendly.com/minayouaness/30min', '_blank')
               }}
             >
               <Phone className="w-4 h-4 text-[var(--vscode-green)]" />
-              <span>Request a Call</span>
+              <span>Book a Call</span>
             </div>
             <div className="flex items-center gap-2 p-3 rounded bg-[var(--card)] hover:bg-[var(--popover)] transition-all">
               <Mail className="w-4 h-4 text-[var(--vscode-green)]" />
