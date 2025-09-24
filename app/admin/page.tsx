@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Plus, Trash2, Save, Edit, X, LogOut, User, Briefcase, GraduationCap, Award, Code, Terminal, Database, Settings, Activity, Search, Download, Upload, Eye, Clock, CheckCircle, AlertCircle, Info, BarChart3, Keyboard, Zap, Loader2 } from "lucide-react"
 import { useAuth } from "@/context/AuthContext"
 import { config } from "@/lib/config"
+import { SaveStatusIndicator } from "@/components/SaveStatusIndicator"
 
 // Define ResumeData interface locally
 interface ResumeData {
@@ -108,6 +109,7 @@ export default function AdminPage() {
   const [showPreview, setShowPreview] = useState(false)
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({})
   const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false)
+  
 
   // Data is now loaded by the ResumeDataContext
 
@@ -115,17 +117,14 @@ export default function AdminPage() {
   const resumeDataRef = useRef<ResumeData | null>(null)
   const updateTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   
-  // Simple update function - no re-renders at all
+  // Simple update function
   const updateResumeData = useCallback((newData: ResumeData) => {
+    setResumeData(newData)
     resumeDataRef.current = newData
     setHasUnsavedChanges(true)
-    // No setResumeData call - completely avoid re-renders
   }, [])
 
-  // Simplified state management - direct updates for performance
-  // Removed resumeData complexity that was causing performance issues
-
-  // Efficient autosave state
+  // Save status state
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle')
   const [lastSaved, setLastSaved] = useState<Date | null>(null)
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
@@ -216,36 +215,6 @@ export default function AdminPage() {
   //   }
   // }, [hasUnsavedChanges, resumeData, debouncedSave])
 
-  // Manual save function
-  const saveNow = useCallback(async () => {
-    const currentData = resumeDataRef.current
-    if (!currentData || isSavingRef.current) return
-    
-    // Clear any pending debounced save
-    if (saveTimeoutRef.current) {
-      clearTimeout(saveTimeoutRef.current)
-    }
-    
-    // Force immediate save
-    try {
-      isSavingRef.current = true
-      setSaveStatus('saving')
-      
-      // const result = await updateResume(currentData).unwrap()
-      setSaveStatus('saved')
-      setLastSaved(new Date())
-      setHasUnsavedChanges(false)
-      lastSavedDataRef.current = JSON.stringify(currentData)
-      
-      setTimeout(() => setSaveStatus('idle'), 1500)
-    } catch (error: any) {
-      console.error('Manual save failed:', error)
-      setSaveStatus('error')
-      setTimeout(() => setSaveStatus('idle'), 3000)
-    } finally {
-      isSavingRef.current = false
-    }
-  }, [resumeData])
 
 
   // Cleanup timeout on unmount
@@ -256,6 +225,39 @@ export default function AdminPage() {
       }
     }
   }, [])
+
+  // Save function
+  const saveNow = useCallback(async () => {
+    if (!resumeData) return
+    
+    try {
+      setSaveStatus('saving')
+      const response = await fetch(`${config.API_BASE_URL}${config.ENDPOINTS.RESUME}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+        },
+        body: JSON.stringify(resumeData)
+      })
+
+      if (response.ok) {
+        setSaveStatus('saved')
+        setLastSaved(new Date())
+        setHasUnsavedChanges(false)
+        console.log('Save successful')
+      } else {
+        setSaveStatus('error')
+        console.error('Save failed:', response.statusText)
+      }
+    } catch (error) {
+      setSaveStatus('error')
+      console.error('Save error:', error)
+    }
+    
+    // Reset to idle after a delay
+    setTimeout(() => setSaveStatus('idle'), 2000)
+  }, [resumeData])
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -396,10 +398,13 @@ export default function AdminPage() {
                 </Button>
                 </div>
                 
-                <div className="flex items-center gap-2 px-2 py-1 bg-[#0d1117] rounded-lg border border-[#30363d]">
-                  <CheckCircle className="w-3 h-3 text-green-400" />
-                  <span className="text-xs text-green-400">Saved</span>
-                </div>
+                <SaveStatusIndicator
+                  status={saveStatus}
+                  lastSaved={lastSaved}
+                  hasUnsavedChanges={hasUnsavedChanges}
+                  onSaveNow={saveNow}
+                  className="text-xs"
+                />
                 
                 {hasUnsavedChanges && (
                 <Button 
