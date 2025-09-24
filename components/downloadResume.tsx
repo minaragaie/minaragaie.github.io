@@ -3,19 +3,27 @@
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { Download } from "lucide-react";
-import { useGeneratePDFMutation } from "@/lib/api/apiSlice";
+import { config } from "@/lib/config";
 
 export default function DownloadPDFResume() {
   const [isLoading, setIsLoading] = useState(false);
-  const [generatePDF] = useGeneratePDFMutation();
 
   const handleDownload = async () => {
     setIsLoading(true);
 
     try {
-      // Call the new backend PDF generation endpoint using RTK Query
-      const blob = await generatePDF().unwrap();
+      // Call the new backend PDF generation endpoint
+      const response = await fetch(`${config.API_BASE_URL}${config.ENDPOINTS.GENERATE_PDF}`, {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({}) // Empty body since backend fetches data from API
+      });
 
+      if (!response.ok) throw new Error("Failed to generate PDF");
+
+      const blob = await response.blob();
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;

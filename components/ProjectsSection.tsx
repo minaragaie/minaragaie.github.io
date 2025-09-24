@@ -135,7 +135,9 @@ const ProjectCard = memo(({ project, index }: { project: any, index: number }) =
 
 ProjectCard.displayName = 'ProjectCard'
 
-import type { ResumeData } from "@/lib/api/apiSlice"
+interface ResumeData {
+  projects: any[]
+}
 
 interface ProjectsSectionProps {
   resumeData: ResumeData

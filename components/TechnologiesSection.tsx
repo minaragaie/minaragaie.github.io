@@ -2,7 +2,17 @@
 import { Code, Database, Globe, Wrench, Shield, Zap } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 
-import type { ResumeData } from "@/lib/api/apiSlice"
+interface ResumeData {
+  skills: {
+    languages: string[]
+    frameworks: string[]
+    databases: string[]
+    technologies: string[]
+    versionControl: string[]
+    methodologies: string[]
+    standards: string[]
+  }
+}
 
 interface TechnologiesSectionProps {
   resumeData: ResumeData

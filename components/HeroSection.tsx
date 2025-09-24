@@ -7,24 +7,45 @@ import TerminalWindow from "@/components/TerminalWindow"
 import DownloadPDFResume from "./downloadResume"
 import Image from "next/image"
 import { config } from "@/lib/config"
-import { useGeneratePDFMutation, type ResumeData } from "@/lib/api/apiSlice"
 
 // NOTE: The jspdf library is an external dependency that must be loaded via a <script> tag from a CDN
 // in your HTML for the download functionality to work. We are removing the direct import to resolve the compilation error.
+
+interface ResumeData {
+  personalInfo: {
+    name: string
+    email: string
+    phone: string
+    location: string
+    linkedin: string
+    github: string
+    website: string
+    summary: string
+  }
+}
 
 interface HeroSectionProps {
   resumeData: ResumeData
 }
 
 const HeroSection = memo(({ resumeData }: HeroSectionProps) => {
-  const [generatePDF] = useGeneratePDFMutation()
-  
   const handleDownloadResume = useCallback(async () => {
     try {
-      // Call the backend PDF generation endpoint using RTK Query
-      const blob = await generatePDF().unwrap()
+      // Call the backend PDF generation endpoint
+      const response = await fetch(`${config.API_BASE_URL}/api/generate-pdf`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({}) // Empty body since we fetch data from API
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to generate PDF')
+      }
 
       // Create blob and download
+      const blob = await response.blob()
       const url = window.URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
@@ -38,7 +59,7 @@ const HeroSection = memo(({ resumeData }: HeroSectionProps) => {
       // Fallback to simple alert
       alert('Failed to generate PDF. Please try again.')
     }
-  }, [resumeData.personalInfo.name, generatePDF])
+  }, [resumeData.personalInfo.name])
 
 
   return (
