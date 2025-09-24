@@ -4,7 +4,9 @@ import { GitBranch, Coffee, X } from "lucide-react"
 import TerminalWindow from "./TerminalWindow"
 import AuthTerminal from "./AuthTerminal"
 import { useStatusBar } from "@/context/StatusBarContext"
-import { useAuth } from "@/context/AuthContext"
+import { useAppSelector, useAppDispatch } from "@/lib/hooks/redux"
+import { openAuthTerminal, closeAuthTerminal, setCredentials } from "@/lib/store/authSlice"
+import { useLoginMutation } from "@/lib/api/apiSlice"
 import { useRouter } from "next/navigation"
 
 export default function StatusBar() {
@@ -17,21 +19,29 @@ export default function StatusBar() {
     addCommand,
   } = useStatusBar()
   
-  const {
-    showAuthTerminal,
-    openAuthTerminal,
-    closeAuthTerminal,
-    login,
-  } = useAuth()
-  
+  const dispatch = useAppDispatch()
+  const { showAuthTerminal } = useAppSelector((state) => state.auth)
+  const [login] = useLoginMutation()
   const router = useRouter()
 
   const handleCloseStatus = () => {
     setStatus("Ready for next challenge")
   }
 
-  const handleLogin = (username: string, password: string) => {
-    return login(username, password)
+  const handleLogin = async (username: string, password: string) => {
+    try {
+      const result = await login({ username, password }).unwrap()
+      if (result.success && result.token) {
+        dispatch(setCredentials({ username, token: result.token }))
+        dispatch(closeAuthTerminal())
+        router.push('/admin')
+        return true
+      }
+      return false
+    } catch (error) {
+      console.error('Login error:', error)
+      return false
+    }
   }
 
 
@@ -85,7 +95,7 @@ export default function StatusBar() {
         <div className="w-full z-50 transition-all duration-300">
           <AuthTerminal
             onLogin={handleLogin}
-            onClose={closeAuthTerminal}
+            onClose={() => dispatch(closeAuthTerminal())}
           />
         </div>
       )}

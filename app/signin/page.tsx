@@ -1,7 +1,8 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useAuth } from "@/context/AuthContext"
+import { useAppDispatch } from "@/lib/hooks/redux"
+import { openAuthTerminal } from "@/lib/store/authSlice"
 import AdminPage from "../admin/page"
 
 interface SignInShortcutProps {
@@ -9,7 +10,7 @@ interface SignInShortcutProps {
 }
 
 export default function SignInShortcut({ shortcutKey = "A" }: SignInShortcutProps) {
-  const { openAuthTerminal } = useAuth()
+  const dispatch = useAppDispatch()
   const [isAdmin, setIsAdmin] = useState(false)
 
   // Example: Replace with your real admin check
@@ -27,13 +28,13 @@ export default function SignInShortcut({ shortcutKey = "A" }: SignInShortcutProp
         e.preventDefault()
 
         // Open auth terminal instead of old terminal
-        openAuthTerminal()
+        dispatch(openAuthTerminal())
       }
     }
 
     window.addEventListener("keydown", handleShortcut)
     return () => window.removeEventListener("keydown", handleShortcut)
-  }, [shortcutKey, openAuthTerminal])
+  }, [shortcutKey, dispatch])
 
   return (
     <div className="flex flex-col min-h-screen bg-[var(--vscode-bg)] text-[var(--vscode-text)]">

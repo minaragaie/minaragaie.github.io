@@ -6,19 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Mail, Phone, MapPin, Linkedin, Send, MessageSquare } from "lucide-react"
 import TerminalWindow from "./TerminalWindow"
 import { useStatusBar } from "@/context/StatusBarContext"
-
-interface ResumeData {
-  personalInfo: {
-    name: string
-    email: string
-    phone: string
-    location: string
-    linkedin: string
-    github: string
-    website: string
-    summary: string
-  }
-}
+import type { ResumeData } from "@/lib/api/apiSlice"
 
 interface ContactSectionProps {
   resumeData: ResumeData

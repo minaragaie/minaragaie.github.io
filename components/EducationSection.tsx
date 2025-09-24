@@ -1,13 +1,5 @@
 import { GraduationCap, Calendar, Building } from "lucide-react"
-
-interface ResumeData {
-  education: Array<{
-    degree: string
-    institution: string
-    year: string
-    gpa: string
-  }>
-}
+import type { ResumeData } from "@/lib/api/apiSlice"
 
 interface EducationSectionProps {
   resumeData: ResumeData

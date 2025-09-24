@@ -15,20 +15,7 @@ interface Certificate {
   pathway?: Certificate[];
 }
 
-interface ResumeData {
-  certifications: Array<{
-    name: string
-    issuer: string
-    icon: string
-    status: string
-    description: string
-    color: string
-    skills: string[]
-    verify: string
-    pathway: any[]
-  }>
-  additionalInfo?: string
-}
+import type { ResumeData } from "@/lib/api/apiSlice"
 
 interface CertificationsSectionProps {
   resumeData: ResumeData

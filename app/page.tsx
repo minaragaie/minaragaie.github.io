@@ -9,12 +9,12 @@ import EducationSection from "@/components/EducationSection"
 import CertificationsSection from "@/components/CertificationsSection"
 import ContactSection from "@/components/ContactSection"
 import ScrollAnimatedSection from "@/components/ScrollAnimatedSection"
-import { useResumeData } from "@/hooks/useResumeData"
+import { useGetPublicResumeQuery } from "@/lib/api/apiSlice"
 
 const Resume = memo(() => {
-  const { resumeData, loading, error } = useResumeData()
+  const { data: resumeResponse, isLoading, error } = useGetPublicResumeQuery()
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
@@ -29,14 +29,14 @@ const Resume = memo(() => {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <p className="text-red-500">Error loading resume data: {error}</p>
+          <p className="text-red-500">Error loading resume data: {error ? String(error) : 'Unknown error'}</p>
           <p className="text-gray-600 mt-2">Please try refreshing the page</p>
         </div>
       </div>
     )
   }
 
-  if (!resumeData) {
+  if (!resumeResponse?.data) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
@@ -45,6 +45,8 @@ const Resume = memo(() => {
       </div>
     )
   }
+
+  const resumeData = resumeResponse.data
   return (
     <div className="flex flex-col transition-all duration-300">
       <section 

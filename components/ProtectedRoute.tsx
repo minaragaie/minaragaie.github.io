@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect } from "react"
-import { useAuth } from "@/context/AuthContext"
+import { useAppSelector } from "@/lib/hooks/redux"
 import { useRouter } from "next/navigation"
 
 interface ProtectedRouteProps {
@@ -10,7 +10,7 @@ interface ProtectedRouteProps {
 }
 
 export default function ProtectedRoute({ children, fallback }: ProtectedRouteProps) {
-  const { isAuthenticated, username } = useAuth()
+  const { isAuthenticated, username } = useAppSelector((state) => state.auth)
   const router = useRouter()
 
   useEffect(() => {

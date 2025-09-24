@@ -1,19 +1,7 @@
 "use client"
 import { Calendar, MapPin, ArrowDown, Briefcase, CheckCircle } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
-interface ResumeData {
-  experience: Array<{
-    id: number
-    company: string
-    title: string
-    startDate: string
-    endDate: string
-    description: string
-    technologies: string[]
-    type?: string
-    achievements?: string[]
-  }>
-}
+import type { ResumeData } from "@/lib/api/apiSlice"
 
 interface ExperienceSectionProps {
   resumeData: ResumeData
