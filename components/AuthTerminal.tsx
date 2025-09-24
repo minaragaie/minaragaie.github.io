@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback, memo } from "react"
 import { Terminal, Shield, Eye, EyeOff } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 interface AuthTerminalProps {
   onLogin: (username: string, password: string) => Promise<boolean>
@@ -11,6 +12,7 @@ interface AuthTerminalProps {
 type AuthState = 'welcome' | 'username' | 'password' | 'authenticating' | 'success' | 'error'
 
 const AuthTerminal = memo(function AuthTerminal({ onLogin, onClose }: AuthTerminalProps) {
+  const router = useRouter()
   const [authState, setAuthState] = useState<AuthState>('welcome')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -134,6 +136,11 @@ const AuthTerminal = memo(function AuthTerminal({ onLogin, onClose }: AuthTermin
               setTerminalText(prev => prev + 'Welcome, ' + username + '!\n')
               setTerminalText(prev => prev + 'Redirecting to admin panel...\n')
               setAuthState('success')
+              
+              // Redirect to admin page after a short delay
+              setTimeout(() => {
+                router.push('/admin')
+              }, 2000)
             } else {
               setTerminalText(prev => prev + '✗ Authentication failed!\n')
               setTerminalText(prev => prev + 'Invalid username or password.\n')
