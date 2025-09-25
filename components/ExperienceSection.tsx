@@ -20,7 +20,6 @@ interface ExperienceSectionProps {
 }
 
 export default function ExperienceSection({ resumeData }: ExperienceSectionProps) {
-
   return (
     <div className="max-w-6xl mx-auto lg:px-8">
       {/* Section header */}
@@ -39,7 +38,12 @@ export default function ExperienceSection({ resumeData }: ExperienceSectionProps
         <div className="absolute left-2 sm:left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-[var(--vscode-blue)] via-[var(--vscode-green)] to-[var(--vscode-yellow)] opacity-30"></div>
 
         <div className="space-y-8 sm:space-y-12">
-          {resumeData.experience.map((exp, index) => (
+          {(!resumeData.experience || resumeData.experience.length === 0) ? (
+            <div className="text-center py-8">
+              <p className="text-[var(--text-secondary)]">No experience data available</p>
+            </div>
+          ) : (
+            resumeData.experience.map((exp, index) => (
             <div key={exp.id} className="relative">
               {/* Timeline marker */}
               <div className="absolute left-1.5 sm:left-5 top-0 w-3 sm:w-4 h-3 sm:h-4 bg-[var(--vscode-blue)] rounded-full border-2 sm:border-4 border-[var(--bg-primary)] z-10 shadow-md shadow-[var(--vscode-blue)]/50"></div>
@@ -127,7 +131,8 @@ export default function ExperienceSection({ resumeData }: ExperienceSectionProps
                 </div>
               )}
             </div>
-          ))}
+          ))
+          )}
         </div>
 
         {/* End marker */}
