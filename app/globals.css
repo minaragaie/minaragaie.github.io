@@ -1602,6 +1602,7 @@ html {
   --background: var(--vscode-bg);
   --bg-primary: var(--vscode-bg);
   --bg-primary-gradient: linear-gradient(135deg, #0d1117 0%, #1e1e1e 50%, #0d1117 100%);
+  --bg-primary-gradient-test: linear-gradient(135deg, #ff0000 0%, #00ff00 50%, #0000ff 100%);
   --bg-secondary: var(--vscode-sidebar);
   --foreground: var(--vscode-text);
   --card: var(--vscode-sidebar);
@@ -1821,6 +1822,34 @@ html {
   --admin-button-hover-bg: #2d2d30;
   --admin-search-bg: #0d1117;
   --admin-status-bg: #0d1117;
+}
+
+/* DevTool Theme Homepage Styling */
+.devtool {
+  /* Apply devtool theme to homepage sections */
+  .devtool-section-primary {
+    background: var(--bg-primary-gradient) !important;
+  }
+  
+  .devtool-section-secondary {
+    background: var(--bg-secondary) !important;
+  }
+  
+  /* Loading, error, and no-data states */
+  .loading-state {
+    background: var(--vscode-bg);
+    color: var(--vscode-text-muted);
+  }
+  
+  .error-state {
+    background: var(--vscode-bg);
+    color: var(--vscode-error);
+  }
+  
+  .no-data-state {
+    background: var(--vscode-bg);
+    color: var(--vscode-text-muted);
+  }
 }
 
 /* Enhanced DevTool UI/UX Styles */

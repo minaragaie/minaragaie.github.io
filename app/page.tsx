@@ -16,10 +16,10 @@ const Resume = memo(() => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen loading-state">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading resume data...</p>
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-[var(--vscode-blue)] mx-auto"></div>
+          <p className="mt-4">Loading resume data...</p>
         </div>
       </div>
     )
@@ -27,10 +27,10 @@ const Resume = memo(() => {
 
   if (error) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen error-state">
         <div className="text-center">
-          <p className="text-red-500">Error loading resume data: {error}</p>
-          <p className="text-gray-600 mt-2">Please try refreshing the page</p>
+          <p className="text-[var(--vscode-error)]">Error loading resume data: {error}</p>
+          <p className="mt-2">Please try refreshing the page</p>
         </div>
       </div>
     )
@@ -38,9 +38,9 @@ const Resume = memo(() => {
 
   if (!resumeData) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen no-data-state">
         <div className="text-center">
-          <p className="text-gray-600">No resume data available</p>
+          <p>No resume data available</p>
         </div>
       </div>
     )
