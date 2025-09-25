@@ -262,6 +262,28 @@ export default function AdminPage() {
       warnings['skills.frameworks'] = 'Consider adding some frameworks'
     }
 
+    // Projects Validation
+    data.projects?.forEach((project, index) => {
+      if (!validateRequired(project.name || '')) {
+        errors[`projects.${index}.name`] = 'Project name is required'
+      }
+      if (project.year && new Date(project.year) > new Date()) {
+        errors[`projects.${index}.year`] = 'Project year cannot be in the future'
+      }
+      if (project.githubUrl && !validateURL(project.githubUrl)) {
+        errors[`projects.${index}.githubUrl`] = 'Please enter a valid GitHub URL'
+      }
+      if (project.liveUrl && !validateURL(project.liveUrl)) {
+        errors[`projects.${index}.liveUrl`] = 'Please enter a valid live URL'
+      }
+      if (project.imageUrl && !validateURL(project.imageUrl)) {
+        errors[`projects.${index}.imageUrl`] = 'Please enter a valid image URL'
+      }
+      if (!validateMinLength(project.description || '', 20)) {
+        warnings[`projects.${index}.description`] = 'Project description should be more detailed'
+      }
+    })
+
     return { errors, warnings }
   }, [])
 
@@ -308,6 +330,36 @@ export default function AdminPage() {
       case 'personalInfo.summary':
         if (value && !validateMinLength(value, 10)) {
           newWarnings[path] = 'Professional summary should be at least 10 characters'
+        }
+        break
+      case 'projects.name':
+        if (!validateRequired(value)) {
+          newErrors[path] = 'Project name is required'
+        }
+        break
+      case 'projects.year':
+        if (value && new Date(value) > new Date()) {
+          newErrors[path] = 'Project year cannot be in the future'
+        }
+        break
+      case 'projects.githubUrl':
+        if (value && !validateURL(value)) {
+          newErrors[path] = 'Please enter a valid GitHub URL'
+        }
+        break
+      case 'projects.liveUrl':
+        if (value && !validateURL(value)) {
+          newErrors[path] = 'Please enter a valid live URL'
+        }
+        break
+      case 'projects.imageUrl':
+        if (value && !validateURL(value)) {
+          newErrors[path] = 'Please enter a valid image URL'
+        }
+        break
+      case 'projects.description':
+        if (value && !validateMinLength(value, 20)) {
+          newWarnings[path] = 'Project description should be more detailed'
         }
         break
     }

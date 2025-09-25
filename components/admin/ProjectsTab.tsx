@@ -14,17 +14,19 @@ interface ProjectsTabProps {
   onUpdateResumeData: (data: ResumeData) => void
   validationErrors: Record<string, string>
   validationWarnings: Record<string, string>
+  editingProject: number | null
+  setEditingProject: (index: number | null) => void
 }
 
 export default function ProjectsTab({ 
   resumeData, 
   onUpdateResumeData, 
   validationErrors, 
-  validationWarnings 
+  validationWarnings,
+  editingProject,
+  setEditingProject
 }: ProjectsTabProps) {
   if (!resumeData) return null
-
-  const [editingProject, setEditingProject] = useState<number | null>(null)
 
   const createArrayHandler = (index: number, field: string) => 
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -134,9 +136,21 @@ export default function ProjectsTab({
                       <Input
                         value={project.name}
                         onChange={createArrayHandler(index, 'name')}
-                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc]"
+                        className={`bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] ${
+                          validationErrors[`projects.${index}.name`] 
+                            ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' 
+                            : validationWarnings[`projects.${index}.name`]
+                            ? 'border-yellow-500 focus:border-yellow-500 focus:ring-yellow-500/20'
+                            : ''
+                        }`}
                         placeholder="e.g., E-commerce Platform"
                       />
+                      {validationErrors[`projects.${index}.name`] && (
+                        <p className="text-xs text-red-400 mt-1">{validationErrors[`projects.${index}.name`]}</p>
+                      )}
+                      {validationWarnings[`projects.${index}.name`] && (
+                        <p className="text-xs text-yellow-400 mt-1">{validationWarnings[`projects.${index}.name`]}</p>
+                      )}
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-[#d4d4d4] mb-2">Status</label>
@@ -152,36 +166,84 @@ export default function ProjectsTab({
                       <Input
                         value={project.year || ""}
                         onChange={createArrayHandler(index, 'year')}
-                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc]"
+                        className={`bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] ${
+                          validationErrors[`projects.${index}.year`] 
+                            ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' 
+                            : validationWarnings[`projects.${index}.year`]
+                            ? 'border-yellow-500 focus:border-yellow-500 focus:ring-yellow-500/20'
+                            : ''
+                        }`}
                         placeholder="e.g., 2023"
                       />
+                      {validationErrors[`projects.${index}.year`] && (
+                        <p className="text-xs text-red-400 mt-1">{validationErrors[`projects.${index}.year`]}</p>
+                      )}
+                      {validationWarnings[`projects.${index}.year`] && (
+                        <p className="text-xs text-yellow-400 mt-1">{validationWarnings[`projects.${index}.year`]}</p>
+                      )}
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-[#d4d4d4] mb-2">GitHub URL</label>
                       <Input
                         value={project.githubUrl || ""}
                         onChange={createArrayHandler(index, 'githubUrl')}
-                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc]"
+                        className={`bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] ${
+                          validationErrors[`projects.${index}.githubUrl`] 
+                            ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' 
+                            : validationWarnings[`projects.${index}.githubUrl`]
+                            ? 'border-yellow-500 focus:border-yellow-500 focus:ring-yellow-500/20'
+                            : ''
+                        }`}
                         placeholder="https://github.com/username/project"
                       />
+                      {validationErrors[`projects.${index}.githubUrl`] && (
+                        <p className="text-xs text-red-400 mt-1">{validationErrors[`projects.${index}.githubUrl`]}</p>
+                      )}
+                      {validationWarnings[`projects.${index}.githubUrl`] && (
+                        <p className="text-xs text-yellow-400 mt-1">{validationWarnings[`projects.${index}.githubUrl`]}</p>
+                      )}
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-[#d4d4d4] mb-2">Live URL</label>
                       <Input
                         value={project.liveUrl || ""}
                         onChange={createArrayHandler(index, 'liveUrl')}
-                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc]"
+                        className={`bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] ${
+                          validationErrors[`projects.${index}.liveUrl`] 
+                            ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' 
+                            : validationWarnings[`projects.${index}.liveUrl`]
+                            ? 'border-yellow-500 focus:border-yellow-500 focus:ring-yellow-500/20'
+                            : ''
+                        }`}
                         placeholder="https://project-demo.com"
                       />
+                      {validationErrors[`projects.${index}.liveUrl`] && (
+                        <p className="text-xs text-red-400 mt-1">{validationErrors[`projects.${index}.liveUrl`]}</p>
+                      )}
+                      {validationWarnings[`projects.${index}.liveUrl`] && (
+                        <p className="text-xs text-yellow-400 mt-1">{validationWarnings[`projects.${index}.liveUrl`]}</p>
+                      )}
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-[#d4d4d4] mb-2">Image URL</label>
                       <Input
                         value={project.imageUrl || ""}
                         onChange={createArrayHandler(index, 'imageUrl')}
-                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc]"
+                        className={`bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] ${
+                          validationErrors[`projects.${index}.imageUrl`] 
+                            ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' 
+                            : validationWarnings[`projects.${index}.imageUrl`]
+                            ? 'border-yellow-500 focus:border-yellow-500 focus:ring-yellow-500/20'
+                            : ''
+                        }`}
                         placeholder="https://example.com/project-image.jpg"
                       />
+                      {validationErrors[`projects.${index}.imageUrl`] && (
+                        <p className="text-xs text-red-400 mt-1">{validationErrors[`projects.${index}.imageUrl`]}</p>
+                      )}
+                      {validationWarnings[`projects.${index}.imageUrl`] && (
+                        <p className="text-xs text-yellow-400 mt-1">{validationWarnings[`projects.${index}.imageUrl`]}</p>
+                      )}
                     </div>
                   </div>
                   
@@ -190,9 +252,21 @@ export default function ProjectsTab({
                     <Textarea
                       value={project.description}
                       onChange={createArrayHandler(index, 'description')}
-                      className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] min-h-[120px]"
+                      className={`bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] min-h-[120px] ${
+                        validationErrors[`projects.${index}.description`] 
+                          ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' 
+                          : validationWarnings[`projects.${index}.description`]
+                          ? 'border-yellow-500 focus:border-yellow-500 focus:ring-yellow-500/20'
+                          : ''
+                      }`}
                       placeholder="Describe your project, its features, and technologies used..."
                     />
+                    {validationErrors[`projects.${index}.description`] && (
+                      <p className="text-xs text-red-400 mt-1">{validationErrors[`projects.${index}.description`]}</p>
+                    )}
+                    {validationWarnings[`projects.${index}.description`] && (
+                      <p className="text-xs text-yellow-400 mt-1">{validationWarnings[`projects.${index}.description`]}</p>
+                    )}
                   </div>
                   
                   <div>

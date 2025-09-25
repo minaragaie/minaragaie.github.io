@@ -11,7 +11,7 @@ interface StatisticsDashboardProps {
 
 export default function StatisticsDashboard({ resumeData, stats }: StatisticsDashboardProps) {
   return (
-    <div className="mb-4 sm:mb-6 grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
+    <div className="mb-4 sm:mb-6 grid grid-cols-2 lg:grid-cols-5 gap-2 sm:gap-4">
       <Card className="bg-gradient-to-br from-[#161b22] to-[#0d1117] border-[#30363d] shadow-xl">
         <CardContent className="p-4">
           <div className="flex items-center justify-between">
@@ -56,6 +56,18 @@ export default function StatisticsDashboard({ resumeData, stats }: StatisticsDas
               <p className="text-2xl font-bold text-[#ffa657]">{stats.certificationCount}</p>
             </div>
             <Award className="w-8 h-8 text-[#ffa657]" />
+          </div>
+        </CardContent>
+      </Card>
+      
+      <Card className="bg-gradient-to-br from-[#161b22] to-[#0d1117] border-[#30363d] shadow-xl">
+        <CardContent className="p-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-400">Projects</p>
+              <p className="text-2xl font-bold text-[#4ec9b0]">{stats.projectCount}</p>
+            </div>
+            <Terminal className="w-8 h-8 text-[#4ec9b0]" />
           </div>
         </CardContent>
       </Card>

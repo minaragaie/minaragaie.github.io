@@ -192,6 +192,8 @@ export default function AdminTabs({
             onUpdateResumeData={onUpdateResumeData}
             validationErrors={validationErrors}
             validationWarnings={validationWarnings}
+            editingProject={editingProject}
+            setEditingProject={setEditingProject}
           />
         </TabsContent>
       </div>
