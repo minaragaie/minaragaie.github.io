@@ -157,7 +157,7 @@ export default function ProjectsTab({
                       <Input
                         value={project.status || ""}
                         onChange={createArrayHandler(index, 'status')}
-                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc]"
+                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] focus:ring-2 focus:ring-[#007acc]/20 transition-all duration-200 hover:border-[#4ec9b0] h-12"
                         placeholder="e.g., Completed, In Progress, On Hold"
                       />
                     </div>

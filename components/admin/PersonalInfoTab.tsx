@@ -54,9 +54,9 @@ export default function PersonalInfoTab({
               <Input
                 value={resumeData.personalInfo.name}
                 onChange={createInputHandler('name')}
-                className={`bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] ${
-                  validationErrors['personalInfo.name'] ? 'border-red-500' : 
-                  validationWarnings['personalInfo.name'] ? 'border-yellow-500' : ''
+                className={`bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] focus:ring-2 focus:ring-[#007acc]/20 transition-all duration-200 hover:border-[#4ec9b0] h-12 ${
+                  validationErrors['personalInfo.name'] ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : 
+                  validationWarnings['personalInfo.name'] ? 'border-yellow-500 focus:border-yellow-500 focus:ring-yellow-500/20' : ''
                 }`}
                 placeholder="Enter your full name"
               />
@@ -76,9 +76,9 @@ export default function PersonalInfoTab({
                 type="email"
                 value={resumeData.personalInfo.email}
                 onChange={createInputHandler('email')}
-                className={`bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] ${
-                  validationErrors['personalInfo.email'] ? 'border-red-500' : 
-                  validationWarnings['personalInfo.email'] ? 'border-yellow-500' : ''
+                className={`bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] focus:ring-2 focus:ring-[#007acc]/20 transition-all duration-200 hover:border-[#4ec9b0] h-12 ${
+                  validationErrors['personalInfo.email'] ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : 
+                  validationWarnings['personalInfo.email'] ? 'border-yellow-500 focus:border-yellow-500 focus:ring-yellow-500/20' : ''
                 }`}
                 placeholder="your.email@example.com"
               />
@@ -97,9 +97,9 @@ export default function PersonalInfoTab({
               <Input
                 value={resumeData.personalInfo.phone}
                 onChange={createInputHandler('phone')}
-                className={`bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] ${
-                  validationErrors['personalInfo.phone'] ? 'border-red-500' : 
-                  validationWarnings['personalInfo.phone'] ? 'border-yellow-500' : ''
+                className={`bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] focus:ring-2 focus:ring-[#007acc]/20 transition-all duration-200 hover:border-[#4ec9b0] h-12 ${
+                  validationErrors['personalInfo.phone'] ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : 
+                  validationWarnings['personalInfo.phone'] ? 'border-yellow-500 focus:border-yellow-500 focus:ring-yellow-500/20' : ''
                 }`}
                 placeholder="(555) 123-4567"
               />
@@ -118,7 +118,7 @@ export default function PersonalInfoTab({
               <Input
                 value={resumeData.personalInfo.location}
                 onChange={createInputHandler('location')}
-                className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc]"
+                className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] focus:ring-2 focus:ring-[#007acc]/20 transition-all duration-200 hover:border-[#4ec9b0] h-12"
                 placeholder="City, State/Country"
               />
             </div>
@@ -132,9 +132,9 @@ export default function PersonalInfoTab({
               <Input
                 value={resumeData.personalInfo.linkedin}
                 onChange={createInputHandler('linkedin')}
-                className={`bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] ${
-                  validationErrors['personalInfo.linkedin'] ? 'border-red-500' : 
-                  validationWarnings['personalInfo.linkedin'] ? 'border-yellow-500' : ''
+                className={`bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] focus:ring-2 focus:ring-[#007acc]/20 transition-all duration-200 hover:border-[#4ec9b0] h-12 ${
+                  validationErrors['personalInfo.linkedin'] ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : 
+                  validationWarnings['personalInfo.linkedin'] ? 'border-yellow-500 focus:border-yellow-500 focus:ring-yellow-500/20' : ''
                 }`}
                 placeholder="https://linkedin.com/in/yourprofile"
               />
@@ -153,9 +153,9 @@ export default function PersonalInfoTab({
               <Input
                 value={resumeData.personalInfo.github}
                 onChange={createInputHandler('github')}
-                className={`bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] ${
-                  validationErrors['personalInfo.github'] ? 'border-red-500' : 
-                  validationWarnings['personalInfo.github'] ? 'border-yellow-500' : ''
+                className={`bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] focus:ring-2 focus:ring-[#007acc]/20 transition-all duration-200 hover:border-[#4ec9b0] h-12 ${
+                  validationErrors['personalInfo.github'] ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : 
+                  validationWarnings['personalInfo.github'] ? 'border-yellow-500 focus:border-yellow-500 focus:ring-yellow-500/20' : ''
                 }`}
                 placeholder="https://github.com/yourusername"
               />
@@ -174,9 +174,9 @@ export default function PersonalInfoTab({
               <Input
                 value={resumeData.personalInfo.website}
                 onChange={createInputHandler('website')}
-                className={`bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] ${
-                  validationErrors['personalInfo.website'] ? 'border-red-500' : 
-                  validationWarnings['personalInfo.website'] ? 'border-yellow-500' : ''
+                className={`bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] focus:ring-2 focus:ring-[#007acc]/20 transition-all duration-200 hover:border-[#4ec9b0] h-12 ${
+                  validationErrors['personalInfo.website'] ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : 
+                  validationWarnings['personalInfo.website'] ? 'border-yellow-500 focus:border-yellow-500 focus:ring-yellow-500/20' : ''
                 }`}
                 placeholder="https://yourwebsite.com"
               />
@@ -197,9 +197,9 @@ export default function PersonalInfoTab({
           <Textarea
             value={resumeData.personalInfo.summary}
             onChange={createInputHandler('summary')}
-            className={`bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] min-h-[120px] ${
-              validationErrors['personalInfo.summary'] ? 'border-red-500' : 
-              validationWarnings['personalInfo.summary'] ? 'border-yellow-500' : ''
+            className={`bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] focus:ring-2 focus:ring-[#007acc]/20 transition-all duration-200 hover:border-[#4ec9b0] min-h-[120px] ${
+              validationErrors['personalInfo.summary'] ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : 
+              validationWarnings['personalInfo.summary'] ? 'border-yellow-500 focus:border-yellow-500 focus:ring-yellow-500/20' : ''
             }`}
             placeholder="Write a compelling summary of your professional background, skills, and career objectives..."
           />

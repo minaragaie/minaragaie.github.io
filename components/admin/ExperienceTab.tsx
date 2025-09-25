@@ -158,7 +158,7 @@ export default function ExperienceTab({
                       <Input
                         value={exp.title}
                         onChange={createArrayHandler('experience', index, 'title')}
-                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc]"
+                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] focus:ring-2 focus:ring-[#007acc]/20 transition-all duration-200 hover:border-[#4ec9b0] h-12"
                         placeholder="e.g., Senior Software Engineer"
                       />
                     </div>
@@ -167,7 +167,7 @@ export default function ExperienceTab({
                       <Input
                         value={exp.company}
                         onChange={createArrayHandler('experience', index, 'company')}
-                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc]"
+                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] focus:ring-2 focus:ring-[#007acc]/20 transition-all duration-200 hover:border-[#4ec9b0] h-12"
                         placeholder="e.g., Tech Company Inc."
                       />
                     </div>
@@ -176,7 +176,7 @@ export default function ExperienceTab({
                       <Input
                         value={exp.startDate}
                         onChange={createArrayHandler('experience', index, 'startDate')}
-                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc]"
+                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] focus:ring-2 focus:ring-[#007acc]/20 transition-all duration-200 hover:border-[#4ec9b0] h-12"
                         placeholder="e.g., 2020-01"
                       />
                     </div>
@@ -185,7 +185,7 @@ export default function ExperienceTab({
                       <Input
                         value={exp.endDate}
                         onChange={createArrayHandler('experience', index, 'endDate')}
-                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc]"
+                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] focus:ring-2 focus:ring-[#007acc]/20 transition-all duration-200 hover:border-[#4ec9b0] h-12"
                         placeholder="e.g., 2023-12 or Present"
                       />
                     </div>
@@ -196,7 +196,7 @@ export default function ExperienceTab({
                     <Textarea
                       value={exp.description}
                       onChange={createArrayHandler('experience', index, 'description')}
-                      className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] min-h-[120px]"
+                      className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] focus:ring-2 focus:ring-[#007acc]/20 transition-all duration-200 hover:border-[#4ec9b0] min-h-[120px]"
                       placeholder="Describe your role, responsibilities, and key achievements..."
                     />
                   </div>
@@ -219,7 +219,7 @@ export default function ExperienceTab({
                     <div className="flex gap-2">
                       <Input
                         placeholder="Add technology (press Enter)"
-                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] flex-1"
+                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] focus:ring-2 focus:ring-[#007acc]/20 transition-all duration-200 hover:border-[#4ec9b0] h-12 flex-1"
                         onKeyPress={(e) => {
                           if (e.key === 'Enter') {
                             addTechnology(index, e.currentTarget.value)
@@ -251,7 +251,7 @@ export default function ExperienceTab({
                           <Input
                             value={achievement}
                             onChange={(e) => updateAchievement(index, achIndex, e.target.value)}
-                            className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] flex-1"
+                            className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] focus:ring-2 focus:ring-[#007acc]/20 transition-all duration-200 hover:border-[#4ec9b0] h-12 flex-1"
                             placeholder="Enter a key achievement..."
                           />
                           <Button

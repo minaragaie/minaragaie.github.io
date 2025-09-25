@@ -79,7 +79,7 @@ export default function SkillsTab({
         <div className="flex gap-2">
           <Input
             placeholder={`Add ${label.toLowerCase()}...`}
-            className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] flex-1"
+            className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] focus:ring-2 focus:ring-[#007acc]/20 transition-all duration-200 hover:border-[#4ec9b0] h-12 flex-1"
             onKeyPress={(e) => {
               if (e.key === 'Enter') {
                 addSkill(category, e.currentTarget.value)
@@ -140,7 +140,7 @@ export default function SkillsTab({
               <div key={key} className="flex gap-2">
                 <Input
                   placeholder={`${label} (comma-separated)`}
-                  className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] flex-1"
+                  className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] focus:ring-2 focus:ring-[#007acc]/20 transition-all duration-200 hover:border-[#4ec9b0] h-12 flex-1"
                   onKeyPress={(e) => {
                     if (e.key === 'Enter') {
                       const skills = e.currentTarget.value.split(',').map(s => s.trim()).filter(s => s)

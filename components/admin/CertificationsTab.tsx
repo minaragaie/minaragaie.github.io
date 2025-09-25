@@ -135,7 +135,7 @@ export default function CertificationsTab({
                       <Input
                         value={cert.name}
                         onChange={createArrayHandler(index, 'name')}
-                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc]"
+                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] focus:ring-2 focus:ring-[#007acc]/20 transition-all duration-200 hover:border-[#4ec9b0] h-12"
                         placeholder="e.g., AWS Certified Solutions Architect"
                       />
                     </div>
@@ -144,7 +144,7 @@ export default function CertificationsTab({
                       <Input
                         value={cert.issuer}
                         onChange={createArrayHandler(index, 'issuer')}
-                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc]"
+                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] focus:ring-2 focus:ring-[#007acc]/20 transition-all duration-200 hover:border-[#4ec9b0] h-12"
                         placeholder="e.g., Amazon Web Services"
                       />
                     </div>
@@ -153,7 +153,7 @@ export default function CertificationsTab({
                       <Input
                         value={cert.status || ""}
                         onChange={createArrayHandler(index, 'status')}
-                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc]"
+                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] focus:ring-2 focus:ring-[#007acc]/20 transition-all duration-200 hover:border-[#4ec9b0] h-12"
                         placeholder="e.g., Active, Expired, In Progress"
                       />
                     </div>
@@ -162,7 +162,7 @@ export default function CertificationsTab({
                       <Input
                         value={cert.date || ""}
                         onChange={createArrayHandler(index, 'date')}
-                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc]"
+                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] focus:ring-2 focus:ring-[#007acc]/20 transition-all duration-200 hover:border-[#4ec9b0] h-12"
                         placeholder="e.g., 2023-06"
                       />
                     </div>
@@ -171,7 +171,7 @@ export default function CertificationsTab({
                       <Input
                         value={cert.verify || ""}
                         onChange={createArrayHandler(index, 'verify')}
-                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc]"
+                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] focus:ring-2 focus:ring-[#007acc]/20 transition-all duration-200 hover:border-[#4ec9b0] h-12"
                         placeholder="https://verify.example.com/certificate/123"
                       />
                     </div>
@@ -180,7 +180,7 @@ export default function CertificationsTab({
                       <Input
                         value={cert.color || ""}
                         onChange={createArrayHandler(index, 'color')}
-                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc]"
+                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] focus:ring-2 focus:ring-[#007acc]/20 transition-all duration-200 hover:border-[#4ec9b0] h-12"
                         placeholder="#007acc"
                       />
                     </div>
@@ -191,7 +191,7 @@ export default function CertificationsTab({
                     <Textarea
                       value={cert.description || ""}
                       onChange={createArrayHandler(index, 'description')}
-                      className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] min-h-[100px]"
+                      className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] focus:ring-2 focus:ring-[#007acc]/20 transition-all duration-200 hover:border-[#4ec9b0] min-h-[100px]"
                       placeholder="Describe the certification and its value..."
                     />
                   </div>
@@ -214,7 +214,7 @@ export default function CertificationsTab({
                     <div className="flex gap-2">
                       <Input
                         placeholder="Add skill (press Enter)"
-                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] flex-1"
+                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] focus:ring-2 focus:ring-[#007acc]/20 transition-all duration-200 hover:border-[#4ec9b0] h-12 flex-1"
                         onKeyPress={(e) => {
                           if (e.key === 'Enter') {
                             addSkill(index, e.currentTarget.value)

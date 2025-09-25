@@ -110,7 +110,7 @@ export default function EducationTab({
                       <Input
                         value={edu.degree}
                         onChange={createArrayHandler(index, 'degree')}
-                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc]"
+                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] focus:ring-2 focus:ring-[#007acc]/20 transition-all duration-200 hover:border-[#4ec9b0] h-12"
                         placeholder="e.g., Bachelor of Science in Computer Science"
                       />
                     </div>
@@ -119,7 +119,7 @@ export default function EducationTab({
                       <Input
                         value={edu.institution}
                         onChange={createArrayHandler(index, 'institution')}
-                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc]"
+                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] focus:ring-2 focus:ring-[#007acc]/20 transition-all duration-200 hover:border-[#4ec9b0] h-12"
                         placeholder="e.g., University of Technology"
                       />
                     </div>
@@ -128,7 +128,7 @@ export default function EducationTab({
                       <Input
                         value={edu.year}
                         onChange={createArrayHandler(index, 'year')}
-                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc]"
+                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] focus:ring-2 focus:ring-[#007acc]/20 transition-all duration-200 hover:border-[#4ec9b0] h-12"
                         placeholder="e.g., 2020-2024"
                       />
                     </div>
@@ -137,7 +137,7 @@ export default function EducationTab({
                       <Input
                         value={edu.gpa}
                         onChange={createArrayHandler(index, 'gpa')}
-                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc]"
+                        className="bg-[#0d1117] border-[#30363d] text-[#d4d4d4] focus:border-[#007acc] focus:ring-2 focus:ring-[#007acc]/20 transition-all duration-200 hover:border-[#4ec9b0] h-12"
                         placeholder="e.g., 3.8/4.0"
                       />
                     </div>
