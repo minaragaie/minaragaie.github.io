@@ -1,7 +1,7 @@
 "use client"
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Briefcase, Code, GraduationCap, Award, Terminal } from "lucide-react"
+import { Briefcase, Code, GraduationCap, Award, Terminal, User } from "lucide-react"
 import { ResumeData, AdminStats } from "./types"
 import PersonalInfoTab from "./PersonalInfoTab"
 import ExperienceTab from "./ExperienceTab"
@@ -43,92 +43,96 @@ export default function AdminTabs({
     <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
       {/* Mobile Tabs - Scrollable */}
       <div className="lg:hidden">
-        <TabsList className="grid w-full grid-cols-3 bg-[#0d1117] border border-[#30363d] p-1 rounded-lg">
+        <TabsList className="flex w-full bg-[#161b22] border border-[#30363d] rounded-xl p-1 shadow-xl overflow-x-auto scrollbar-hide">
           <TabsTrigger 
             value="personal" 
-            className="text-xs data-[state=active]:bg-[#007acc] data-[state=active]:text-white"
+            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#007acc] data-[state=active]:to-[#4ec9b0] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-200 hover:bg-[#21262d] rounded-lg flex-shrink-0 min-w-[80px] text-xs"
           >
-            Personal
+            <User className="w-3 h-3 mr-1" />
+            <span className="hidden sm:inline">Personal</span>
           </TabsTrigger>
           <TabsTrigger 
             value="experience" 
-            className="text-xs data-[state=active]:bg-[#007acc] data-[state=active]:text-white"
+            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#007acc] data-[state=active]:to-[#4ec9b0] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-200 hover:bg-[#21262d] rounded-lg flex-shrink-0 min-w-[80px] text-xs"
           >
-            Experience
+            <Briefcase className="w-3 h-3 mr-1" />
+            <span className="hidden sm:inline">Experience</span>
           </TabsTrigger>
           <TabsTrigger 
             value="skills" 
-            className="text-xs data-[state=active]:bg-[#007acc] data-[state=active]:text-white"
+            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#007acc] data-[state=active]:to-[#4ec9b0] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-200 hover:bg-[#21262d] rounded-lg flex-shrink-0 min-w-[80px] text-xs"
           >
-            Skills
+            <Code className="w-3 h-3 mr-1" />
+            <span className="hidden sm:inline">Skills</span>
           </TabsTrigger>
-        </TabsList>
-        <TabsList className="grid w-full grid-cols-3 bg-[#0d1117] border border-[#30363d] p-1 rounded-lg mt-2">
           <TabsTrigger 
             value="education" 
-            className="text-xs data-[state=active]:bg-[#007acc] data-[state=active]:text-white"
+            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#007acc] data-[state=active]:to-[#4ec9b0] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-200 hover:bg-[#21262d] rounded-lg flex-shrink-0 min-w-[80px] text-xs"
           >
-            Education
+            <GraduationCap className="w-3 h-3 mr-1" />
+            <span className="hidden sm:inline">Education</span>
           </TabsTrigger>
-          <TabsTrigger 
-            value="certifications" 
-            className="text-xs data-[state=active]:bg-[#007acc] data-[state=active]:text-white"
+          <TabsTrigger
+            value="certifications"
+            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#007acc] data-[state=active]:to-[#4ec9b0] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-200 hover:bg-[#21262d] rounded-lg flex-shrink-0 min-w-[80px] text-xs"
           >
-            Certifications
+            <Award className="w-3 h-3 mr-1" />
+            <span className="hidden sm:inline">Certs</span>
           </TabsTrigger>
-          <TabsTrigger 
-            value="projects" 
-            className="text-xs data-[state=active]:bg-[#007acc] data-[state=active]:text-white"
+          <TabsTrigger
+            value="projects"
+            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#007acc] data-[state=active]:to-[#4ec9b0] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-200 hover:bg-[#21262d] rounded-lg flex-shrink-0 min-w-[80px] text-xs"
           >
-            Projects
+            <Terminal className="w-3 h-3 mr-1" />
+            <span className="hidden sm:inline">Projects</span>
           </TabsTrigger>
         </TabsList>
       </div>
 
       {/* Desktop Tabs */}
       <div className="hidden lg:block">
-        <TabsList className="grid w-full grid-cols-6 bg-[#0d1117] border border-[#30363d] p-1 rounded-lg">
+        <TabsList className="flex w-full bg-[#161b22] border border-[#30363d] rounded-xl p-1 shadow-xl overflow-x-auto scrollbar-hide">
           <TabsTrigger 
             value="personal" 
-            className="flex items-center gap-2 data-[state=active]:bg-[#007acc] data-[state=active]:text-white"
+            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#007acc] data-[state=active]:to-[#4ec9b0] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-200 hover:bg-[#21262d] rounded-lg flex-shrink-0 min-w-[80px]"
           >
-            <Briefcase className="w-4 h-4" />
-            Personal Info
+            <User className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+            <span className="hidden sm:inline">Personal</span>
           </TabsTrigger>
           <TabsTrigger 
             value="experience" 
-            className="flex items-center gap-2 data-[state=active]:bg-[#007acc] data-[state=active]:text-white"
+            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#007acc] data-[state=active]:to-[#4ec9b0] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-200 hover:bg-[#21262d] rounded-lg flex-shrink-0 min-w-[80px]"
           >
-            <Briefcase className="w-4 h-4" />
-            Experience
+            <Briefcase className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+            <span className="hidden sm:inline">Experience</span>
           </TabsTrigger>
           <TabsTrigger 
             value="skills" 
-            className="flex items-center gap-2 data-[state=active]:bg-[#007acc] data-[state=active]:text-white"
+            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#007acc] data-[state=active]:to-[#4ec9b0] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-200 hover:bg-[#21262d] rounded-lg flex-shrink-0 min-w-[80px]"
           >
-            <Code className="w-4 h-4" />
-            Skills
+            <Code className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+            <span className="hidden sm:inline">Skills</span>
           </TabsTrigger>
           <TabsTrigger 
             value="education" 
-            className="flex items-center gap-2 data-[state=active]:bg-[#007acc] data-[state=active]:text-white"
+            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#007acc] data-[state=active]:to-[#4ec9b0] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-200 hover:bg-[#21262d] rounded-lg flex-shrink-0 min-w-[80px]"
           >
-            <GraduationCap className="w-4 h-4" />
-            Education
+            <GraduationCap className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+            <span className="hidden sm:inline">Education</span>
           </TabsTrigger>
-          <TabsTrigger 
-            value="certifications" 
-            className="flex items-center gap-2 data-[state=active]:bg-[#007acc] data-[state=active]:text-white"
+          <TabsTrigger
+            value="certifications"
+            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#007acc] data-[state=active]:to-[#4ec9b0] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-200 hover:bg-[#21262d] rounded-lg flex-shrink-0 min-w-[80px]"
           >
-            <Award className="w-4 h-4" />
-            Certifications
+            <Award className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+            <span className="hidden sm:inline">Certs</span>
           </TabsTrigger>
-          <TabsTrigger 
-            value="projects" 
-            className="flex items-center gap-2 data-[state=active]:bg-[#007acc] data-[state=active]:text-white"
+          <TabsTrigger
+            value="projects"
+            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#007acc] data-[state=active]:to-[#4ec9b0] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-200 hover:bg-[#21262d] rounded-lg flex-shrink-0 min-w-[80px]"
           >
-            <Terminal className="w-4 h-4" />
-            Projects
+            <Terminal className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+            <span className="hidden sm:inline">Projects</span>
           </TabsTrigger>
         </TabsList>
       </div>
