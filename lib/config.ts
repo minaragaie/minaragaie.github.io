@@ -11,6 +11,10 @@ export const config = {
     EDUCATION: "/api/admin?type=education",
     CERTIFICATIONS: "/api/admin?type=certifications",
     AUTH: "/api/admin-auth",
-    GENERATE_PDF: "/api/generate-pdf"
+    GENERATE_PDF: "/api/generate-pdf",
+    // Version control endpoints
+    RESUME_HISTORY: "/api/admin?type=resume&action=history",
+    RESUME_RESTORE: "/api/admin?type=resume&action=restore",
+    RESUME_PREVIEW: "/api/admin?type=resume&action=preview"
   }
 }
