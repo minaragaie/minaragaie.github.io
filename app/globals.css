@@ -293,39 +293,15 @@
 }
 
 
-/* Enhanced DevTool UI/UX Styles */
+/* Enhanced DevTool UI/UX Styles - Admin Page Style */
 .devtool .devtool-section-primary {
   position: relative;
   overflow: hidden;
 }
 
-.devtool .devtool-section-primary::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(45deg, transparent 30%, rgba(0, 122, 204, 0.03) 50%, transparent 70%);
-  pointer-events: none;
-  /* animation: devtool-shimmer 8s ease-in-out infinite; */
-}
-
 .devtool .devtool-section-secondary {
   position: relative;
   overflow: hidden;
-}
-
-.devtool .devtool-section-secondary::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(45deg, transparent 30%, rgba(78, 201, 176, 0.02) 50%, transparent 70%);
-  pointer-events: none;
-  /* animation: devtool-shimmer 10s ease-in-out infinite reverse; */
 }
 
 .devtool .devtool-card {
@@ -337,6 +313,8 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
+  background: linear-gradient(135deg, #161b22 0%, #0d1117 100%);
+  border: 1px solid #30363d;
 }
 
 .devtool .devtool-card::before {
@@ -381,13 +359,10 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  background-size: 200% 200%;
-  animation: devtool-text-shimmer 3s ease-in-out infinite;
 }
 
 .devtool .devtool-text-accent {
   color: #4ec9b0;
-  text-shadow: 0 0 10px rgba(78, 201, 176, 0.3);
 }
 
 .devtool .devtool-text-muted {
@@ -404,8 +379,6 @@
     0 4px 15px rgba(0, 122, 204, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
 }
 
 .devtool .devtool-button-primary::before {
@@ -469,16 +442,6 @@
   background: linear-gradient(135deg, #007acc, #4ec9b0);
 }
 
-/* Animations */
-@keyframes devtool-shimmer {
-  0%, 100% { transform: translateX(-100%); }
-  50% { transform: translateX(100%); }
-}
-
-@keyframes devtool-text-shimmer {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
 
 /* Enhanced Code Blocks */
 .devtool .devtool-code {
@@ -783,34 +746,12 @@
   overflow: hidden;
 }
 
-.devtool .devtool-section-primary::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(45deg, transparent 30%, rgba(0, 122, 204, 0.03) 50%, transparent 70%);
-  pointer-events: none;
-  animation: devtool-shimmer 8s ease-in-out infinite;
-}
 
 .devtool .devtool-section-secondary {
   position: relative;
   overflow: hidden;
 }
 
-.devtool .devtool-section-secondary::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(45deg, transparent 30%, rgba(78, 201, 176, 0.02) 50%, transparent 70%);
-  pointer-events: none;
-  animation: devtool-shimmer 10s ease-in-out infinite reverse;
-}
 
 .devtool .devtool-card {
   border-radius: 12px;
@@ -821,6 +762,8 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
+  background: linear-gradient(135deg, #161b22 0%, #0d1117 100%);
+  border: 1px solid #30363d;
 }
 
 .devtool .devtool-card::before {
@@ -865,13 +808,10 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  background-size: 200% 200%;
-  animation: devtool-text-shimmer 3s ease-in-out infinite;
 }
 
 .devtool .devtool-text-accent {
   color: #4ec9b0;
-  text-shadow: 0 0 10px rgba(78, 201, 176, 0.3);
 }
 
 .devtool .devtool-text-muted {
@@ -888,8 +828,6 @@
     0 4px 15px rgba(0, 122, 204, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
 }
 
 .devtool .devtool-button-primary::before {
@@ -953,16 +891,6 @@
   background: linear-gradient(135deg, #007acc, #4ec9b0);
 }
 
-/* Animations */
-@keyframes devtool-shimmer {
-  0%, 100% { transform: translateX(-100%); }
-  50% { transform: translateX(100%); }
-}
-
-@keyframes devtool-text-shimmer {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
 
 /* Enhanced Code Blocks */
 .devtool .devtool-code {
@@ -1819,34 +1747,12 @@ html {
   overflow: hidden;
 }
 
-.devtool .devtool-section-primary::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(45deg, transparent 30%, rgba(0, 122, 204, 0.03) 50%, transparent 70%);
-  pointer-events: none;
-  animation: devtool-shimmer 8s ease-in-out infinite;
-}
 
 .devtool .devtool-section-secondary {
   position: relative;
   overflow: hidden;
 }
 
-.devtool .devtool-section-secondary::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(45deg, transparent 30%, rgba(78, 201, 176, 0.02) 50%, transparent 70%);
-  pointer-events: none;
-  animation: devtool-shimmer 10s ease-in-out infinite reverse;
-}
 
 .devtool .devtool-card {
   border-radius: 12px;
@@ -1857,6 +1763,8 @@ html {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
+  background: linear-gradient(135deg, #161b22 0%, #0d1117 100%);
+  border: 1px solid #30363d;
 }
 
 .devtool .devtool-card::before {
@@ -1901,13 +1809,10 @@ html {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  background-size: 200% 200%;
-  animation: devtool-text-shimmer 3s ease-in-out infinite;
 }
 
 .devtool .devtool-text-accent {
   color: #4ec9b0;
-  text-shadow: 0 0 10px rgba(78, 201, 176, 0.3);
 }
 
 .devtool .devtool-text-muted {
@@ -1924,8 +1829,6 @@ html {
     0 4px 15px rgba(0, 122, 204, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
 }
 
 .devtool .devtool-button-primary::before {
@@ -1989,16 +1892,6 @@ html {
   background: linear-gradient(135deg, #007acc, #4ec9b0);
 }
 
-/* Animations */
-@keyframes devtool-shimmer {
-  0%, 100% { transform: translateX(-100%); }
-  50% { transform: translateX(100%); }
-}
-
-@keyframes devtool-text-shimmer {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
 
 /* Enhanced Code Blocks */
 .devtool .devtool-code {
