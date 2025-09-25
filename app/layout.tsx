@@ -14,6 +14,7 @@ const playfair = Playfair_Display({
   display: "swap",
   variable: "--font-playfair",
   weight: ["400", "600", "700"],
+  preload: true,
 })
 
 const sourceSans = Source_Sans_3({
@@ -21,6 +22,7 @@ const sourceSans = Source_Sans_3({
   display: "swap",
   variable: "--font-source-sans",
   weight: ["400", "500", "600"],
+  preload: true,
 })
 
 // --------------------
