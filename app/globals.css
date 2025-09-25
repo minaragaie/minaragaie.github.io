@@ -1728,7 +1728,8 @@ html {
   --admin-footer-shadow: 0 -4px 20px rgba(0, 122, 204, 0.15);
 
   /* Admin Card Variables */
-  --admin-card-bg: linear-gradient(135deg, #161b22 0%, #1e1e1e 50%, #0d1117 100%);
+  --admin-card-bg: linear-gradient(135deg, #161b22 0%, #0d1117 100%);
+  --admin-card-bg-with-via: linear-gradient(135deg, #161b22 0%, #1e1e1e 50%, #0d1117 100%);
   --admin-card-border: #30363d;
   --admin-card-shadow: 0 4px 20px rgba(0, 122, 204, 0.15);
   --admin-card-shadow-hover: 0 8px 30px rgba(0, 122, 204, 0.25);
@@ -1806,6 +1807,17 @@ html {
   --admin-transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   --admin-transition-normal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --admin-transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Special Admin Colors */
+  --admin-github-green: #238636;
+  --admin-github-green-hover: #2ea043;
+  --admin-macos-red: #ff5f57;
+  --admin-macos-yellow: #ffbd2e;
+  --admin-macos-green: #28ca42;
+  --admin-user-info-bg: linear-gradient(135deg, #1e1e1e 0%, #2d2d30 100%);
+  --admin-button-hover-bg: #2d2d30;
+  --admin-search-bg: #0d1117;
+  --admin-status-bg: #0d1117;
 }
 
 /* Enhanced DevTool UI/UX Styles */
