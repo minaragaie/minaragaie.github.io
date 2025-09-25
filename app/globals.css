@@ -397,7 +397,7 @@
 
 /* Enhanced Buttons */
 .devtool .devtool-button-primary {
-  background: linear-gradient(135deg, #007acc 0%, #005a9e 100%);
+  background: linear-gradient(135deg, #007acc 0%, #4ec9b0 100%);
   border: 1px solid rgba(0, 122, 204, 0.3);
   border-radius: 8px;
   box-shadow: 
@@ -881,7 +881,7 @@
 
 /* Enhanced Buttons */
 .devtool .devtool-button-primary {
-  background: linear-gradient(135deg, #007acc 0%, #005a9e 100%);
+  background: linear-gradient(135deg, #007acc 0%, #4ec9b0 100%);
   border: 1px solid rgba(0, 122, 204, 0.3);
   border-radius: 8px;
   box-shadow: 
@@ -1690,26 +1690,26 @@ html {
 
 /* DevTool Theme - Professional Dev Tools Palette */
 .devtool {
-  /* DevTool Theme - Enhanced Colors */
+  /* DevTool Theme - Enhanced Colors - Matching Admin Page */
   --vscode-bg: #0d1117;
   --vscode-sidebar: #161b22;
   --vscode-tab: #21262d;
   --vscode-border: #30363d;
   --vscode-text: #d4d4d4;
   --vscode-text-muted: #8b949e;
-  --vscode-blue: #00a8ff;
-  --vscode-blue-light: #4fc3f7;
-  --vscode-green: #00e676;
-  --vscode-yellow: #ffeb3b;
-  --vscode-orange: #ff9800;
-  --vscode-purple: #e91e63;
-  --vscode-keyword: #00a8ff;
+  --vscode-blue: #007acc;
+  --vscode-blue-light: #4ec9b0;
+  --vscode-green: #4ec9b0;
+  --vscode-yellow: #ffa657;
+  --vscode-orange: #ce9178;
+  --vscode-purple: #d2a8ff;
+  --vscode-keyword: #007acc;
   --vscode-string: #ce9178;
   --vscode-comment: #6a9955;
-  --vscode-error: #ff5252;
-  --vscode-warning: #ff9800;
+  --vscode-error: #f85149;
+  --vscode-warning: #ffa657;
   --terminal-title-bar: #21262d;
-  --terminal-text: #00a8ff;
+  --terminal-text: #007acc;
   --terminal-bg: #0d1117;
 
   /* General design tokens */
@@ -1756,9 +1756,9 @@ html {
   --certificates-text-accent: var(--vscode-blue);
   --certificates-text-code: var(--vscode-blue);
   --certificates-text-string: #ce9178;
-  --certificates-color-green: #00e676;
-  --certificates-color-yellow: #ffeb3b;
-  --certificates-color-cyan: #00d4aa;
+  --certificates-color-green: #4ec9b0;
+  --certificates-color-yellow: #ffa657;
+  --certificates-color-cyan: #4ec9b0;
   --certificates-color-blue: var(--vscode-blue);
 
   --projects-bg: #0d1117;
@@ -1767,12 +1767,12 @@ html {
   --projects-text-white: #ffffff;
   --projects-text-muted: #d4d4d4;
   --projects-text-accent-blue: var(--vscode-blue);
-  --projects-text-accent-green: #00e676;
+  --projects-text-accent-green: #4ec9b0;
   --projects-text-accent-orange: #ce9178;
   --projects-card-bg: #161b22;
   --projects-card-border-hover: #30363d;
   --projects-card-bg-hover: #30363d;
-  --projects-shadow: 0 4px 12px rgba(0, 168, 255, 0.2);
+  --projects-shadow: 0 4px 12px rgba(0, 122, 204, 0.2);
 
   --tech-bg: #0d1117;
   --tech-border: #30363d;
@@ -1780,12 +1780,12 @@ html {
   --tech-text-white: #ffffff;
   --tech-text-muted: #d4d4d4;
   --tech-text-accent-blue: var(--vscode-blue);
-  --tech-text-accent-green: #00e676;
+  --tech-text-accent-green: #4ec9b0;
   --tech-text-accent-orange: #ce9178;
   --tech-card-bg: #161b22;
   --tech-card-border-hover: #30363d;
   --tech-card-bg-hover: #30363d;
-  --tech-shadow: 0 4px 12px rgba(0, 168, 255, 0.2);
+  --tech-shadow: 0 4px 12px rgba(0, 122, 204, 0.2);
 
   --tree-active-bg: var(--vscode-blue);
   --tree-active-text: #ffffff;
@@ -1917,7 +1917,7 @@ html {
 
 /* Enhanced Buttons */
 .devtool .devtool-button-primary {
-  background: linear-gradient(135deg, #007acc 0%, #005a9e 100%);
+  background: linear-gradient(135deg, #007acc 0%, #4ec9b0 100%);
   border: 1px solid rgba(0, 122, 204, 0.3);
   border-radius: 8px;
   box-shadow: 
