@@ -16,10 +16,10 @@ const Resume = memo(() => {
 
   if (loading) {
     return (
-      <div className="devtool flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-[#007acc] mx-auto"></div>
-          <p className="mt-4 text-[#8b949e]">Loading resume data...</p>
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading resume data...</p>
         </div>
       </div>
     )
@@ -27,10 +27,10 @@ const Resume = memo(() => {
 
   if (error) {
     return (
-      <div className="devtool flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <p className="text-[#f85149]">Error loading resume data: {error}</p>
-          <p className="text-[#8b949e] mt-2">Please try refreshing the page</p>
+          <p className="text-red-500">Error loading resume data: {error}</p>
+          <p className="text-gray-600 mt-2">Please try refreshing the page</p>
         </div>
       </div>
     )
@@ -38,15 +38,15 @@ const Resume = memo(() => {
 
   if (!resumeData) {
     return (
-      <div className="devtool flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <p className="text-[#8b949e]">No resume data available</p>
+          <p className="text-gray-600">No resume data available</p>
         </div>
       </div>
     )
   }
   return (
-    <div className="devtool flex flex-col transition-all duration-300">
+    <div className="flex flex-col transition-all duration-300">
       <section 
         id="hero" 
         className="py-20 px-4 md:px-8 bg-[var(--bg-primary)] devtool-section-primary"
