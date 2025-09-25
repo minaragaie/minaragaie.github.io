@@ -1698,6 +1698,114 @@ html {
   --activity-bar-text: #8b949e;
   --activity-bar-text-active: #ffffff;
   --activity-bar-border: var(--vscode-border);
+
+  /* Admin Component Variables - DevTool Theme */
+  --admin-bg-primary: #0d1117;
+  --admin-bg-secondary: #161b22;
+  --admin-bg-tertiary: #21262d;
+  --admin-bg-gradient: linear-gradient(135deg, #0d1117 0%, #1e1e1e 50%, #0d1117 100%);
+  --admin-border: #30363d;
+  --admin-border-hover: rgba(0, 122, 204, 0.3);
+  --admin-border-focus: #007acc;
+  --admin-text-primary: #d4d4d4;
+  --admin-text-secondary: #8b949e;
+  --admin-text-muted: #6a9955;
+  --admin-text-accent: #007acc;
+  --admin-text-success: #4ec9b0;
+  --admin-text-warning: #ffa657;
+  --admin-text-error: #f85149;
+  --admin-text-info: #d2a8ff;
+
+  /* Admin Header Variables */
+  --admin-header-bg: linear-gradient(135deg, #161b22 0%, #1e1e1e 50%, #0d1117 100%);
+  --admin-header-border: #30363d;
+  --admin-header-shadow: 0 4px 20px rgba(0, 122, 204, 0.15);
+  --admin-header-backdrop: rgba(22, 27, 34, 0.8);
+
+  /* Admin Footer Variables */
+  --admin-footer-bg: linear-gradient(135deg, #161b22 0%, #1e1e1e 50%, #0d1117 100%);
+  --admin-footer-border: #30363d;
+  --admin-footer-shadow: 0 -4px 20px rgba(0, 122, 204, 0.15);
+
+  /* Admin Card Variables */
+  --admin-card-bg: linear-gradient(135deg, #161b22 0%, #1e1e1e 50%, #0d1117 100%);
+  --admin-card-border: #30363d;
+  --admin-card-shadow: 0 4px 20px rgba(0, 122, 204, 0.15);
+  --admin-card-shadow-hover: 0 8px 30px rgba(0, 122, 204, 0.25);
+  --admin-card-radius: 12px;
+
+  /* Admin Input Variables */
+  --admin-input-bg: #0d1117;
+  --admin-input-border: #30363d;
+  --admin-input-border-hover: #4ec9b0;
+  --admin-input-border-focus: #007acc;
+  --admin-input-text: #d4d4d4;
+  --admin-input-placeholder: #8b949e;
+  --admin-input-ring: rgba(0, 122, 204, 0.2);
+  --admin-input-ring-focus: rgba(0, 122, 204, 0.2);
+
+  /* Admin Button Variables */
+  --admin-btn-primary-bg: linear-gradient(135deg, #007acc 0%, #4ec9b0 100%);
+  --admin-btn-primary-hover: linear-gradient(135deg, #005a9e 0%, #3ba89d 100%);
+  --admin-btn-secondary-bg: #161b22;
+  --admin-btn-secondary-border: #30363d;
+  --admin-btn-secondary-hover: #21262d;
+  --admin-btn-text: #ffffff;
+  --admin-btn-shadow: 0 4px 15px rgba(0, 122, 204, 0.3);
+  --admin-btn-shadow-hover: 0 6px 20px rgba(0, 122, 204, 0.4);
+
+  /* Admin Tab Variables */
+  --admin-tab-bg: #161b22;
+  --admin-tab-border: #30363d;
+  --admin-tab-active-bg: linear-gradient(135deg, #007acc 0%, #4ec9b0 100%);
+  --admin-tab-active-text: #ffffff;
+  --admin-tab-hover-bg: #21262d;
+  --admin-tab-text: #d4d4d4;
+  --admin-tab-radius: 8px;
+
+  /* Admin Statistics Variables */
+  --admin-stats-bg: linear-gradient(135deg, #161b22 0%, #0d1117 100%);
+  --admin-stats-border: #30363d;
+  --admin-stats-shadow: 0 4px 20px rgba(0, 122, 204, 0.15);
+  --admin-stats-icon-experience: #4ec9b0;
+  --admin-stats-icon-skills: #007acc;
+  --admin-stats-icon-education: #d2a8ff;
+  --admin-stats-icon-certifications: #ffa657;
+  --admin-stats-icon-projects: #4ec9b0;
+
+  /* Admin Modal Variables */
+  --admin-modal-bg: rgba(0, 0, 0, 0.8);
+  --admin-modal-content-bg: linear-gradient(135deg, #161b22 0%, #1e1e1e 50%, #0d1117 100%);
+  --admin-modal-border: #30363d;
+  --admin-modal-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  --admin-modal-backdrop: rgba(0, 0, 0, 0.6);
+
+  /* Admin Status Variables */
+  --admin-status-idle: #8b949e;
+  --admin-status-saving: #ffa657;
+  --admin-status-saved: #4ec9b0;
+  --admin-status-error: #f85149;
+  --admin-status-warning: #ffa657;
+  --admin-status-success: #4ec9b0;
+
+  /* Admin Validation Variables */
+  --admin-validation-error: #f85149;
+  --admin-validation-warning: #ffa657;
+  --admin-validation-success: #4ec9b0;
+  --admin-validation-border-error: #f85149;
+  --admin-validation-border-warning: #ffa657;
+  --admin-validation-ring-error: rgba(248, 81, 73, 0.2);
+  --admin-validation-ring-warning: rgba(255, 166, 87, 0.2);
+
+  /* Admin Scrollbar Variables */
+  --admin-scrollbar-track: #161b22;
+  --admin-scrollbar-thumb: #30363d;
+  --admin-scrollbar-thumb-hover: linear-gradient(135deg, #007acc, #4ec9b0);
+
+  /* Admin Animation Variables */
+  --admin-transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --admin-transition-normal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --admin-transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Enhanced DevTool UI/UX Styles */
