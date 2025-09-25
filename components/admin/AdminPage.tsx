@@ -146,6 +146,176 @@ export default function AdminPage() {
     }
   }, [])
 
+  // Validation functions
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email)
+  }
+
+  const validatePhone = (phone: string): boolean => {
+    const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/
+    return phoneRegex.test(phone.replace(/[\s\-\(\)]/g, ''))
+  }
+
+  const validateURL = (url: string): boolean => {
+    try {
+      new URL(url)
+      return true
+    } catch {
+      return false
+    }
+  }
+
+  const validateRequired = (value: string): boolean => {
+    return value.trim().length > 0
+  }
+
+  const validateMinLength = (value: string, minLength: number): boolean => {
+    return value.trim().length >= minLength
+  }
+
+  const validateMaxLength = (value: string, maxLength: number): boolean => {
+    return value.trim().length <= maxLength
+  }
+
+  // Comprehensive data validation
+  const validateResumeData = useCallback((data: ResumeData): { errors: Record<string, string>, warnings: Record<string, string> } => {
+    const errors: Record<string, string> = {}
+    const warnings: Record<string, string> = {}
+
+    // Personal Info Validation
+    if (!validateRequired(data.personalInfo?.name || '')) {
+      errors['personalInfo.name'] = 'Full name is required'
+    } else if (!validateMinLength(data.personalInfo?.name || '', 2)) {
+      errors['personalInfo.name'] = 'Full name must be at least 2 characters'
+    } else if (!validateMaxLength(data.personalInfo?.name || '', 100)) {
+      warnings['personalInfo.name'] = 'Full name is quite long'
+    }
+
+    if (data.personalInfo?.email && !validateEmail(data.personalInfo.email)) {
+      errors['personalInfo.email'] = 'Please enter a valid email address'
+    }
+
+    if (data.personalInfo?.phone && !validatePhone(data.personalInfo.phone)) {
+      errors['personalInfo.phone'] = 'Please enter a valid phone number'
+    }
+
+    if (data.personalInfo?.linkedin && !validateURL(data.personalInfo.linkedin)) {
+      errors['personalInfo.linkedin'] = 'Please enter a valid LinkedIn URL'
+    }
+
+    if (data.personalInfo?.github && !validateURL(data.personalInfo.github)) {
+      errors['personalInfo.github'] = 'Please enter a valid GitHub URL'
+    }
+
+    if (data.personalInfo?.summary && !validateMinLength(data.personalInfo.summary, 10)) {
+      warnings['personalInfo.summary'] = 'Professional summary should be at least 10 characters'
+    }
+
+    // Experience Validation
+    data.experience?.forEach((exp, index) => {
+      if (!validateRequired(exp.title || '')) {
+        errors[`experience.${index}.title`] = 'Job title is required'
+      }
+      if (!validateRequired(exp.company || '')) {
+        errors[`experience.${index}.company`] = 'Company name is required'
+      }
+      if (exp.startDate && exp.endDate && new Date(exp.startDate) > new Date(exp.endDate)) {
+        errors[`experience.${index}.dates`] = 'Start date cannot be after end date'
+      }
+      if (!validateMinLength(exp.description || '', 20)) {
+        warnings[`experience.${index}.description`] = 'Job description should be more detailed'
+      }
+    })
+
+    // Education Validation
+    data.education?.forEach((edu, index) => {
+      if (!validateRequired(edu.degree || '')) {
+        errors[`education.${index}.degree`] = 'Degree is required'
+      }
+      if (!validateRequired(edu.institution || '')) {
+        errors[`education.${index}.institution`] = 'Institution name is required'
+      }
+      if (edu.year && new Date(edu.year) > new Date()) {
+        errors[`education.${index}.year`] = 'Graduation year cannot be in the future'
+      }
+    })
+
+    // Certifications Validation
+    data.certifications?.forEach((cert, index) => {
+      if (!validateRequired(cert.name || '')) {
+        errors[`certifications.${index}.name`] = 'Certification name is required'
+      }
+      if (!validateRequired(cert.issuer || '')) {
+        errors[`certifications.${index}.issuer`] = 'Issuer is required'
+      }
+      if (cert.date && new Date(cert.date) > new Date()) {
+        warnings[`certifications.${index}.date`] = 'Certification date is in the future'
+      }
+    })
+
+    // Skills Validation
+    if (data.skills?.technologies?.length === 0) {
+      warnings['skills.technologies'] = 'Consider adding some technologies'
+    }
+    if (data.skills?.frameworks?.length === 0) {
+      warnings['skills.frameworks'] = 'Consider adding some frameworks'
+    }
+
+    return { errors, warnings }
+  }, [])
+
+  // Real-time validation
+  const validateField = useCallback((path: string, value: string, data: ResumeData) => {
+    const newErrors = { ...validationErrors }
+    const newWarnings = { ...validationWarnings }
+
+    // Remove existing errors/warnings for this field
+    delete newErrors[path]
+    delete newWarnings[path]
+
+    // Validate based on field type
+    switch (path) {
+      case 'personalInfo.name':
+        if (!validateRequired(value)) {
+          newErrors[path] = 'Full name is required'
+        } else if (!validateMinLength(value, 2)) {
+          newErrors[path] = 'Full name must be at least 2 characters'
+        } else if (!validateMaxLength(value, 100)) {
+          newWarnings[path] = 'Full name is quite long'
+        }
+        break
+      case 'personalInfo.email':
+        if (value && !validateEmail(value)) {
+          newErrors[path] = 'Please enter a valid email address'
+        }
+        break
+      case 'personalInfo.phone':
+        if (value && !validatePhone(value)) {
+          newErrors[path] = 'Please enter a valid phone number'
+        }
+        break
+      case 'personalInfo.linkedin':
+        if (value && !validateURL(value)) {
+          newErrors[path] = 'Please enter a valid LinkedIn URL'
+        }
+        break
+      case 'personalInfo.github':
+        if (value && !validateURL(value)) {
+          newErrors[path] = 'Please enter a valid GitHub URL'
+        }
+        break
+      case 'personalInfo.summary':
+        if (value && !validateMinLength(value, 10)) {
+          newWarnings[path] = 'Professional summary should be at least 10 characters'
+        }
+        break
+    }
+
+    setValidationErrors(newErrors)
+    setValidationWarnings(newWarnings)
+  }, [validationErrors, validationWarnings])
+
   // Load resume data from backend
   const loadResumeData = useCallback(async () => {
     try {
@@ -253,6 +423,26 @@ export default function AdminPage() {
       setSyncInProgress(true)
       setErrorState({ hasError: false, message: '', type: 'unknown', retryCount: 0, lastError: null })
       
+      // Validate data before syncing
+      setIsValidating(true)
+      const { errors, warnings } = validateResumeData(data)
+      
+      if (Object.keys(errors).length > 0) {
+        console.warn('⚠️ Validation errors found, but proceeding with sync:', errors)
+        setValidationErrors(errors)
+      } else {
+        setValidationErrors({})
+      }
+      
+      if (Object.keys(warnings).length > 0) {
+        console.info('ℹ️ Validation warnings:', warnings)
+        setValidationWarnings(warnings)
+      } else {
+        setValidationWarnings({})
+      }
+      
+      setIsValidating(false)
+      
       const response = await fetch(`${config.API_BASE_URL}${config.ENDPOINTS.RESUME}`, {
         method: 'POST',
         headers: {
@@ -293,8 +483,9 @@ export default function AdminPage() {
       setRetryQueue(prev => [...prev, data])
     } finally {
       setSyncInProgress(false)
+      setIsValidating(false)
     }
-  }, [saveToCache])
+  }, [saveToCache, validateResumeData])
 
   // Timeout refs
   const updateTimeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -556,8 +747,22 @@ export default function AdminPage() {
           errorState={errorState}
           isOffline={isOffline}
           retryQueue={retryQueue}
-          onRetryFailedSync={() => {
-            // Implement retry logic
+          onRetryFailedSync={async () => {
+            if (retryQueue.length > 0) {
+              console.log('🔄 Manually retrying failed syncs...')
+              for (const data of retryQueue) {
+                try {
+                  await syncToBackend(data)
+                  setRetryQueue(prev => prev.filter(item => item !== data))
+                } catch (error) {
+                  console.error('❌ Failed to sync queued data:', error)
+                  break
+                }
+              }
+            } else if (optimisticData && errorState.hasError) {
+              console.log('🔄 Manually retrying current sync...')
+              await syncToBackend(optimisticData)
+            }
           }}
           cacheHit={cacheHit}
           isPreloading={isPreloading}
