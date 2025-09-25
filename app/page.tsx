@@ -49,7 +49,7 @@ const Resume = memo(() => {
     <div className="flex flex-col transition-all duration-300">
       <section 
         id="hero" 
-        className="py-20 px-4 md:px-8 bg-[var(--bg-primary)] devtool-section-primary"
+        className="py-20 px-4 md:px-8 bg-[var(--bg-primary-gradient)] devtool-section-primary"
       >
         <ScrollAnimatedSection animationType="fade" delay={200}>
           <HeroSection resumeData={resumeData} />
@@ -67,7 +67,7 @@ const Resume = memo(() => {
 
       <section 
         id="experience" 
-        className="py-20 px-4 md:px-8 bg-[var(--bg-primary)] devtool-section-primary"
+        className="py-20 px-4 md:px-8 bg-[var(--bg-primary-gradient)] devtool-section-primary"
       >
         <ScrollAnimatedSection animationType="slideLeft" delay={150}>
           <ExperienceSection resumeData={resumeData} />
@@ -85,7 +85,7 @@ const Resume = memo(() => {
 
       <section 
         id="education" 
-        className="py-20 px-4 md:px-8 bg-[var(--bg-primary)] devtool-section-primary"
+        className="py-20 px-4 md:px-8 bg-[var(--bg-primary-gradient)] devtool-section-primary"
       >
         <ScrollAnimatedSection animationType="slideRight" delay={200}>
           <EducationSection resumeData={resumeData} />
@@ -103,7 +103,7 @@ const Resume = memo(() => {
 
       <section 
         id="contact" 
-        className="py-20 px-4 md:px-8 bg-[var(--bg-primary)] devtool-section-primary"
+        className="py-20 px-4 md:px-8 bg-[var(--bg-primary-gradient)] devtool-section-primary"
       >
         <ScrollAnimatedSection animationType="scale" delay={300}>
           <ContactSection resumeData={resumeData} />
