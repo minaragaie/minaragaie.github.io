@@ -1,11 +1,12 @@
 // Configuration for external API and authentication
 export const config = {
   // External API Base URL
-  API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL || "https://resume-backend-service-at9fd26jv-minaragaie89-8717s-projects.vercel.app",
+  API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL || "https://resume-backend-service-qbdc1f6re-minaragaie89-8717s-projects.vercel.app",
   
   // API Endpoints
   ENDPOINTS: {
     RESUME: "/api/admin?type=resume",
+    PUBLIC_RESUME: "/api/admin?type=resume", // Use same endpoint as admin
     EXPERIENCE: "/api/admin?type=experience", 
     EDUCATION: "/api/admin?type=education",
     CERTIFICATIONS: "/api/admin?type=certifications",

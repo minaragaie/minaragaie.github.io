@@ -71,11 +71,20 @@ export const useResumeData = () => {
         
         const result = await response.json()
         
-        if (result.success) {
-          setResumeData(result.data)
-        } else {
-          throw new Error(result.message || 'Failed to fetch resume data')
-        }
+               if (result.success) {
+                 // Transform backend data to match frontend structure
+                 const transformedData = {
+                   ...result.data,
+                   personalInfo: {
+                     ...result.data.personalInfo,
+                     summary: result.data.summary || result.data.personalInfo?.summary || ''
+                   },
+                   projects: result.data.projects || []
+                 }
+                 setResumeData(transformedData)
+               } else {
+                 throw new Error(result.message || 'Failed to fetch resume data')
+               }
       } catch (err) {
         console.error('Error fetching resume data:', err)
         setError(err instanceof Error ? err.message : 'Unknown error')
