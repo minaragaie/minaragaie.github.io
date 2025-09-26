@@ -1,20 +1,26 @@
 "use client"
-import React, { useState, useRef, memo, useCallback } from "react"
-import { FileCode, X, Github, FileText } from "lucide-react"
+import React, { useState, useRef, memo, useCallback, useEffect } from "react"
+import { FileCode, X, Github, FileText, Settings } from "lucide-react"
 import { DndProvider, useDrag, useDrop } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 import { usePathname, useRouter } from "next/navigation"
+import { useAuth } from "@/context/AuthContext"
 
 interface Tab {
-  id: "mina" | "signin" | "github"
+  id: "mina" | "signin" | "admin" | "github"
   label: string
   icon: React.ReactNode
   path: string
 }
 
-const initialTabs: Tab[] = [
+const getInitialTabs = (isAuthenticated: boolean): Tab[] => [
   { id: "mina", label: "mina-youaness-resume.tsx", icon: <FileCode className="w-4 h-4" />, path: "/" },
-  { id: "signin", label: "signin.md", icon: <FileText className="w-4 h-4" />, path: "/signin" },
+  { 
+    id: isAuthenticated ? "admin" : "signin", 
+    label: isAuthenticated ? "admin.md" : "signin.md", 
+    icon: isAuthenticated ? <Settings className="w-4 h-4" /> : <FileText className="w-4 h-4" />, 
+    path: isAuthenticated ? "/admin" : "/signin" 
+  },
   { id: "github", label: "GitHub Activity", icon: <Github className="w-4 h-4" />, path: "/github" },
 ]
 
@@ -108,7 +114,13 @@ DraggableTab.displayName = 'DraggableTab'
 const Header: React.FC = memo(() => {
   const pathname = usePathname()
   const router = useRouter()
-  const [tabs, setTabs] = useState<Tab[]>(initialTabs)
+  const { isAuthenticated } = useAuth()
+  const [tabs, setTabs] = useState<Tab[]>(getInitialTabs(isAuthenticated))
+
+  // Update tabs when authentication status changes
+  useEffect(() => {
+    setTabs(getInitialTabs(isAuthenticated))
+  }, [isAuthenticated])
 
   const moveTab = useCallback((fromIndex: number, toIndex: number) => {
     setTabs(prev => {
