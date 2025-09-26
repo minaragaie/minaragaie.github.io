@@ -160,6 +160,53 @@
   --activity-bar-text: #858585;
   --activity-bar-text-active: #ffffff;
   --activity-bar-border: var(--vscode-border);
+
+  /* Homepage Component Styling Variables - Dark Theme */
+  --homepage-card-bg: transparent;
+  --homepage-card-border: transparent;
+  --homepage-card-shadow: none;
+  --homepage-card-shadow-hover: none;
+  --homepage-card-radius: 0;
+  
+  --homepage-button-primary-bg: transparent;
+  --homepage-button-primary-hover: transparent;
+  --homepage-button-secondary-bg: transparent;
+  --homepage-button-secondary-border: transparent;
+  --homepage-button-secondary-hover: transparent;
+  --homepage-button-text: inherit;
+  --homepage-button-shadow: none;
+  --homepage-button-shadow-hover: none;
+  
+  --homepage-input-bg: transparent;
+  --homepage-input-border: transparent;
+  --homepage-input-border-hover: transparent;
+  --homepage-input-border-focus: transparent;
+  --homepage-input-text: inherit;
+  --homepage-input-placeholder: inherit;
+  --homepage-input-ring: none;
+  
+  --homepage-badge-bg: transparent;
+  --homepage-badge-border: transparent;
+  --homepage-badge-text: inherit;
+  --homepage-badge-hover: inherit;
+  --homepage-badge-hover-text: inherit;
+  
+  --homepage-link-color: inherit;
+  --homepage-link-hover: inherit;
+  
+  --homepage-avatar-border: transparent;
+  --homepage-avatar-gradient: transparent;
+  --homepage-status-indicator: transparent;
+  
+  --homepage-section-title: inherit;
+  --homepage-section-subtitle: inherit;
+  --homepage-section-accent: inherit;
+  
+  --homepage-divider: transparent;
+
+  /* Additional text variables for sections */
+  --text-primary: inherit;
+  --text-secondary: inherit;
 }
 
 
@@ -290,6 +337,53 @@
   --activity-bar-text: #a0a0a0;
   --activity-bar-text-active: #ffffff;
   --activity-bar-border: var(--vscode-border);
+
+  /* Homepage Component Styling Variables - Light Theme */
+  --homepage-card-bg: transparent;
+  --homepage-card-border: transparent;
+  --homepage-card-shadow: none;
+  --homepage-card-shadow-hover: none;
+  --homepage-card-radius: 0;
+  
+  --homepage-button-primary-bg: transparent;
+  --homepage-button-primary-hover: transparent;
+  --homepage-button-secondary-bg: transparent;
+  --homepage-button-secondary-border: transparent;
+  --homepage-button-secondary-hover: transparent;
+  --homepage-button-text: inherit;
+  --homepage-button-shadow: none;
+  --homepage-button-shadow-hover: none;
+  
+  --homepage-input-bg: transparent;
+  --homepage-input-border: transparent;
+  --homepage-input-border-hover: transparent;
+  --homepage-input-border-focus: transparent;
+  --homepage-input-text: inherit;
+  --homepage-input-placeholder: inherit;
+  --homepage-input-ring: none;
+  
+  --homepage-badge-bg: transparent;
+  --homepage-badge-border: transparent;
+  --homepage-badge-text: inherit;
+  --homepage-badge-hover: inherit;
+  --homepage-badge-hover-text: inherit;
+  
+  --homepage-link-color: inherit;
+  --homepage-link-hover: inherit;
+  
+  --homepage-avatar-border: transparent;
+  --homepage-avatar-gradient: transparent;
+  --homepage-status-indicator: transparent;
+  
+  --homepage-section-title: inherit;
+  --homepage-section-subtitle: inherit;
+  --homepage-section-accent: inherit;
+  
+  --homepage-divider: transparent;
+
+  /* Additional text variables for sections */
+  --text-primary: inherit;
+  --text-secondary: inherit;
 }
 
 
@@ -567,6 +661,53 @@
   --activity-bar-text: #cccccc;
   --activity-bar-text-active: #000000;
   --activity-bar-border: #ffffff;
+
+  /* Homepage Component Styling Variables - High Contrast Theme */
+  --homepage-card-bg: transparent;
+  --homepage-card-border: transparent;
+  --homepage-card-shadow: none;
+  --homepage-card-shadow-hover: none;
+  --homepage-card-radius: 0;
+  
+  --homepage-button-primary-bg: transparent;
+  --homepage-button-primary-hover: transparent;
+  --homepage-button-secondary-bg: transparent;
+  --homepage-button-secondary-border: transparent;
+  --homepage-button-secondary-hover: transparent;
+  --homepage-button-text: inherit;
+  --homepage-button-shadow: none;
+  --homepage-button-shadow-hover: none;
+  
+  --homepage-input-bg: transparent;
+  --homepage-input-border: transparent;
+  --homepage-input-border-hover: transparent;
+  --homepage-input-border-focus: transparent;
+  --homepage-input-text: inherit;
+  --homepage-input-placeholder: inherit;
+  --homepage-input-ring: none;
+  
+  --homepage-badge-bg: transparent;
+  --homepage-badge-border: transparent;
+  --homepage-badge-text: inherit;
+  --homepage-badge-hover: inherit;
+  --homepage-badge-hover-text: inherit;
+  
+  --homepage-link-color: inherit;
+  --homepage-link-hover: inherit;
+  
+  --homepage-avatar-border: transparent;
+  --homepage-avatar-gradient: transparent;
+  --homepage-status-indicator: transparent;
+  
+  --homepage-section-title: inherit;
+  --homepage-section-subtitle: inherit;
+  --homepage-section-accent: inherit;
+  
+  --homepage-divider: transparent;
+
+  /* Additional text variables for sections */
+  --text-primary: inherit;
+  --text-secondary: inherit;
 }
 
 /* ==================================== */
@@ -695,6 +836,53 @@
   --activity-bar-text: #75715e;
   --activity-bar-text-active: #272822;
   --activity-bar-border: var(--vscode-border);
+
+  /* Homepage Component Styling Variables - Monokai Theme */
+  --homepage-card-bg: transparent;
+  --homepage-card-border: transparent;
+  --homepage-card-shadow: none;
+  --homepage-card-shadow-hover: none;
+  --homepage-card-radius: 0;
+  
+  --homepage-button-primary-bg: transparent;
+  --homepage-button-primary-hover: transparent;
+  --homepage-button-secondary-bg: transparent;
+  --homepage-button-secondary-border: transparent;
+  --homepage-button-secondary-hover: transparent;
+  --homepage-button-text: inherit;
+  --homepage-button-shadow: none;
+  --homepage-button-shadow-hover: none;
+  
+  --homepage-input-bg: transparent;
+  --homepage-input-border: transparent;
+  --homepage-input-border-hover: transparent;
+  --homepage-input-border-focus: transparent;
+  --homepage-input-text: inherit;
+  --homepage-input-placeholder: inherit;
+  --homepage-input-ring: none;
+  
+  --homepage-badge-bg: transparent;
+  --homepage-badge-border: transparent;
+  --homepage-badge-text: inherit;
+  --homepage-badge-hover: inherit;
+  --homepage-badge-hover-text: inherit;
+  
+  --homepage-link-color: inherit;
+  --homepage-link-hover: inherit;
+  
+  --homepage-avatar-border: transparent;
+  --homepage-avatar-gradient: transparent;
+  --homepage-status-indicator: transparent;
+  
+  --homepage-section-title: inherit;
+  --homepage-section-subtitle: inherit;
+  --homepage-section-accent: inherit;
+  
+  --homepage-divider: transparent;
+
+  /* Additional text variables for sections */
+  --text-primary: inherit;
+  --text-secondary: inherit;
 }
 
 
@@ -1062,7 +1250,7 @@
   }
 
   body {
-    font-size: var(--base-font-size);
+    /* font-size: var(--base-font-size); */
     line-height: 1.4 !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -1602,25 +1790,24 @@ html {
   --background: var(--vscode-bg);
   --bg-primary: var(--vscode-bg);
   --bg-primary-gradient: linear-gradient(135deg, #0d1117 0%, #1e1e1e 50%, #0d1117 100%);
-  --bg-primary-gradient-test: linear-gradient(135deg, #ff0000 0%, #00ff00 50%, #0000ff 100%);
   --bg-secondary: var(--vscode-sidebar);
   --foreground: var(--vscode-text);
-  --card: var(--vscode-sidebar);
+  --card: var(--homepage-card-bg);
   --card-foreground: var(--vscode-text);
-  --popover: var(--vscode-sidebar);
+  --popover: var(--homepage-card-bg);
   --popover-foreground: var(--vscode-text);
   --primary: var(--vscode-blue);
   --primary-foreground: var(--vscode-text);
-  --secondary: var(--vscode-sidebar);
-  --secondary-foreground: var(--vscode-text);
+  --secondary: var(--homepage-button-secondary-bg);
+  --secondary-foreground: var(--homepage-button-text);
   --muted: var(--vscode-tab);
   --muted-foreground: var(--vscode-text-muted);
   --accent: var(--vscode-sidebar);
   --accent-foreground: var(--vscode-text);
   --destructive: var(--vscode-error);
   --destructive-foreground: var(--vscode-text);
-  --border: var(--vscode-border);
-  --input: var(--vscode-tab);
+  --border: var(--homepage-card-border);
+  --input: var(--homepage-input-bg);
   --ring: var(--vscode-blue);
   --chart-1: #007acc;
   --chart-2: #4ec9b0;
@@ -1637,13 +1824,13 @@ html {
   --sidebar-border: var(--vscode-border);
   --sidebar-ring: var(--vscode-blue);
 
-  --certificates-bg-primary: #0d1117;
-  --certificates-bg-secondary: #161b22;
-  --certificates-bg-tertiary: #21262d;
-  --certificates-border-color: #30363d;
-  --certificates-text-primary: #d4d4d4;
-  --certificates-text-secondary: var(--vscode-text-muted);
-  --certificates-text-accent: var(--vscode-blue);
+  --certificates-bg-primary: var(--homepage-card-bg);
+  --certificates-bg-secondary: var(--homepage-card-bg);
+  --certificates-bg-tertiary: var(--homepage-card-bg);
+  --certificates-border-color: var(--homepage-card-border);
+  --certificates-text-primary: var(--homepage-section-title);
+  --certificates-text-secondary: var(--homepage-section-subtitle);
+  --certificates-text-accent: var(--homepage-section-accent);
   --certificates-text-code: var(--vscode-blue);
   --certificates-text-string: #ce9178;
   --certificates-color-green: #4ec9b0;
@@ -1651,31 +1838,31 @@ html {
   --certificates-color-cyan: #4ec9b0;
   --certificates-color-blue: var(--vscode-blue);
 
-  --projects-bg: #0d1117;
-  --projects-border: #30363d;
+  --projects-bg: var(--homepage-card-bg);
+  --projects-border: var(--homepage-card-border);
   --projects-primary: var(--vscode-blue);
-  --projects-text-white: #ffffff;
-  --projects-text-muted: #d4d4d4;
-  --projects-text-accent-blue: var(--vscode-blue);
-  --projects-text-accent-green: #4ec9b0;
+  --projects-text-white: var(--homepage-section-title);
+  --projects-text-muted: var(--homepage-section-subtitle);
+  --projects-text-accent-blue: var(--homepage-section-accent);
+  --projects-text-accent-green: var(--homepage-link-hover);
   --projects-text-accent-orange: #ce9178;
-  --projects-card-bg: #161b22;
-  --projects-card-border-hover: #30363d;
-  --projects-card-bg-hover: #30363d;
-  --projects-shadow: 0 4px 12px rgba(0, 122, 204, 0.2);
+  --projects-card-bg: var(--homepage-card-bg);
+  --projects-card-border-hover: var(--homepage-input-hover);
+  --projects-card-bg-hover: var(--homepage-input-hover);
+  --projects-shadow: var(--homepage-card-shadow);
 
-  --tech-bg: #0d1117;
-  --tech-border: #30363d;
+  --tech-bg: var(--homepage-card-bg);
+  --tech-border: var(--homepage-card-border);
   --tech-primary: var(--vscode-blue);
-  --tech-text-white: #ffffff;
-  --tech-text-muted: #d4d4d4;
-  --tech-text-accent-blue: var(--vscode-blue);
-  --tech-text-accent-green: #4ec9b0;
+  --tech-text-white: var(--homepage-section-title);
+  --tech-text-muted: var(--homepage-section-subtitle);
+  --tech-text-accent-blue: var(--homepage-section-accent);
+  --tech-text-accent-green: var(--homepage-link-hover);
   --tech-text-accent-orange: #ce9178;
-  --tech-card-bg: #161b22;
-  --tech-card-border-hover: #30363d;
-  --tech-card-bg-hover: #30363d;
-  --tech-shadow: 0 4px 12px rgba(0, 122, 204, 0.2);
+  --tech-card-bg: var(--homepage-card-bg);
+  --tech-card-border-hover: var(--homepage-input-hover);
+  --tech-card-bg-hover: var(--homepage-input-hover);
+  --tech-shadow: var(--homepage-card-shadow);
 
   --tree-active-bg: var(--vscode-blue);
   --tree-active-text: #ffffff;
@@ -1822,6 +2009,48 @@ html {
   --admin-button-hover-bg: #2d2d30;
   --admin-search-bg: #0d1117;
   --admin-status-bg: #0d1117;
+
+  /* Homepage Component Variables - Admin Style */
+  --homepage-card-bg: linear-gradient(135deg, #161b22 0%, #0d1117 100%);
+  --homepage-card-border: #30363d;
+  --homepage-card-shadow: 0 4px 20px rgba(0, 122, 204, 0.15);
+  --homepage-card-shadow-hover: 0 8px 30px rgba(0, 122, 204, 0.25);
+  --homepage-card-radius: 12px;
+  
+  --homepage-button-bg: linear-gradient(135deg, #007acc 0%, #4ec9b0 100%);
+  --homepage-button-hover: linear-gradient(135deg, #005a9e 0%, #3ba89d 100%);
+  --homepage-button-secondary-bg: #161b22;
+  --homepage-button-border: #30363d;
+  --homepage-button-text: #ffffff;
+  --homepage-button-shadow: 0 4px 15px rgba(0, 122, 204, 0.3);
+  
+  --homepage-input-bg: #0d1117;
+  --homepage-input-border: #30363d;
+  --homepage-input-hover: #4ec9b0;
+  --homepage-input-focus: #007acc;
+  --homepage-input-text: #d4d4d4;
+  --homepage-input-placeholder: #8b949e;
+  
+  --homepage-badge-bg: #21262d;
+  --homepage-badge-border: #30363d;
+  --homepage-badge-text: #007acc;
+  --homepage-badge-hover: #007acc;
+  
+  --homepage-link-color: #007acc;
+  --homepage-link-hover: #4ec9b0;
+  
+  --homepage-avatar-border: #007acc;
+  --homepage-avatar-gradient: linear-gradient(135deg, #007acc 0%, #4ec9b0 100%);
+  --homepage-status-indicator: #28ca42;
+  
+  --homepage-section-title: #d4d4d4;
+  --homepage-section-subtitle: #8b949e;
+  --homepage-section-accent: #007acc;
+  --homepage-divider: linear-gradient(90deg, transparent, #007acc, transparent);
+
+  /* Text variables for sections */
+  --text-primary: var(--homepage-section-title);
+  --text-secondary: var(--homepage-section-subtitle);
 }
 
 /* DevTool Theme Homepage Styling */
