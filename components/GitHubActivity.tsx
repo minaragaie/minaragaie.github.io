@@ -1,7 +1,22 @@
 "use client"
 
 import React, { useEffect, useState } from "react"
-import { Star, GitBranch, Code, ExternalLink } from "lucide-react"
+import { 
+  Star, 
+  GitBranch, 
+  Code, 
+  ExternalLink, 
+  Calendar, 
+  TrendingUp, 
+  Users, 
+  Clock,
+  Activity,
+  Zap,
+  Award,
+  Github,
+  Eye,
+  GitCommit
+} from "lucide-react"
 
 interface Repo {
   name: string
@@ -11,6 +26,21 @@ interface Repo {
   stargazers_count: number
   forks_count: number
   commits_count: number
+  updated_at: string
+  size: number
+  topics: string[]
+  visibility: string
+}
+
+interface GitHubStats {
+  totalRepos: number
+  totalStars: number
+  totalForks: number
+  totalCommits: number
+  languages: Record<string, number>
+  recentActivity: any[]
+  privateRepos: number
+  publicRepos: number
 }
 
 const languageColors: Record<string, string> = {
@@ -21,56 +51,112 @@ const languageColors: Record<string, string> = {
   Python: "#3572A5",
   PHP: "#4F5D95",
   Java: "#b07219",
+  "C++": "#00599C",
+  "C#": "#239120",
+  Go: "#00ADD8",
+  Rust: "#000000",
+  Swift: "#FA7343",
+  Kotlin: "#7F52FF",
+  Ruby: "#CC342D",
+  Shell: "#89e051",
+  Dockerfile: "#384d54",
+  "Vue.js": "#4FC08D",
+  React: "#61DAFB",
+  "Node.js": "#339933",
+  "Next.js": "#000000",
+  "Svelte": "#FF3E00",
+  "Angular": "#DD0031",
+  "Express": "#000000",
+  "Django": "#092E20",
+  "Flask": "#000000",
+  "Laravel": "#FF2D20",
+  "Spring": "#6DB33F",
+  "Rails": "#CC0000",
+  "ASP.NET": "#512BD4",
+  "Jupyter Notebook": "#F37626",
+  "Markdown": "#083FA1",
+  "JSON": "#000000",
+  "YAML": "#CB171E",
+  "XML": "#005F9F",
+  "SQL": "#336791",
+  "R": "#276DC3",
+  "MATLAB": "#e16737",
+  "Scala": "#DC322F",
+  "Clojure": "#5881D8",
+  "Haskell": "#5D4F85",
+  "Elixir": "#4B275F",
+  "Erlang": "#A90533",
+  "F#": "#378BBA",
+  "OCaml": "#EC6813",
+  "Perl": "#39457E",
+  "Lua": "#000080",
+  "PowerShell": "#012456",
+  "Assembly": "#6E4C13",
+  "C": "#A8B9CC",
+  "Objective-C": "#438EFF",
+  "Dart": "#00B4AB",
+  "Elm": "#60B5CC",
+  "Julia": "#A270BA",
+  "Nim": "#FFE953",
+  "Crystal": "#000100",
+  "Groovy": "#4298B8",
+  "Haxe": "#DF7900",
+  "Idris": "#B30000",
+  "PureScript": "#1D222D",
+  "Reason": "#FF5847",
+  "Solidity": "#363636",
+  "Terraform": "#623CE4",
+  "Vim script": "#199F4B",
+  "WebAssembly": "#654FF0",
+  "Zig": "#F7A41D"
 }
 
 const GitHubActivity: React.FC<{ username: string }> = ({ username }) => {
   const [repos, setRepos] = useState<Repo[]>([])
+  const [stats, setStats] = useState<GitHubStats | null>(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [chartBg, setChartBg] = useState("ffffff")
+  const [activeTab, setActiveTab] = useState<'repos' | 'activity' | 'languages'>('repos')
+  const [hasPrivateAccess, setHasPrivateAccess] = useState(false)
 
-  // fetch top commit repos
+  // Fetch comprehensive GitHub data
   useEffect(() => {
-    const fetchTopRepos = async () => {
+    const fetchGitHubData = async () => {
       try {
-        const res = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=6`)
-        const data: any[] = await res.json()
+        setLoading(true)
+        setError(null)
 
-        const reposWithCommits = await Promise.all(
-          data.map(async (repo) => {
-            const commitsRes = await fetch(
-              `https://api.github.com/repos/${username}/${repo.name}/commits?per_page=1`
-            )
-            const commitsLink = commitsRes.headers.get("link")
-            let commits_count = 1
-            if (commitsLink) {
-              const match = commitsLink.match(/&page=(\d+)>; rel="last"/)
-              if (match) commits_count = parseInt(match[1])
-            }
-            return {
-              name: repo.name,
-              html_url: repo.html_url,
-              description: repo.description,
-              language: repo.language,
-              stargazers_count: repo.stargazers_count,
-              forks_count: repo.forks_count,
-              commits_count,
-            }
-          })
-        )
+        // Use backend endpoint with GitHub token
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || 'https://resume-backend-service-ft2elzp8i-minaragaie89-8717s-projects.vercel.app'}/api/admin?type=github-activity&username=${username}`)
+        
+        if (!response.ok) {
+          throw new Error(`Failed to fetch GitHub data: ${response.status}`)
+        }
 
-        const topRepos = reposWithCommits.sort((a, b) => b.commits_count - a.commits_count).slice(0, 6)
-        setRepos(topRepos)
+        const result = await response.json()
+        
+        if (!result.success) {
+          throw new Error(result.message || 'Failed to fetch GitHub data')
+        }
+
+        const { repos, stats, user } = result.data
+
+        setRepos(repos)
+        setStats(stats)
+        setHasPrivateAccess(stats.privateRepos > 0)
       } catch (err) {
-        console.error(err)
+        console.error('GitHub API Error:', err)
+        setError(err instanceof Error ? err.message : 'Failed to fetch GitHub data')
       } finally {
         setLoading(false)
       }
     }
 
-    fetchTopRepos()
+    fetchGitHubData()
   }, [username])
 
-  // dynamically track theme color changes
+  // Dynamically track theme color changes
   useEffect(() => {
     const updateBg = () => {
       const bgColor = getComputedStyle(document.documentElement)
@@ -80,81 +166,406 @@ const GitHubActivity: React.FC<{ username: string }> = ({ username }) => {
       setChartBg(bgColor || "ffffff")
     }
 
-    updateBg() // initial
-
-    // Observe changes to theme variables
+    updateBg()
     const observer = new MutationObserver(updateBg)
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["style"] })
-
     return () => observer.disconnect()
   }, [])
 
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    })
+  }
+
+  const formatFileSize = (bytes: number) => {
+    const sizes = ['B', 'KB', 'MB', 'GB']
+    if (bytes === 0) return '0 B'
+    const i = Math.floor(Math.log(bytes) / Math.log(1024))
+    return Math.round(bytes / Math.pow(1024, i) * 100) / 100 + ' ' + sizes[i]
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[var(--vscode-editor-bg)] flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[var(--vscode-blue)] mx-auto mb-4"></div>
+          <p className="text-[var(--vscode-text)]">Loading GitHub activity...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-[var(--vscode-editor-bg)] flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Github className="w-8 h-8 text-red-500" />
+          </div>
+          <h2 className="text-xl font-semibold text-[var(--vscode-text)] mb-2">Error Loading GitHub Data</h2>
+          <p className="text-[var(--vscode-text-muted)] mb-4">{error}</p>
+          <button 
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-[var(--vscode-blue)] text-white rounded-lg hover:bg-[var(--vscode-blue)]/80 transition-colors"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <>
-      {/* Top Commit Repos Section */}
-      <section className="py-20 px-4 md:px-8 bg-[var(--bg-primary)]">
-        <h2 className="text-3xl font-bold mb-8 text-center">Top Committed Repos</h2>
-        {loading ? (
-          <p className="text-center">Loading top commit repos...</p>
-        ) : (
-          <div className="grid md:grid-cols-3 gap-6">
-            {repos.map((repo) => (
-              <a
-                key={repo.name}
+    <div className="min-h-screen bg-[var(--vscode-editor-bg)] text-[var(--vscode-editor-foreground)]">
+      {/* Header Section */}
+      <div className="bg-gradient-to-r from-[var(--vscode-blue)]/10 to-[var(--vscode-green)]/10 border-b border-[var(--vscode-border)]">
+        <div className="max-w-7xl mx-auto px-4 py-8">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-[var(--vscode-blue)] to-[var(--vscode-green)] rounded-xl flex items-center justify-center">
+                <Github className="w-8 h-8 text-white" />
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold text-[var(--vscode-text)]">@{username}</h1>
+                <p className="text-[var(--vscode-text-muted)]">GitHub Activity Dashboard</p>
+              </div>
+            </div>
+            <div className="text-right">
+              <div className="text-2xl font-bold text-[var(--vscode-text)]">{stats?.totalRepos || 0}</div>
+              <div className="text-sm text-[var(--vscode-text-muted)]">Repositories</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Stats Overview */}
+      {stats && (
+        <div className="max-w-7xl mx-auto px-4 py-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div className="bg-[var(--vscode-sidebar)] rounded-lg p-4 border border-[var(--vscode-border)]">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-[var(--vscode-text-muted)]">Total Stars</p>
+                  <p className="text-2xl font-bold text-[var(--vscode-text)]">{stats.totalStars}</p>
+                </div>
+                <Star className="w-8 h-8 text-yellow-500" />
+              </div>
+            </div>
+            <div className="bg-[var(--vscode-sidebar)] rounded-lg p-4 border border-[var(--vscode-border)]">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-[var(--vscode-text-muted)]">Total Forks</p>
+                  <p className="text-2xl font-bold text-[var(--vscode-text)]">{stats.totalForks}</p>
+                </div>
+                <GitBranch className="w-8 h-8 text-blue-500" />
+              </div>
+            </div>
+            <div className="bg-[var(--vscode-sidebar)] rounded-lg p-4 border border-[var(--vscode-border)]">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-[var(--vscode-text-muted)]">Total Commits</p>
+                  <p className="text-2xl font-bold text-[var(--vscode-text)]">{stats.totalCommits.toLocaleString()}</p>
+                </div>
+                <GitCommit className="w-8 h-8 text-green-500" />
+              </div>
+            </div>
+            <div className="bg-[var(--vscode-sidebar)] rounded-lg p-4 border border-[var(--vscode-border)]">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-[var(--vscode-text-muted)]">Languages</p>
+                  <p className="text-2xl font-bold text-[var(--vscode-text)]">{Object.keys(stats.languages).length}</p>
+                </div>
+                <Code className="w-8 h-8 text-purple-500" />
+              </div>
+            </div>
+          </div>
+
+          {/* Private Repository Notice */}
+          {hasPrivateAccess && (
+            <div className="bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20 rounded-xl p-6 mb-8">
+              <div className="flex items-start space-x-4">
+                <div className="w-12 h-12 bg-amber-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Eye className="w-6 h-6 text-amber-500" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold text-[var(--vscode-text)] mb-2 flex items-center space-x-2">
+                    <span>🔒 Private Repository Access</span>
+                    <span className="px-2 py-1 text-xs bg-amber-500/20 text-amber-600 rounded-full">
+                      Authenticated
+                    </span>
+                  </h3>
+                  <p className="text-[var(--vscode-text-muted)] leading-relaxed">
+                    Successfully accessing private repositories through authenticated backend. 
+                    All projects are hosted on private repositories due to confidentiality reasons. 
+                    They are available for review upon request. Security expertise demonstrated through 
+                    multiple certifications, including Google Cybersecurity Certificate.
+                  </p>
+                  <div className="mt-4 flex items-center space-x-6 text-sm">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-3 h-3 bg-amber-500 rounded-full"></div>
+                      <span className="text-[var(--vscode-text-muted)]">
+                        {stats.privateRepos} Private Repositories
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                      <span className="text-[var(--vscode-text-muted)]">
+                        {stats.publicRepos} Public Repositories
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Tab Navigation */}
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex space-x-1 bg-[var(--vscode-sidebar)] rounded-lg p-1 border border-[var(--vscode-border)]">
+          <button
+            onClick={() => setActiveTab('repos')}
+            className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all ${
+              activeTab === 'repos'
+                ? 'bg-[var(--vscode-blue)] text-white shadow-sm'
+                : 'text-[var(--vscode-text-muted)] hover:text-[var(--vscode-text)]'
+            }`}
+          >
+            <div className="flex items-center justify-center space-x-2">
+              <Code className="w-4 h-4" />
+              <span>Repositories</span>
+            </div>
+          </button>
+          <button
+            onClick={() => setActiveTab('languages')}
+            className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all ${
+              activeTab === 'languages'
+                ? 'bg-[var(--vscode-blue)] text-white shadow-sm'
+                : 'text-[var(--vscode-text-muted)] hover:text-[var(--vscode-text)]'
+            }`}
+          >
+            <div className="flex items-center justify-center space-x-2">
+              <Activity className="w-4 h-4" />
+              <span>Languages</span>
+            </div>
+          </button>
+          <button
+            onClick={() => setActiveTab('activity')}
+            className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all ${
+              activeTab === 'activity'
+                ? 'bg-[var(--vscode-blue)] text-white shadow-sm'
+                : 'text-[var(--vscode-text-muted)] hover:text-[var(--vscode-text)]'
+            }`}
+          >
+            <div className="flex items-center justify-center space-x-2">
+              <Calendar className="w-4 h-4" />
+              <span>Activity</span>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      {/* Tab Content */}
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        {activeTab === 'repos' && (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-[var(--vscode-text)]">Top Repositories</h2>
+              <div className="flex items-center space-x-4 text-sm text-[var(--vscode-text-muted)]">
+                <div className="flex items-center space-x-2">
+                  <div className="w-3 h-3 bg-amber-500 rounded-full"></div>
+                  <span>Private</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                  <span>Public</span>
+                </div>
+              </div>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {repos.map((repo, index) => (
+                <a
+                  key={`${repo.name}-${index}-${repo.html_url}`}
                 href={repo.html_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-5 border rounded-xl bg-[var(--bg-primary)] hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
+                  className="group bg-[var(--vscode-sidebar)] border border-[var(--vscode-border)] rounded-xl p-6 hover:border-[var(--vscode-blue)] hover:shadow-lg transition-all duration-300"
               >
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex items-center space-x-3">
+                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                        repo.visibility === 'private' 
+                          ? 'bg-gradient-to-br from-amber-500 to-orange-500' 
+                          : 'bg-gradient-to-br from-[var(--vscode-blue)] to-[var(--vscode-green)]'
+                      }`}>
+                        {repo.visibility === 'private' ? (
+                          <Eye className="w-5 h-5 text-white" />
+                        ) : (
+                          <Code className="w-5 h-5 text-white" />
+                        )}
+                      </div>
                 <div>
-                  <h3 className="font-semibold text-lg flex items-center justify-between">
-                    {repo.name} <ExternalLink className="w-4 h-4 text-[var(--vscode-text)]" />
+                        <div className="flex items-center space-x-2">
+                          <h3 className="font-semibold text-[var(--vscode-text)] group-hover:text-[var(--vscode-blue)] transition-colors">
+                            {repo.name}
                   </h3>
-                  <p className="text-sm mt-2 min-h-[40px]">{repo.description || "No description"}</p>
+                          {repo.visibility === 'private' && (
+                            <span className="px-2 py-0.5 text-xs bg-amber-500/20 text-amber-600 rounded-full flex items-center space-x-1">
+                              <Eye className="w-3 h-3" />
+                              <span>Private</span>
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs text-[var(--vscode-text-muted)]">
+                          Updated {formatDate(repo.updated_at)}
+                        </p>
+                      </div>
+                    </div>
+                    <ExternalLink className="w-4 h-4 text-[var(--vscode-text-muted)] group-hover:text-[var(--vscode-blue)] transition-colors" />
                 </div>
 
-                <div className="flex justify-between items-center mt-4 text-xs text-[var(--vscode-tab-inactiveForeground,#888)]">
-                  <div className="flex items-center gap-2">
-                    {repo.language && (
-                      <span className="flex items-center gap-1">
+                  <p className="text-sm text-[var(--vscode-text-muted)] mb-4 line-clamp-2">
+                    {repo.description || "No description available"}
+                  </p>
+
+                  {repo.topics.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mb-4">
+                      {repo.topics.slice(0, 3).map((topic, topicIndex) => (
                         <span
+                          key={`${repo.name}-topic-${topicIndex}-${topic}`}
+                          className="px-2 py-1 text-xs bg-[var(--vscode-blue)]/10 text-[var(--vscode-blue)] rounded-md"
+                        >
+                          {topic}
+                        </span>
+                      ))}
+                      {repo.topics.length > 3 && (
+                        <span className="px-2 py-1 text-xs text-[var(--vscode-text-muted)]">
+                          +{repo.topics.length - 3} more
+                        </span>
+                      )}
+                    </div>
+                  )}
+
+                  <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center space-x-4">
+                      {repo.language && (
+                        <div className="flex items-center space-x-1">
+                          <div
                           className="w-3 h-3 rounded-full"
                           style={{ backgroundColor: languageColors[repo.language] || "#888" }}
                         />
-                        {repo.language}
+                          <span className="text-[var(--vscode-text-muted)]">{repo.language}</span>
+                        </div>
+                      )}
+                      <span className="text-[var(--vscode-text-muted)]">
+                        {formatFileSize(repo.size * 1024)}
                       </span>
-                    )}
+                    </div>
+                    <div className="flex items-center space-x-4">
+                      <div className="flex items-center space-x-1">
+                        <Star className="w-4 h-4 text-yellow-500" />
+                        <span className="text-[var(--vscode-text-muted)]">{repo.stargazers_count}</span>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <GitBranch className="w-4 h-4 text-blue-500" />
+                        <span className="text-[var(--vscode-text-muted)]">{repo.forks_count}</span>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <GitCommit className="w-4 h-4 text-green-500" />
+                        <span className="text-[var(--vscode-text-muted)]">{repo.commits_count}</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex gap-4">
-                    <span className="flex items-center gap-1">
-                      <Star className="w-3 h-3" /> {repo.stargazers_count}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <GitBranch className="w-3 h-3" /> {repo.forks_count}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Code className="w-3 h-3" /> {repo.commits_count}
-                    </span>
-                  </div>
-                </div>
-              </a>
-            ))}
+                </a>
+              ))}
+            </div>
           </div>
         )}
-      </section>
 
-      {/* GitHub Contributions Chart Section */}
-      <section className="py-20 px-4 md:px-8 bg-[var(--bg-secondary)]">
-        <h2 className="text-2xl font-bold mb-6 text-center">GitHub Contributions</h2>
+        {activeTab === 'languages' && stats && (
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold text-[var(--vscode-text)] mb-6">Language Distribution</h2>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-[var(--vscode-sidebar)] border border-[var(--vscode-border)] rounded-xl p-6">
+                <h3 className="text-lg font-semibold text-[var(--vscode-text)] mb-4">By Repository Count</h3>
+                <div className="space-y-3">
+                  {Object.entries(stats.languages)
+                    .sort(([,a], [,b]) => b - a)
+                    .slice(0, 10)
+                    .map(([language, count], index) => (
+                      <div key={`${language}-${index}-${count}`} className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                          <div
+                            className="w-4 h-4 rounded-full"
+                            style={{ backgroundColor: languageColors[language] || "#888" }}
+                          />
+                          <span className="text-[var(--vscode-text)]">{language}</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <div className="w-24 bg-[var(--vscode-border)] rounded-full h-2">
+                            <div
+                              className="h-2 rounded-full"
+                              style={{
+                                width: `${(count / Math.max(...Object.values(stats.languages))) * 100}%`,
+                                backgroundColor: languageColors[language] || "#888"
+                              }}
+                            />
+                          </div>
+                          <span className="text-sm text-[var(--vscode-text-muted)] w-8 text-right">{count}</span>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+              <div className="bg-[var(--vscode-sidebar)] border border-[var(--vscode-border)] rounded-xl p-6">
+                <h3 className="text-lg font-semibold text-[var(--vscode-text)] mb-4">Language Overview</h3>
+                <div className="space-y-4">
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-[var(--vscode-text)]">
+                      {Object.keys(stats.languages).length}
+                    </div>
+                    <div className="text-sm text-[var(--vscode-text-muted)]">Different Languages</div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="text-center">
+                      <div className="text-xl font-semibold text-[var(--vscode-text)]">
+                        {Object.entries(stats.languages).reduce((sum, [,count]) => sum + count, 0)}
+                      </div>
+                      <div className="text-xs text-[var(--vscode-text-muted)]">Total Repos</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-xl font-semibold text-[var(--vscode-text)]">
+                        {Object.entries(stats.languages).sort(([,a], [,b]) => b - a)[0]?.[0] || 'N/A'}
+                      </div>
+                      <div className="text-xs text-[var(--vscode-text-muted)]">Most Used</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'activity' && (
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold text-[var(--vscode-text)] mb-6">GitHub Activity</h2>
+            <div className="bg-[var(--vscode-sidebar)] border border-[var(--vscode-border)] rounded-xl p-6">
         <div className="flex justify-center">
           <img
             src={`https://ghchart.rshah.org/${username}?bg_color=${chartBg}`}
             alt={`${username} GitHub contributions`}
-            className="w-full max-w-3xl rounded-lg shadow-lg"
+                  className="w-full max-w-4xl rounded-lg shadow-lg"
           />
         </div>
-      </section>
-    </>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
   )
 }
 
