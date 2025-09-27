@@ -1,8 +1,10 @@
 "use client"
 
-import { GitBranch, Coffee, X } from "lucide-react"
+import { useState } from "react"
+import { GitBranch, Coffee, X, MessageCircle } from "lucide-react"
 import TerminalWindow from "./TerminalWindow"
 import AuthTerminal from "./AuthTerminal"
+import ChatTerminal from "./ChatTerminal"
 import { useStatusBar } from "@/context/StatusBarContext"
 import { useAuth } from "@/context/AuthContext"
 import { useRouter } from "next/navigation"
@@ -25,6 +27,17 @@ export default function StatusBar() {
   } = useAuth()
   
   const router = useRouter()
+  
+  // Chat state
+  const [showChatTerminal, setShowChatTerminal] = useState(false)
+  
+  const openChatTerminal = () => {
+    setShowChatTerminal(true)
+  }
+  
+  const closeChatTerminal = () => {
+    setShowChatTerminal(false)
+  }
 
   const handleCloseStatus = () => {
     setStatus("Ready for next challenge")
@@ -62,7 +75,24 @@ export default function StatusBar() {
             )}
           </div>
         </div>
-        <div className="text-[#d4d4d4] font-mono">© 2025 Mina Youaness</div>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={openAuthTerminal}
+            className="flex items-center gap-2 px-3 py-1 bg-[#28a745] hover:bg-[#28a745]/80 text-white rounded transition-colors font-mono text-sm"
+            title="Sign In to Admin Panel"
+          >
+            <span>Sign In</span>
+          </button>
+          <button
+            onClick={openChatTerminal}
+            className="flex items-center gap-2 px-3 py-1 bg-[#007acc] hover:bg-[#007acc]/80 text-white rounded transition-colors font-mono text-sm"
+            title="Open AI Assistant"
+          >
+            <MessageCircle className="w-4 h-4" />
+            <span>AI Chat</span>
+          </button>
+          <div className="text-[#d4d4d4] font-mono">© 2025 Mina Youaness</div>
+        </div>
       </div>
 
       {terminalOpen && (
@@ -86,6 +116,14 @@ export default function StatusBar() {
           <AuthTerminal
             onLogin={handleLogin}
             onClose={closeAuthTerminal}
+          />
+        </div>
+      )}
+
+      {showChatTerminal && (
+        <div className="w-full z-50 transition-all duration-300">
+          <ChatTerminal
+            onClose={closeChatTerminal}
           />
         </div>
       )}
