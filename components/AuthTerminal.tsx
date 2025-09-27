@@ -34,8 +34,25 @@ const AuthTerminal = memo(function AuthTerminal({ onLogin, onClose }: AuthTermin
     if (initializedRef.current) return
     initializedRef.current = true
 
-    // Reset state and enable input immediately
-    setTerminalText('')
+    console.log('AuthTerminal initializing...')
+
+    // Set welcome text immediately
+    const welcomeText = `Welcome to Mina.dev Admin Terminal
+
+System Information:
+OS: macOS 14.0 (Darwin 23.0.0)
+Kernel: 23.0.0
+Architecture: arm64
+Terminal: xterm-256color
+
+Last login: ${new Date().toLocaleString()}
+
+Authentication required to access admin panel.
+
+Username: `
+
+    // Reset state and set welcome text immediately
+    setTerminalText(welcomeText)
     setUsername('')
     setPassword('')
     setCurrentInput('')
@@ -43,40 +60,7 @@ const AuthTerminal = memo(function AuthTerminal({ onLogin, onClose }: AuthTermin
     setAuthState('username')
     setIsInitialized(true)
 
-    const welcomeSequence = [
-      'Welcome to Mina.dev Admin Terminal',
-      '',
-      'System Information:',
-      'OS: macOS 14.0 (Darwin 23.0.0)',
-      'Kernel: 23.0.0',
-      'Architecture: arm64',
-      'Terminal: xterm-256color',
-      '',
-      'Last login: ' + new Date().toLocaleString(),
-      '',
-      'Authentication required to access admin panel.',
-      '',
-      'Username: '
-    ]
-
-    let currentIndex = 0
-    let timeoutId: NodeJS.Timeout
-
-    const typeText = () => {
-      if (currentIndex < welcomeSequence.length) {
-        setTerminalText(prev => prev + welcomeSequence[currentIndex] + '\n')
-        currentIndex++
-        timeoutId = setTimeout(typeText, 100)
-      }
-    }
-
-    typeText()
-
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId)
-      }
-    }
+    console.log('Welcome text set, ready for input')
   }, [])
 
   // Cursor blinking
@@ -104,6 +88,7 @@ const AuthTerminal = memo(function AuthTerminal({ onLogin, onClose }: AuthTermin
 
   const handleKeyPress = useCallback((e: KeyboardEvent) => {
     e.preventDefault()
+    console.log('Key pressed:', e.key, 'AuthState:', authState, 'CurrentInput:', currentInput)
 
     if (authState === 'username') {
       if (e.key === 'Enter') {
@@ -169,9 +154,20 @@ const AuthTerminal = memo(function AuthTerminal({ onLogin, onClose }: AuthTermin
     }
   }, [authState, currentInput, username, onLogin, onClose, showPassword])
 
+  // Keyboard event handling - only when terminal is focused
   useEffect(() => {
-    window.addEventListener('keydown', handleKeyPress)
-    return () => window.removeEventListener('keydown', handleKeyPress)
+    const handleGlobalKeyPress = (e: KeyboardEvent) => {
+      // Only handle if the terminal container is focused or contains the active element
+      if (containerRef.current && (
+        containerRef.current.contains(document.activeElement) ||
+        document.activeElement === containerRef.current
+      )) {
+        handleKeyPress(e)
+      }
+    }
+    
+    window.addEventListener('keydown', handleGlobalKeyPress)
+    return () => window.removeEventListener('keydown', handleGlobalKeyPress)
   }, [handleKeyPress])
 
   const getDisplayInput = () => {
@@ -200,7 +196,16 @@ const AuthTerminal = memo(function AuthTerminal({ onLogin, onClose }: AuthTermin
   }
 
   return (
-    <div className="bg-[var(--terminal-bg)] rounded-lg border border-[var(--vscode-border)] overflow-hidden shadow-2xl">
+    <div 
+      className="bg-[var(--terminal-bg)] rounded-lg border border-[var(--vscode-border)] overflow-hidden shadow-2xl focus:outline-none"
+      tabIndex={0}
+      onFocus={() => {
+        // Ensure the terminal gets focus when clicked
+        if (containerRef.current) {
+          containerRef.current.focus()
+        }
+      }}
+    >
       {/* Header */}
       <div className="bg-[var(--terminal-title-bar)] px-4 py-2 flex items-center gap-2 border-b border-[var(--vscode-border)]">
         <Terminal className="w-4 h-4 text-[var(--vscode-text-muted)]" />
