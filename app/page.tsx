@@ -8,6 +8,14 @@ import TechnologiesSection from "@/components/TechnologiesSection"
 import EducationSection from "@/components/EducationSection"
 import CertificationsSection from "@/components/CertificationsSection"
 import ContactSection from "@/components/ContactSection"
+import AnalyticsDashboard from "@/components/AnalyticsDashboard"
+import ProfessionalMetrics from "@/components/ProfessionalMetrics"
+import InteractiveDemo from "@/components/InteractiveDemo"
+import TestimonialsSection from "@/components/TestimonialsSection"
+import CaseStudiesSection from "@/components/CaseStudiesSection"
+import EnhancedContactSection from "@/components/EnhancedContactSection"
+import SmartRecommendations from "@/components/SmartRecommendations"
+import SkillAssessment from "@/components/SkillAssessment"
 import ScrollAnimatedSection from "@/components/ScrollAnimatedSection"
 import { useResumeData } from "@/hooks/useResumeData"
 
@@ -102,13 +110,77 @@ const Resume = memo(() => {
       </section>
 
       <section 
-        id="contact" 
+        id="analytics" 
         className="py-20 px-4 md:px-8 bg-[var(--bg-primary-gradient)] devtool-section-primary"
       >
-        <ScrollAnimatedSection animationType="scale" delay={300}>
-          <ContactSection resumeData={resumeData} />
+        <ScrollAnimatedSection animationType="fade" delay={200}>
+          <AnalyticsDashboard />
         </ScrollAnimatedSection>
       </section>
+
+      <section 
+        id="metrics" 
+        className="py-20 px-4 md:px-8 bg-[var(--bg-secondary)] devtool-section-secondary"
+      >
+        <ScrollAnimatedSection animationType="slideUp" delay={150}>
+          <ProfessionalMetrics />
+        </ScrollAnimatedSection>
+      </section>
+
+      <section 
+        id="demo" 
+        className="py-20 px-4 md:px-8 bg-[var(--bg-primary-gradient)] devtool-section-primary"
+      >
+        <ScrollAnimatedSection animationType="fade" delay={200}>
+          <InteractiveDemo />
+        </ScrollAnimatedSection>
+      </section>
+
+      <section 
+        id="testimonials" 
+        className="py-20 px-4 md:px-8 bg-[var(--bg-secondary)] devtool-section-secondary"
+      >
+        <ScrollAnimatedSection animationType="slideUp" delay={150}>
+          <TestimonialsSection />
+        </ScrollAnimatedSection>
+      </section>
+
+      <section 
+        id="case-studies" 
+        className="py-20 px-4 md:px-8 bg-[var(--bg-primary-gradient)] devtool-section-primary"
+      >
+        <ScrollAnimatedSection animationType="fade" delay={200}>
+          <CaseStudiesSection />
+        </ScrollAnimatedSection>
+      </section>
+
+      <section 
+        id="recommendations" 
+        className="py-20 px-4 md:px-8 bg-[var(--bg-secondary)] devtool-section-secondary"
+      >
+        <ScrollAnimatedSection animationType="slideUp" delay={150}>
+          <SmartRecommendations />
+        </ScrollAnimatedSection>
+      </section>
+
+      <section 
+        id="assessment" 
+        className="py-20 px-4 md:px-8 bg-[var(--bg-primary-gradient)] devtool-section-primary"
+      >
+        <ScrollAnimatedSection animationType="fade" delay={200}>
+          <SkillAssessment />
+        </ScrollAnimatedSection>
+      </section>
+
+      <section 
+        id="contact" 
+        className="py-20 px-4 md:px-8 bg-[var(--bg-secondary)] devtool-section-secondary"
+      >
+        <ScrollAnimatedSection animationType="scale" delay={300}>
+          <EnhancedContactSection />
+        </ScrollAnimatedSection>
+      </section>
+
     </div>
   )
 })
