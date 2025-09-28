@@ -1,8 +1,10 @@
 // AI Service for Live Chat Bot
-// Using Hugging Face Inference API (free tier: 30k requests/month)
+// Using backend API with Hugging Face integration
+
+import { config } from './config'
 
 interface AIResponse {
-  generated_text: string
+  response: string
   error?: string
 }
 
@@ -12,91 +14,43 @@ interface ChatMessage {
 }
 
 class AIService {
-  private apiKey: string
-  private model: string
   private baseUrl: string
 
   constructor() {
-    // You can get a free API key from https://huggingface.co/settings/tokens
-    this.apiKey = process.env.NEXT_PUBLIC_HUGGINGFACE_API_KEY || ''
-    this.model = 'microsoft/DialoGPT-medium' // Free conversational model
-    this.baseUrl = 'https://api-inference.huggingface.co/models'
+    this.baseUrl = config.API_BASE_URL
   }
 
-  // Generate response using Hugging Face
+  // Generate response using backend API
   async generateResponse(userMessage: string, conversationHistory: ChatMessage[] = []): Promise<string> {
-    // For now, always use fallback response to ensure it works
-    // TODO: Re-enable Hugging Face API when properly configured
-    return this.getFallbackResponse(userMessage)
-    
-    /* 
-    if (!this.apiKey) {
-      console.log('AI Service: Using fallback response')
-      return this.getFallbackResponse(userMessage)
-    }
-
     try {
-      // Prepare conversation context
-      const messages = [
-        {
-          role: 'system',
-          content: `You are Mina's AI assistant running in a terminal environment. You are a professional full-stack developer with 5+ years of experience. 
-          You specialize in React, Node.js, TypeScript, AWS, and cloud technologies. 
-          You're helpful, professional, and knowledgeable about software development, 
-          project management, and career advice. 
-          
-          IMPORTANT: Format your responses like terminal outputs. Use:
-          - Monospace formatting with proper line breaks
-          - Terminal-style headers and separators
-          - Code blocks with proper indentation
-          - Status indicators and progress bars when appropriate
-          - Error messages in red text format
-          - Success messages in green text format
-          - Use ASCII art for headers when appropriate
-          - Keep responses concise but informative
-          - Always end with a newline and the prompt "mina@portfolio-terminal:~$ "`
-        },
-        ...conversationHistory.slice(-6), // Keep last 6 messages for context
-        { role: 'user', content: userMessage }
-      ]
-
-      const response = await fetch(`${this.baseUrl}/${this.model}`, {
+      const response = await fetch(`${this.baseUrl}${config.ENDPOINTS.AI_CHAT}`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${this.apiKey}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          inputs: {
-            past_user_inputs: conversationHistory.filter(m => m.role === 'user').map(m => m.content),
-            generated_responses: conversationHistory.filter(m => m.role === 'assistant').map(m => m.content),
-            text: userMessage
-          },
-          parameters: {
-            max_length: 200,
-            temperature: 0.7,
-            do_sample: true,
-            return_full_text: false
-          }
+          message: userMessage,
+          conversationHistory: conversationHistory
         })
       })
 
       if (!response.ok) {
-        throw new Error(`API request failed: ${response.status}`)
+        throw new Error(`HTTP error! status: ${response.status}`)
       }
 
       const data: AIResponse = await response.json()
       
       if (data.error) {
-        throw new Error(data.error)
+        console.error('Backend AI Error:', data.error)
+        return this.getFallbackResponse(userMessage)
       }
 
-      return this.cleanResponse(data.generated_text)
+      return data.response || this.getFallbackResponse(userMessage)
+      
     } catch (error) {
       console.error('AI Service Error:', error)
       return this.getFallbackResponse(userMessage)
     }
-    */
   }
 
   // Fallback responses when AI is unavailable
@@ -342,15 +296,15 @@ Or ask me anything about:
 
   // Check if AI service is available
   isAvailable(): boolean {
-    return !!this.apiKey
+    return true // Backend handles availability
   }
 
   // Get service status
   getStatus(): { available: boolean; model: string; provider: string } {
     return {
-      available: this.isAvailable(),
-      model: this.model,
-      provider: 'Hugging Face'
+      available: true,
+      model: 'Backend AI',
+      provider: 'Backend API'
     }
   }
 }

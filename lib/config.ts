@@ -12,6 +12,7 @@ export const config = {
     CERTIFICATIONS: "/api/admin?type=certifications",
     AUTH: "/api/admin-auth",
     GENERATE_PDF: "/api/generate-pdf",
+    AI_CHAT: "/api/ai-chat",
     // Version control endpoints
     RESUME_HISTORY: "/api/admin?type=resume&action=history",
     RESUME_RESTORE: "/api/admin?type=resume&action=restore",
