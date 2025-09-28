@@ -22,6 +22,9 @@ class AIService {
 
   // Generate response using backend API
   async generateResponse(userMessage: string, conversationHistory: ChatMessage[] = []): Promise<string> {
+    console.log('🤖 AI Service: Generating response for:', userMessage)
+    console.log('🌐 Backend URL:', `${this.baseUrl}${config.ENDPOINTS.AI_CHAT}`)
+    
     try {
       const response = await fetch(`${this.baseUrl}${config.ENDPOINTS.AI_CHAT}`, {
         method: 'POST',
@@ -34,11 +37,16 @@ class AIService {
         })
       })
 
+      console.log('📡 Backend response status:', response.status)
+
       if (!response.ok) {
+        const errorText = await response.text()
+        console.error('❌ Backend error response:', errorText)
         throw new Error(`HTTP error! status: ${response.status}`)
       }
 
       const data: AIResponse = await response.json()
+      console.log('✅ Backend AI response:', data)
       
       if (data.error) {
         console.error('Backend AI Error:', data.error)
