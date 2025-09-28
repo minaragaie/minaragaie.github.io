@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback, memo } from "react"
 import { Terminal } from "lucide-react"
 import { aiService } from '@/lib/ai-service'
+import { useTerminalFocus } from "@/context/TerminalFocusContext"
 
 interface ChatTerminalProps {
   onClose: () => void
@@ -14,6 +15,7 @@ interface ConversationMessage {
 }
 
 const ChatTerminal = memo(function ChatTerminal({ onClose }: ChatTerminalProps) {
+  const { activeTerminal, setActiveTerminal } = useTerminalFocus()
   const [terminalText, setTerminalText] = useState('')
   const [currentInput, setCurrentInput] = useState('')
   const [showCursor, setShowCursor] = useState(true)
@@ -245,26 +247,29 @@ const ChatTerminal = memo(function ChatTerminal({ onClose }: ChatTerminalProps) 
     setTerminalText(prev => prev + '\nuser@portfolio:~$ ')
   }
 
-  // Keyboard event handling - only when terminal is focused
+  // Keyboard event handling - only when this terminal is active
   useEffect(() => {
     const handleGlobalKeyPress = (e: KeyboardEvent) => {
-      // Only handle if the terminal container is focused or contains the active element
-      if (containerRef.current && (
-        containerRef.current.contains(document.activeElement) ||
-        document.activeElement === containerRef.current
-      )) {
+      if (activeTerminal === 'chat') {
         handleKeyPress(e)
       }
     }
     
     document.addEventListener('keydown', handleGlobalKeyPress)
     return () => document.removeEventListener('keydown', handleGlobalKeyPress)
-  }, [handleKeyPress])
+  }, [handleKeyPress, activeTerminal])
 
   return (
     <div 
       className="bg-[var(--terminal-bg)] rounded-lg border border-[var(--vscode-border)] overflow-hidden shadow-2xl focus:outline-none"
       tabIndex={0}
+      onClick={() => {
+        // Set this terminal as active and focus it
+        setActiveTerminal('chat')
+        if (containerRef.current) {
+          containerRef.current.focus()
+        }
+      }}
       onFocus={() => {
         // Ensure the terminal gets focus when clicked
         if (containerRef.current) {

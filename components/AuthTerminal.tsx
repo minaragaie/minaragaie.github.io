@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback, memo } from "react"
 import { Terminal, Shield, Eye, EyeOff } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { useTerminalFocus } from "@/context/TerminalFocusContext"
 
 interface AuthTerminalProps {
   onLogin: (username: string, password: string) => Promise<boolean>
@@ -13,6 +14,7 @@ type AuthState = 'welcome' | 'username' | 'password' | 'authenticating' | 'succe
 
 const AuthTerminal = memo(function AuthTerminal({ onLogin, onClose }: AuthTerminalProps) {
   const router = useRouter()
+  const { activeTerminal, setActiveTerminal } = useTerminalFocus()
   const [authState, setAuthState] = useState<AuthState>('welcome')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -155,20 +157,17 @@ Username: `
   }, [authState, currentInput, username, onLogin, onClose, showPassword])
 
   // Keyboard event handling - only when terminal is focused
+  // Keyboard event handling - only when this terminal is active
   useEffect(() => {
     const handleGlobalKeyPress = (e: KeyboardEvent) => {
-      // Only handle if the terminal container is focused or contains the active element
-      if (containerRef.current && (
-        containerRef.current.contains(document.activeElement) ||
-        document.activeElement === containerRef.current
-      )) {
+      if (isInitialized && activeTerminal === 'auth') {
         handleKeyPress(e)
       }
     }
     
     window.addEventListener('keydown', handleGlobalKeyPress)
     return () => window.removeEventListener('keydown', handleGlobalKeyPress)
-  }, [handleKeyPress])
+  }, [handleKeyPress, isInitialized, activeTerminal])
 
   const getDisplayInput = () => {
     const input = currentInput || ''
@@ -199,6 +198,13 @@ Username: `
     <div 
       className="bg-[var(--terminal-bg)] rounded-lg border border-[var(--vscode-border)] overflow-hidden shadow-2xl focus:outline-none"
       tabIndex={0}
+      onClick={() => {
+        // Set this terminal as active and focus it
+        setActiveTerminal('auth')
+        if (containerRef.current) {
+          containerRef.current.focus()
+        }
+      }}
       onFocus={() => {
         // Ensure the terminal gets focus when clicked
         if (containerRef.current) {

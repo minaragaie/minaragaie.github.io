@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react"
 import { StatusBarProvider } from "@/context/StatusBarContext"
 import { AuthProvider } from "@/context/AuthContext"
+import { TerminalFocusProvider } from "@/context/TerminalFocusContext"
 import Sidebar from "./Sidebar"
 import Header from "./Header"
 import StatusBar from "./StatusBar"
@@ -32,6 +33,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   return (
     <AuthProvider>
       <StatusBarProvider>
+        <TerminalFocusProvider>
         <div className="h-screen flex bg-[var(--vscode-bg)] text-[var(--vscode-text)] transition-colors duration-300 overflow-hidden">
         {/* Fixed Sidebar */}
         <div ref={sidebarRef} className="h-full">
@@ -59,6 +61,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           <StatusBar />
         </div>
       </div>
+        </TerminalFocusProvider>
       </StatusBarProvider>
     </AuthProvider>
   )
