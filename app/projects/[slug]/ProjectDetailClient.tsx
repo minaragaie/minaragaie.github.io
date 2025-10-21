@@ -51,13 +51,14 @@ export default function ProjectDetailClient() {
 
   // Find project by slug (match against repo name from GitHub URL)
   useEffect(() => {
-    if (resumeData?.projects) {
-      const found = resumeData.projects.find((p: any) => {
-        const repoInfo = getRepoInfo(p.githubUrl)
-        return repoInfo && repoInfo.name === slug
-      })
-      setProject(found || null)
-    }
+    // Use backend data if available, otherwise use local fallback
+    const projectsSource = resumeData?.projects || localProjectsData
+    
+    const found = projectsSource.find((p: any) => {
+      const repoInfo = getRepoInfo(p.githubUrl)
+      return repoInfo && repoInfo.name === slug
+    })
+    setProject(found || null)
   }, [resumeData, slug])
 
   // Fetch README.md from GitHub repo
