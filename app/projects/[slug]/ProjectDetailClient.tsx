@@ -180,7 +180,7 @@ export default function ProjectDetailClient() {
       </div>
 
       {/* Scroll to Top Button */}
-      <ScrollToTop threshold={300} />
+      <ScrollToTop threshold={300} mainElementId="main-content" />
     </div>
   )
 }
