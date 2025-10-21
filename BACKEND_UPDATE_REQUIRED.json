@@ -1,0 +1,57 @@
+{
+  "projects": [
+    {
+      "name": "Turris ERP",
+      "description": "Enterprise Resource Planning System for construction and telecommunications workforce management",
+      "githubUrl": "https://github.com/minaragaie/turris-erp-frontend",
+      "status": "Production",
+      "year": "2023",
+      "technologies": ["Angular 15", "Node.js", "PostgreSQL", "Redis", "DevExtreme"],
+      "featured": true,
+      "icon": "🏗️",
+      "color": "#3b82f6",
+      "liveUrl": "https://turris-erp.example.com",
+      "imageUrl": "/images/projects/turris-erp.png"
+    },
+    {
+      "name": "StoryVerse",
+      "description": "AI-powered interactive storytelling platform with collaborative features",
+      "githubUrl": "https://github.com/minaragaie/storyverse-app",
+      "status": "Production",
+      "year": "2024",
+      "technologies": ["React Native", "Node.js", "MongoDB", "OpenAI"],
+      "featured": true,
+      "icon": "📚",
+      "color": "#8b5cf6",
+      "liveUrl": "https://storyverse.example.com",
+      "imageUrl": "/images/projects/storyverse.png"
+    },
+    {
+      "name": "Abgadya",
+      "description": "Educational platform for Arabic language learning",
+      "githubUrl": "https://github.com/minaragaie/abgadya",
+      "status": "Active",
+      "year": "2023",
+      "technologies": ["React", "Express", "PostgreSQL"],
+      "featured": true,
+      "icon": "📖",
+      "color": "#10b981",
+      "liveUrl": "https://abgadya.example.com",
+      "imageUrl": "/images/projects/abgadya.png"
+    },
+    {
+      "name": "EntityConnect",
+      "description": "Church community management platform (Quaenet monorepo)",
+      "githubUrl": "https://github.com/minaragaie/quaenet",
+      "status": "Production",
+      "year": "2022",
+      "technologies": ["Angular 13", "Sails.js", "React Native", "MySQL"],
+      "featured": true,
+      "icon": "⛪",
+      "color": "#f59e0b",
+      "liveUrl": "https://quaenet.example.com",
+      "imageUrl": "/images/projects/entityconnect.png"
+    }
+  ]
+}
+
