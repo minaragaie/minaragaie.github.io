@@ -251,11 +251,13 @@ export default function ProjectDetailClient() {
                 <ProjectMetadata project={project} />
                 <ProjectContent markdownContent={markdownContent} headingTree={headingTree} />
 
-                {/* Giscus Comments Section */}
-                <GiscusComments 
-                  projectName={project.name}
-                  githubUrl={project.githubUrl}
-                />
+                {/* Giscus Comments Section - Only for public repos */}
+                {!(project as any).isPrivateRepo && (
+                  <GiscusComments 
+                    projectName={project.name}
+                    githubUrl={project.githubUrl}
+                  />
+                )}
 
                 <div
                   className="mt-12 pt-6 border-t border-[var(--projects-border)]"
