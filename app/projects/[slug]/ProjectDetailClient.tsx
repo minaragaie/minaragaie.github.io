@@ -9,11 +9,13 @@ import ProjectHeader from "./components/ProjectHeader"
 import TableOfContents from "./components/TableOfContents"
 import ProjectMetadata from "./components/ProjectMetadata"
 import ProjectContent from "./components/ProjectContent"
+import ScrollToTop from "./components/ScrollToTop"
 import {
   useReadingProgress,
   useActiveHeading,
   useHeadingExtraction,
 } from "./components/useProjectScroll"
+import "./styles/print.css"
 
 export default function ProjectDetailClient() {
   const params = useParams()
@@ -176,6 +178,9 @@ export default function ProjectDetailClient() {
           </div>
         </div>
       </div>
+
+      {/* Scroll to Top Button */}
+      <ScrollToTop threshold={300} />
     </div>
   )
 }
