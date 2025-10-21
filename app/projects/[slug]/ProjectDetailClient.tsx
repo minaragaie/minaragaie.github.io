@@ -49,14 +49,16 @@ export default function ProjectDetailClient() {
     }
   }
 
-  // Find project by slug (match against repo name from GitHub URL)
+  // Find project by slug
   useEffect(() => {
     if (resumeData?.projects) {
-      const found = resumeData.projects.find((p: any) => {
-        const repoInfo = getRepoInfo(p.githubUrl)
-        return repoInfo && repoInfo.name === slug
-      })
+      const found = resumeData.projects.find((p: any) => p.slug === slug)
       setProject(found || null)
+      
+      if (!found) {
+        setError("Project not found")
+        setLoading(false)
+      }
     }
   }, [resumeData, slug])
 

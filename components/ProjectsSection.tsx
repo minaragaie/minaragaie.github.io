@@ -25,8 +25,8 @@ const ProjectCard = memo(({ project, index }: ProjectCardProps) => {
     ? (iconMap[project.icon] || Building2)
     : (project.icon || Building2)
   
-  // Generate slug from detailsFile (e.g., "turris-erp.md" -> "turris-erp")
-  const slug = project.detailsFile?.replace('.md', '') || ''
+  // Use project slug field
+  const slug = project.slug || ''
   
   return (
     <div
@@ -91,7 +91,7 @@ const ProjectCard = memo(({ project, index }: ProjectCardProps) => {
       </div>
 
       {/* Read More Button */}
-      {project.detailsFile && slug && (
+      {slug && (
         <div className="mt-4 pt-4 border-t border-[var(--projects-border)]">
           <Link
             href={`/projects/${slug}`}

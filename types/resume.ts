@@ -14,6 +14,7 @@ export interface Certificate {
 export interface Project {
   id?: number
   name: string
+  slug?: string       // URL slug for the project page
   description: string
   technologies?: string[]
   icon?: string
