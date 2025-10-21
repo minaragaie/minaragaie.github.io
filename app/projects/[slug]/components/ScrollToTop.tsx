@@ -18,11 +18,22 @@ export default function ScrollToTop({
       ? document.getElementById(mainElementId)
       : document.querySelector('main')
     
-    if (!mainElement) return
+    if (!mainElement) {
+      console.warn('ScrollToTop: Main element not found', mainElementId)
+      return
+    }
+
+    console.log('ScrollToTop: Listening to scroll on', mainElement)
 
     const handleScroll = () => {
-      setIsVisible(mainElement.scrollTop > threshold)
+      const scrollTop = mainElement.scrollTop
+      const shouldShow = scrollTop > threshold
+      console.log('Scroll position:', scrollTop, 'Threshold:', threshold, 'Should show:', shouldShow)
+      setIsVisible(shouldShow)
     }
+
+    // Initial check
+    handleScroll()
 
     mainElement.addEventListener('scroll', handleScroll)
     return () => mainElement.removeEventListener('scroll', handleScroll)
