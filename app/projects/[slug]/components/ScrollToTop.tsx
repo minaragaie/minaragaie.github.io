@@ -18,18 +18,10 @@ export default function ScrollToTop({
       ? document.getElementById(mainElementId)
       : document.querySelector('main')
     
-    if (!mainElement) {
-      console.warn('ScrollToTop: Main element not found', mainElementId)
-      return
-    }
-
-    console.log('ScrollToTop: Listening to scroll on', mainElement)
+    if (!mainElement) return
 
     const handleScroll = () => {
-      const scrollTop = mainElement.scrollTop
-      const shouldShow = scrollTop > threshold
-      console.log('Scroll position:', scrollTop, 'Threshold:', threshold, 'Should show:', shouldShow)
-      setIsVisible(shouldShow)
+      setIsVisible(mainElement.scrollTop > threshold)
     }
 
     // Initial check
@@ -57,11 +49,11 @@ export default function ScrollToTop({
   return (
     <button
       onClick={scrollToTop}
-      className="fixed bottom-6 right-6 z-50 p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 print:hidden group"
+      className="fixed bottom-6 right-6 p-3 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 hover:shadow-blue-500/50 print:hidden group"
       style={{
-        background: "var(--projects-card-bg)",
-        borderColor: "var(--projects-border)",
-        border: "1px solid"
+        background: "var(--projects-primary)",
+        border: "2px solid var(--projects-border)",
+        zIndex: 9999,
       }}
       aria-label="Scroll to top"
     >
@@ -72,7 +64,7 @@ export default function ScrollToTop({
       
       {/* Tooltip */}
       <span 
-        className="absolute bottom-full right-0 mb-2 px-2 py-1 text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none"
+        className="absolute bottom-full right-0 mb-2 px-2 py-1 text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none shadow-lg"
         style={{
           background: "var(--projects-card-bg)",
           color: "var(--projects-text-white)",
