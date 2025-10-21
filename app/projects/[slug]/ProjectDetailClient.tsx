@@ -37,36 +37,82 @@ export default function ProjectDetailClient() {
   const { headings, headingTree } = useHeadingExtraction(markdownContent)
   const activeId = useActiveHeading(headings, isScrollingProgrammatically)
 
-  // Find project
+  // Helper to extract repo info from GitHub URL
+  const getRepoInfo = (url?: string) => {
+    if (!url) return null
+    const match = url.match(/github\.com\/([^\/]+)\/([^\/]+)/)
+    if (!match) return null
+    return {
+      owner: match[1],
+      name: match[2],
+      fullRepo: `${match[1]}/${match[2]}`
+    }
+  }
+
+  // Find project by slug (match against repo name or use id)
   useEffect(() => {
     if (resumeData?.projects) {
-      const found = resumeData.projects.find(
-        (p: any) => p.detailsFile === `${slug}.md`
-      )
+      const found = resumeData.projects.find((p: any) => {
+        // Try matching by repo name from GitHub URL
+        const repoInfo = getRepoInfo(p.githubUrl)
+        if (repoInfo && repoInfo.name === slug) return true
+        
+        // Fallback: match by detailsFile if it exists
+        if (p.detailsFile === `${slug}.md`) return true
+        
+        return false
+      })
       setProject(found || null)
     }
   }, [resumeData, slug])
 
-  // Fetch markdown
+  // Fetch README.md from GitHub repo
   useEffect(() => {
-    if (!project?.detailsFile) return
+    const fetchReadme = async () => {
+      if (!project?.githubUrl) {
+        setError("Project does not have a GitHub repository")
+        setLoading(false)
+        return
+      }
 
-    setLoading(true)
-    setError(null)
+      const repoInfo = getRepoInfo(project.githubUrl)
+      if (!repoInfo) {
+        setError("Invalid GitHub URL")
+        setLoading(false)
+        return
+      }
 
-    fetch(`/data/projects/${project.detailsFile}`)
-      .then((response) => {
-        if (!response.ok) throw new Error("Failed to load")
-        return response.text()
-      })
-      .then((text) => {
+      setLoading(true)
+      setError(null)
+
+      try {
+        // Try portfolio.md from main branch first
+        let portfolioUrl = `https://raw.githubusercontent.com/${repoInfo.fullRepo}/main/portfolio.md`
+        let response = await fetch(portfolioUrl)
+        
+        // If main doesn't exist, try master branch
+        if (!response.ok) {
+          portfolioUrl = `https://raw.githubusercontent.com/${repoInfo.fullRepo}/master/portfolio.md`
+          response = await fetch(portfolioUrl)
+        }
+        
+        if (!response.ok) {
+          throw new Error("portfolio.md not found in repository")
+        }
+        
+        const text = await response.text()
         setMarkdownContent(text)
         setLoading(false)
-      })
-      .catch(() => {
-        setError("Failed to load project details")
+      } catch (err) {
+        console.error("Error fetching portfolio.md:", err)
+        setError("Failed to load project portfolio from GitHub")
         setLoading(false)
-      })
+      }
+    }
+
+    if (project) {
+      fetchReadme()
+    }
   }, [project])
 
   // Handle TOC click - memoized to prevent recreation
@@ -126,9 +172,26 @@ export default function ProjectDetailClient() {
   if (error || !project) {
     return (
       <div className="min-h-screen bg-[#1e1e1e] text-[#d4d4d4] flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-[#f48771] text-xl mb-2">Project not found</p>
-          <p className="mb-6">The project you're looking for doesn't exist.</p>
+        <div className="text-center max-w-md px-4">
+          <p className="text-[#f48771] text-xl mb-2">
+            {error || "Project not found"}
+          </p>
+          <p className="mb-6 text-sm text-gray-400">
+            {error 
+              ? "Unable to load the project portfolio from GitHub. Make sure the repository has a portfolio.md file."
+              : "The project you're looking for doesn't exist."}
+          </p>
+          {project?.githubUrl && (
+            <a
+              href={project.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block mb-4 px-6 py-2 rounded-lg font-medium transition-all duration-200 hover:bg-[#007acc]/20 border border-[#007acc] text-[#007acc]"
+            >
+              View on GitHub →
+            </a>
+          )}
+          <br />
           <button
             onClick={() => router.push("/#projects")}
             className="px-6 py-3 rounded-lg font-medium transition-all duration-200 hover:bg-[#007acc]/20 border border-[#007acc] text-[#007acc]"
