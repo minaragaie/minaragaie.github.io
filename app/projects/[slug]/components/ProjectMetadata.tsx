@@ -20,7 +20,7 @@ export default function ProjectMetadata({ project }: ProjectMetadataProps) {
         {project.description}
       </p>
       {project.technologies && project.technologies.length > 0 && (
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 mb-4">
           {project.technologies.map((tech) => (
             <span
               key={tech}
@@ -34,6 +34,35 @@ export default function ProjectMetadata({ project }: ProjectMetadataProps) {
               {tech}
             </span>
           ))}
+        </div>
+      )}
+
+      {/* Related Repositories */}
+      {project.relatedRepos && project.relatedRepos.length > 0 && (
+        <div className="mt-4 pt-4 border-t border-[var(--projects-border)]">
+          <h3 className="text-sm font-semibold mb-2" style={{ color: "var(--projects-text-white)" }}>
+            📦 Related Repositories
+          </h3>
+          <div className="space-y-2">
+            {project.relatedRepos.map((repo, index) => (
+              <a
+                key={index}
+                href={repo.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start gap-2 text-sm p-2 rounded hover:bg-white/5 transition-colors"
+                style={{ color: "var(--projects-text-muted)" }}
+              >
+                <span className="text-blue-400">→</span>
+                <div>
+                  <div className="font-medium text-blue-400 hover:text-blue-300">
+                    {repo.name}
+                  </div>
+                  <div className="text-xs opacity-80">{repo.description}</div>
+                </div>
+              </a>
+            ))}
+          </div>
         </div>
       )}
     </div>

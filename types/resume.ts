@@ -22,6 +22,12 @@ export interface Project {
   year: string
   featured?: boolean
   githubUrl?: string  // Required for portfolio.md fetching
+  relatedRepos?: Array<{
+    name: string
+    url: string
+    description: string
+  }>
+  portfolioLocation?: string // Which repo has portfolio.md (e.g., "frontend", "monorepo")
   liveUrl?: string
   imageUrl?: string
 }
