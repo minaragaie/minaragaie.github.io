@@ -10,6 +10,7 @@ export const config = {
     EXPERIENCE: "/api/admin?type=experience", 
     EDUCATION: "/api/admin?type=education",
     CERTIFICATIONS: "/api/admin?type=certifications",
+    PORTFOLIO: "/api/admin?type=portfolio", // Portfolio content for private repos
     AUTH: "/api/admin-auth",
     GENERATE_PDF: "/api/generate-pdf",
     AI_CHAT: "/api/ai-chat",

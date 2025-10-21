@@ -74,7 +74,7 @@ export default function ProjectDetailClient() {
       try {
         // Check if project is private - fetch from backend
         if ((project as any).isPrivateRepo) {
-          const response = await fetch(`${config.API_BASE_URL}/api/admin?type=portfolio&slug=${project.slug}`)
+          const response = await fetch(`${config.API_BASE_URL}${config.ENDPOINTS.PORTFOLIO}&slug=${project.slug}`)
           
           if (!response.ok) {
             throw new Error("Failed to load portfolio from backend")
