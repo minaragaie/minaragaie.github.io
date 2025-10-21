@@ -1,11 +1,12 @@
 "use client"
 
 import { useState, useEffect, useMemo, useCallback, useRef, memo } from "react"
-import { Terminal } from "lucide-react"
+import { Terminal, Copy, Check } from "lucide-react"
 
 interface TerminalWindowProps {
   title?: string
-  commands: string[]
+  commands?: string[]
+  content?: string // For static content (no typing animation)
   height?: string
   cursorBlinkSpeed?: number
   isProcessing?: boolean
@@ -13,23 +14,33 @@ interface TerminalWindowProps {
   onClose?: () => void
   inputEnabled?: boolean
   onCommand?: (cmd: string) => void
+  typingAnimation?: boolean // Enable/disable typing animation
+  showCopyButton?: boolean // Show copy button in header
+  language?: string // Language label for code blocks
 }
 
 const TerminalWindow = memo(({
   title = "Terminal",
-  commands,
+  commands = [],
+  content,
   height = "h-64",
   cursorBlinkSpeed = 400,
   isProcessing = false,
   autoCloseAfter = 5000,
   onClose,
   inputEnabled = false,
-  onCommand
+  onCommand,
+  typingAnimation = true,
+  showCopyButton = false,
+  language
 }: TerminalWindowProps) => {
-  const [terminalText, setTerminalText] = useState("Welcome to the shortcut terminal!\n\n")
+  const [terminalText, setTerminalText] = useState(
+    typingAnimation ? "Welcome to the shortcut terminal!\n\n" : (content || commands.join('\n'))
+  )
   const [currentInput, setCurrentInput] = useState("")
   const [showCursor, setShowCursor] = useState(true)
-  const [finished, setFinished] = useState(false)
+  const [finished, setFinished] = useState(!typingAnimation)
+  const [copied, setCopied] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
 
   const terminalCommands = useMemo(() => commands, [commands])
@@ -69,8 +80,18 @@ const TerminalWindow = memo(({
     }
   }, [terminalCommands])
 
+  // Copy handler
+  const handleCopy = useCallback(async () => {
+    const textToCopy = content || commands.join('\n') || terminalText
+    await navigator.clipboard.writeText(textToCopy)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }, [content, commands, terminalText])
+
   // Typing + cursor blinking
   useEffect(() => {
+    if (!typingAnimation) return // Skip typing animation if disabled
+    
     const stopTyping = typeTerminal()
     const cursorInterval =
       cursorBlinkSpeed > 0
@@ -81,7 +102,21 @@ const TerminalWindow = memo(({
       stopTyping()
       if (cursorInterval) clearInterval(cursorInterval)
     }
-  }, [typeTerminal, cursorBlinkSpeed])
+  }, [typeTerminal, cursorBlinkSpeed, typingAnimation])
+  
+  // Cursor blinking for non-typing mode
+  useEffect(() => {
+    if (typingAnimation) return // Already handled above
+    
+    const cursorInterval =
+      cursorBlinkSpeed > 0
+        ? setInterval(() => setShowCursor((prev) => !prev), cursorBlinkSpeed)
+        : undefined
+
+    return () => {
+      if (cursorInterval) clearInterval(cursorInterval)
+    }
+  }, [cursorBlinkSpeed, typingAnimation])
 
   // Auto-close
   useEffect(() => {
@@ -126,16 +161,46 @@ const TerminalWindow = memo(({
     <div className="bg-[var(--terminal-bg)] rounded-lg border border-[var(--vscode-border)] overflow-hidden">
       {/* Header */}
       <div className="bg-[var(--terminal-title-bar)] px-4 py-2 flex items-center gap-2 border-b border-[var(--vscode-border)]">
-        <Terminal className="w-4 h-4 text-[var(--vscode-text-muted)]" />
-        <span className="text-sm text-[var(--vscode-text-muted)]">{title}</span>
-        <div className="ml-auto flex gap-1">
-          <div
-            className="w-3 h-3 bg-[var(--vscode-error)] rounded-full cursor-pointer"
-            onClick={onClose}
-          ></div>
-          <div className="w-3 h-3 bg-[var(--vscode-warning)] rounded-full"></div>
-          <div className="w-3 h-3 bg-[var(--vscode-green)] rounded-full"></div>
+        {/* Left side - Traffic lights + Icon + Title */}
+        <div className="flex items-center gap-2 flex-1">
+          <div className="flex gap-1.5">
+            <div
+              className="w-3 h-3 bg-[var(--vscode-error)] rounded-full cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={onClose}
+            ></div>
+            <div className="w-3 h-3 bg-[var(--vscode-warning)] rounded-full"></div>
+            <div className="w-3 h-3 bg-[var(--vscode-green)] rounded-full"></div>
+          </div>
+          <Terminal className="w-4 h-4 text-[var(--vscode-text-muted)] ml-2" />
+          <span className="text-sm text-[var(--vscode-text-muted)]">{title}</span>
+          {language && (
+            <span className="text-xs font-mono text-[var(--vscode-text-muted)] uppercase tracking-wide ml-2 opacity-60">
+              {language}
+            </span>
+          )}
         </div>
+        
+        {/* Right side - Copy button */}
+        {showCopyButton && (
+          <button
+            onClick={handleCopy}
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-medium transition-all duration-150 hover:bg-white/5"
+            style={{ color: "var(--vscode-text-muted)" }}
+            aria-label="Copy code"
+          >
+            {copied ? (
+              <>
+                <Check className="w-3.5 h-3.5 text-[var(--vscode-green)]" />
+                <span className="text-[var(--vscode-green)]">Copied!</span>
+              </>
+            ) : (
+              <>
+                <Copy className="w-3.5 h-3.5" />
+                <span>Copy</span>
+              </>
+            )}
+          </button>
+        )}
       </div>
 
       {/* Content */}
@@ -144,7 +209,12 @@ const TerminalWindow = memo(({
         className={`p-4 font-mono text-sm overflow-y-auto ${height} text-[var(--terminal-text)] scrollbar-thin`}
       >
         <pre className="whitespace-pre-wrap">
-          {terminalText}
+          {/* Static content mode - no animation */}
+          {!typingAnimation && content}
+          
+          {/* Typing animation mode */}
+          {typingAnimation && terminalText}
+          
           {isProcessing && (
             <div className="flex items-center gap-2 text-[#4ec9b0] mt-1">
               <div className="w-2 h-2 bg-[#4ec9b0] rounded-full animate-pulse" />
@@ -160,7 +230,10 @@ const TerminalWindow = memo(({
               </span>
             </>
           )}
-          {!inputEnabled && showCursor && (
+          {!inputEnabled && !typingAnimation && cursorBlinkSpeed > 0 && showCursor && (
+            <span className="bg-[var(--terminal-bg)] text-[var(--terminal-text)]">█</span>
+          )}
+          {!inputEnabled && typingAnimation && showCursor && (
             <span className="bg-[var(--terminal-bg)] text-[var(--terminal-text)]">█</span>
           )}
         </pre>

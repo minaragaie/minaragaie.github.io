@@ -11,6 +11,21 @@ interface ResumeData {
     description: string
     technologies: string[]
   }>
+  projects?: Array<{
+    id?: number
+    name: string
+    description: string
+    technologies: string[]
+    icon: string
+    color: string
+    status: string
+    year: string
+    detailsFile?: string
+    featured?: boolean
+    githubUrl?: string
+    liveUrl?: string
+    imageUrl?: string
+  }>
   skills?: {
     languages: string[]
     frameworks: string[]

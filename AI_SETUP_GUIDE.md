@@ -131,3 +131,7 @@ this.model = 'microsoft/DialoGPT-medium' // Change this
 The AI bot will work even without an API key (using fallback responses), but with a real AI service, it becomes much more intelligent and engaging! 🚀
 
 
+
+
+
+

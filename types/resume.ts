@@ -10,6 +10,23 @@ export interface Certificate {
   pathway?: Certificate[]
 
 }
+
+export interface Project {
+  id?: number
+  name: string
+  description: string
+  technologies?: string[]
+  icon?: string
+  color?: string
+  status: string
+  year: string
+  detailsFile?: string
+  featured?: boolean
+  githubUrl?: string
+  liveUrl?: string
+  imageUrl?: string
+}
+
 export interface ResumeData {
   personalInfo: {
     name: string
@@ -31,6 +48,7 @@ export interface ResumeData {
     achievements: string[]
     technologies: string[]
   }>
+  projects: Project[]
   skills: {
     languages: string[]
     frameworks: string[]

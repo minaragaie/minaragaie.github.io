@@ -1,72 +1,32 @@
 "use client"
 import { memo, useMemo } from "react"
-import { Building2, Users, GraduationCap, Stethoscope, Calendar, MessageCircle } from "lucide-react"
+import Link from "next/link"
+import { Building2, Users, GraduationCap, Stethoscope, Calendar, MessageCircle, BookOpen, ExternalLink } from "lucide-react"
 
-const recentProjects = [
-  {
-    name: "Turris ERP System",
-    description:
-      "Comprehensive enterprise resource planning system for managing day-to-day business activities with real-time data processing and advanced reporting capabilities.",
-    technologies: ["Angular", "DevExtreme", "Node.js", "PostgreSQL", "WebSockets", "TypeScript"],
-    icon: Building2,
-    color: "from-blue-400 to-cyan-500",
-    status: "Production",
-    year: "2023-2025",
-  },
-  {
-    name: "EntityConnect Platform",
-    description:
-      "Entity management & communications app with membership management, event registration, online donations, and workflow automation for organizations.",
-    technologies: ["Angular", "Kendo UI", "SailsJS", "Node.js", "MySQL", "PWA"],
-    icon: Users,
-    color: "from-green-400 to-emerald-500",
-    status: "Live",
-    year: "2018-2022",
-  },
-  {
-    name: "Abgadya Learning Platform",
-    description:
-      "Progressive Web App for high school students providing educational content through interactive books, videos, lessons, and exercises with offline capabilities.",
-    technologies: ["Angular 10", "Ionic", "PHP", "Laravel", "PWA", "WordPress"],
-    icon: GraduationCap,
-    color: "from-purple-400 to-violet-500",
-    status: "Active",
-    year: "2018-2021",
-  },
-  {
-    name: "Medical Rep Management System",
-    description:
-      "Healthcare industry solution helping pharmaceutical companies manage sales teams and medical representatives with real-time tracking and reporting.",
-    technologies: ["Ionic", "Angular 7-10", "Bootstrap", "PHP", "MySQL", "Cross-platform"],
-    icon: Stethoscope,
-    color: "from-red-400 to-pink-500",
-    status: "Deployed",
-    year: "2016-2018",
-  },
-  {
-    name: "WordPress Booking Engine",
-    description:
-      "Custom WordPress plugin featuring a fully functional reservation system with payment integration, calendar management, and automated notifications.",
-    technologies: ["WordPress", "PHP", "JavaScript", "MySQL", "Bootstrap", "Payment APIs"],
-    icon: Calendar,
-    color: "from-orange-400 to-red-500",
-    status: "Plugin",
-    year: "2020-2021",
-  },
-  {
-    name: "Real-time Communication Suite",
-    description:
-      "WebSocket-based communication platform enabling real-time messaging, notifications, and data synchronization across multiple client applications.",
-    technologies: ["WebSockets", "Node.js", "React", "TypeScript", "Redis", "Socket.io"],
-    icon: MessageCircle,
-    color: "from-indigo-400 to-blue-500",
-    status: "Framework",
-    year: "2022-2024",
-  },
-]
+// Icon mapping for converting string names to icon components
+const iconMap: Record<string, React.ComponentType<any>> = {
+  Building2,
+  Users,
+  GraduationCap,
+  Stethoscope,
+  Calendar,
+  MessageCircle,
+  BookOpen,
+}
 
-const ProjectCard = memo(({ project, index }: { project: any, index: number }) => {
-  const Icon = project.icon
+interface ProjectCardProps {
+  project: any
+  index: number
+}
+
+const ProjectCard = memo(({ project, index }: ProjectCardProps) => {
+  // Get the icon component from the icon map (if icon is a string) or use it directly (if already a component)
+  const Icon = typeof project.icon === 'string' 
+    ? (iconMap[project.icon] || Building2)
+    : (project.icon || Building2)
+  
+  // Generate slug from detailsFile (e.g., "turris-erp.md" -> "turris-erp")
+  const slug = project.detailsFile?.replace('.md', '') || ''
   
   return (
     <div
@@ -129,6 +89,24 @@ const ProjectCard = memo(({ project, index }: { project: any, index: number }) =
           ))}
         </div>
       </div>
+
+      {/* Read More Button */}
+      {project.detailsFile && slug && (
+        <div className="mt-4 pt-4 border-t border-[var(--projects-border)]">
+          <Link
+            href={`/projects/${slug}`}
+            className="flex items-center gap-2 text-xs font-medium px-4 py-2 rounded-lg transition-all duration-300 hover:scale-105"
+            style={{
+              color: "var(--projects-primary)",
+              backgroundColor: "var(--projects-card-bg)",
+              border: "1px solid var(--projects-primary)",
+            }}
+          >
+            <span>Read Full Case Study</span>
+            <ExternalLink className="w-3 h-3" />
+          </Link>
+        </div>
+      )}
     </div>
   )
 })
@@ -144,7 +122,10 @@ interface ProjectsSectionProps {
 }
 
 const ProjectsSection = memo(({ resumeData }: ProjectsSectionProps) => {
-  const memoizedProjects = useMemo(() => recentProjects, [])
+  // Use projects from resumeData, fallback to empty array if not available
+  const memoizedProjects = useMemo(() => {
+    return resumeData?.projects || []
+  }, [resumeData?.projects])
 
   return (
     <div className="max-w-6xl mx-auto">

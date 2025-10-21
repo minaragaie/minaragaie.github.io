@@ -48,7 +48,21 @@ interface ResumeData {
     methodologies: string[]
     standards: string[]
   }
-  projects: any[]
+  projects: Array<{
+    id?: number
+    name: string
+    description: string
+    technologies: string[]
+    icon: string
+    color: string
+    status: string
+    year: string
+    detailsFile?: string
+    featured?: boolean
+    githubUrl?: string
+    liveUrl?: string
+    imageUrl?: string
+  }>
   additionalInfo: string
 }
 
