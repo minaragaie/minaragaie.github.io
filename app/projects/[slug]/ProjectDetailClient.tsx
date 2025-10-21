@@ -49,18 +49,12 @@ export default function ProjectDetailClient() {
     }
   }
 
-  // Find project by slug (match against repo name or use id)
+  // Find project by slug (match against repo name from GitHub URL)
   useEffect(() => {
     if (resumeData?.projects) {
       const found = resumeData.projects.find((p: any) => {
-        // Try matching by repo name from GitHub URL
         const repoInfo = getRepoInfo(p.githubUrl)
-        if (repoInfo && repoInfo.name === slug) return true
-        
-        // Fallback: match by detailsFile if it exists
-        if (p.detailsFile === `${slug}.md`) return true
-        
-        return false
+        return repoInfo && repoInfo.name === slug
       })
       setProject(found || null)
     }
@@ -86,25 +80,37 @@ export default function ProjectDetailClient() {
       setError(null)
 
       try {
-        // Try portfolio.md from main branch first
+        // Try portfolio.md (lowercase) from main branch first
         let portfolioUrl = `https://raw.githubusercontent.com/${repoInfo.fullRepo}/main/portfolio.md`
         let response = await fetch(portfolioUrl)
         
-        // If main doesn't exist, try master branch
+        // Try PORTFOLIO.md (uppercase) if lowercase doesn't exist
+        if (!response.ok) {
+          portfolioUrl = `https://raw.githubusercontent.com/${repoInfo.fullRepo}/main/PORTFOLIO.md`
+          response = await fetch(portfolioUrl)
+        }
+        
+        // Try master branch with lowercase
         if (!response.ok) {
           portfolioUrl = `https://raw.githubusercontent.com/${repoInfo.fullRepo}/master/portfolio.md`
           response = await fetch(portfolioUrl)
         }
         
+        // Try master branch with uppercase
         if (!response.ok) {
-          throw new Error("portfolio.md not found in repository")
+          portfolioUrl = `https://raw.githubusercontent.com/${repoInfo.fullRepo}/master/PORTFOLIO.md`
+          response = await fetch(portfolioUrl)
+        }
+        
+        if (!response.ok) {
+          throw new Error("portfolio.md or PORTFOLIO.md not found in repository")
         }
         
         const text = await response.text()
         setMarkdownContent(text)
         setLoading(false)
       } catch (err) {
-        console.error("Error fetching portfolio.md:", err)
+        console.error("Error fetching portfolio:", err)
         setError("Failed to load project portfolio from GitHub")
         setLoading(false)
       }

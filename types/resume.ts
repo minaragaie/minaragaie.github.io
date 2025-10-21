@@ -20,9 +20,8 @@ export interface Project {
   color?: string
   status: string
   year: string
-  detailsFile?: string
   featured?: boolean
-  githubUrl?: string
+  githubUrl?: string  // Required for portfolio.md fetching
   liveUrl?: string
   imageUrl?: string
 }
