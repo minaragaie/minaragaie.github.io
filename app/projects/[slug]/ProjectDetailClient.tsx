@@ -4,6 +4,7 @@ import { useParams, useRouter } from "next/navigation"
 import { ChevronLeft } from "lucide-react"
 import { useResumeData } from "@/hooks/useResumeData"
 import { Project } from "@/types/resume"
+import { config } from "@/lib/config"
 import ReadingProgress from "./components/ReadingProgress"
 import ProjectHeader from "./components/ProjectHeader"
 import TableOfContents from "./components/TableOfContents"
@@ -62,26 +63,43 @@ export default function ProjectDetailClient() {
     }
   }, [resumeData, slug])
 
-  // Fetch README.md from GitHub repo
+  // Fetch portfolio content (from backend if private, from GitHub if public)
   useEffect(() => {
-    const fetchReadme = async () => {
-      if (!project?.githubUrl) {
-        setError("Project does not have a GitHub repository")
-        setLoading(false)
-        return
-      }
-
-      const repoInfo = getRepoInfo(project.githubUrl)
-      if (!repoInfo) {
-        setError("Invalid GitHub URL")
-        setLoading(false)
-        return
-      }
+    const fetchPortfolio = async () => {
+      if (!project) return
 
       setLoading(true)
       setError(null)
 
       try {
+        // Check if project is private - fetch from backend
+        if ((project as any).isPrivateRepo) {
+          const response = await fetch(`${config.API_BASE_URL}/api/admin?type=portfolio&slug=${project.slug}`)
+          
+          if (!response.ok) {
+            throw new Error("Failed to load portfolio from backend")
+          }
+          
+          const result = await response.json()
+          setMarkdownContent(result.content)
+          setLoading(false)
+          return
+        }
+
+        // Public repo - fetch from GitHub
+        if (!project.githubUrl) {
+          setError("Project does not have a GitHub repository")
+          setLoading(false)
+          return
+        }
+
+        const repoInfo = getRepoInfo(project.githubUrl)
+        if (!repoInfo) {
+          setError("Invalid GitHub URL")
+          setLoading(false)
+          return
+        }
+
         // Try portfolio.md (lowercase) from main branch first
         let portfolioUrl = `https://raw.githubusercontent.com/${repoInfo.fullRepo}/main/portfolio.md`
         let response = await fetch(portfolioUrl)
@@ -113,13 +131,13 @@ export default function ProjectDetailClient() {
         setLoading(false)
       } catch (err) {
         console.error("Error fetching portfolio:", err)
-        setError("Failed to load project portfolio from GitHub")
+        setError("Failed to load project portfolio")
         setLoading(false)
       }
     }
 
     if (project) {
-      fetchReadme()
+      fetchPortfolio()
     }
   }, [project])
 

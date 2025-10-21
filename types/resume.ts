@@ -22,13 +22,14 @@ export interface Project {
   status: string
   year: string
   featured?: boolean
-  githubUrl?: string  // Required for portfolio.md fetching
+  githubUrl?: string  // GitHub repository URL
+  isPrivateRepo?: boolean  // If true, fetch portfolio from backend API
+  portfolioFile?: string   // Filename in backend (for private repos)
   relatedRepos?: Array<{
     name: string
     url: string
     description: string
   }>
-  portfolioLocation?: string // Which repo has portfolio.md (e.g., "frontend", "monorepo")
   liveUrl?: string
   imageUrl?: string
 }
