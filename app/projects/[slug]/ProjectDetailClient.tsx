@@ -10,6 +10,7 @@ import TableOfContents from "./components/TableOfContents"
 import ProjectMetadata from "./components/ProjectMetadata"
 import ProjectContent from "./components/ProjectContent"
 import ScrollToTop from "./components/ScrollToTop"
+import GiscusComments from "./components/GiscusComments"
 import {
   useReadingProgress,
   useActiveHeading,
@@ -160,6 +161,12 @@ export default function ProjectDetailClient() {
               <div className="pr-4">
                 <ProjectMetadata project={project} />
                 <ProjectContent markdownContent={markdownContent} headingTree={headingTree} />
+
+                {/* Giscus Comments Section */}
+                <GiscusComments 
+                  projectName={project.name}
+                  githubUrl={project.githubUrl}
+                />
 
                 <div
                   className="mt-12 pt-6 border-t border-[var(--projects-border)]"
