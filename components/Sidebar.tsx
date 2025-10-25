@@ -189,11 +189,9 @@ export default function Sidebar({ currentSection, onSectionClick, isCollapsed, o
   ]
 
   return (
-    <div className="relative h-full">
-      {/* Sidebar Container */}
-      <div className={`${isCollapsed ? 'w-12' : 'w-full'} h-full flex transition-all duration-300 ease-in-out flex-shrink-0`}>
-        {/* Activity Bar */}
-        <div className="w-12 h-full bg-[var(--activity-bar-bg)] border-r border-[var(--activity-bar-border)] flex flex-col z-20">
+    <div className={`relative h-full transition-all duration-300 ease-in-out overflow-hidden ${isCollapsed ? 'w-12' : 'w-[304px]'}`}>
+      {/* Activity Bar */}
+      <div className="absolute left-0 top-0 w-12 h-full bg-[var(--activity-bar-bg)] border-r border-[var(--activity-bar-border)] flex flex-col z-20">
           <div className="flex flex-col py-2">
           {sidebarTabs.map((tab) => {
             const Icon = tab.icon
@@ -234,11 +232,10 @@ export default function Sidebar({ currentSection, onSectionClick, isCollapsed, o
             </button>
           </div>
         </div>
-      </div>
 
       {/* Sidebar Panel */}
-      <div className={`w-64 bg-[var(--sidebar-bg)] border-r border-[var(--sidebar-border)] flex flex-col h-full transition-all duration-300 ease-in-out transform ${
-        isCollapsed ? '-translate-x-full opacity-0 w-0' : 'translate-x-0 opacity-100'
+      <div className={`absolute left-12 top-0 w-64 bg-[var(--sidebar-bg)] border-r border-[var(--sidebar-border)] flex flex-col h-full transition-opacity duration-300 ease-in-out ${
+        isCollapsed ? 'opacity-0 invisible pointer-events-none' : 'opacity-100 visible pointer-events-auto'
       }`}>
           <div className="md:hidden absolute top-2 right-2 z-50">
             <button onClick={onToggle} className="w-8 h-8 flex items-center justify-center text-[var(--activity-bar-text)] hover:text-[var(--activity-bar-text-active)] hover:bg-[var(--activity-bar-hover)] rounded transition-all duration-200">

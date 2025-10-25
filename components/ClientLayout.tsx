@@ -36,7 +36,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         <TerminalFocusProvider>
         <div className="h-screen flex bg-[var(--vscode-bg)] text-[var(--vscode-text)] transition-colors duration-300 overflow-hidden">
         {/* Fixed Sidebar */}
-        <div ref={sidebarRef} className="h-full">
+        <div ref={sidebarRef} className="h-full transition-all duration-300 ease-in-out flex-shrink-0">
           <Sidebar
             currentSection=""
             onSectionClick={() => {}}
