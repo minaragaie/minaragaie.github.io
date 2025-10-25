@@ -165,6 +165,14 @@ export default function Sidebar({ currentSection, onSectionClick, isCollapsed, o
     fileStructure.reduce((acc, item) => acc + (item.type === "directory" ? item.children.length : 1), 0)
 
   const scrollToSection = (sectionId: string) => {
+    // Handle project navigation
+    if (sectionId.startsWith("projects-")) {
+      const projectSlug = sectionId.replace("projects-", "")
+      // Navigate to project page
+      window.location.href = `/projects/${projectSlug}/`
+      return
+    }
+
     let targetId = sectionId
     if (sectionId.includes("-")) {
       const [parent, idxOrName] = sectionId.split("-")
@@ -175,9 +183,8 @@ export default function Sidebar({ currentSection, onSectionClick, isCollapsed, o
       }
     }
 
-    const element = document.getElementById(targetId)
-    if (element) element.scrollIntoView({ behavior: "smooth", block: "start" })
-    onSectionClick(sectionId)
+    // Use the parent's navigation handler
+    onSectionClick(targetId)
   }
 
   const sidebarTabs = [

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
+import { usePathname, useRouter } from "next/navigation"
 import { StatusBarProvider } from "@/context/StatusBarContext"
 import { AuthProvider } from "@/context/AuthContext"
 import { TerminalFocusProvider } from "@/context/TerminalFocusContext"
@@ -11,6 +12,8 @@ import StatusBar from "./StatusBar"
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(true) // Start closed by default
   const sidebarRef = useRef<HTMLDivElement>(null)
+  const pathname = usePathname()
+  const router = useRouter()
 
   // Close sidebar when clicking outside
   useEffect(() => {
@@ -30,6 +33,21 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     }
   }, [sidebarCollapsed])
 
+  // Handle sidebar navigation
+  const handleSectionClick = (sectionId: string) => {
+    // If we're not on the main page, navigate to it first
+    if (pathname !== '/') {
+      router.push(`/#${sectionId}`)
+      return
+    }
+
+    // If we're on the main page, scroll to the section
+    const element = document.getElementById(sectionId)
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" })
+    }
+  }
+
   return (
     <AuthProvider>
       <StatusBarProvider>
@@ -39,7 +57,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         <div ref={sidebarRef} className="h-full transition-all duration-300 ease-in-out flex-shrink-0">
           <Sidebar
             currentSection=""
-            onSectionClick={() => {}}
+            onSectionClick={handleSectionClick}
             isCollapsed={sidebarCollapsed}
             onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
           />

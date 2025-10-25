@@ -8,14 +8,14 @@ import TechnologiesSection from "@/components/TechnologiesSection"
 import EducationSection from "@/components/EducationSection"
 import CertificationsSection from "@/components/CertificationsSection"
 import ContactSection from "@/components/ContactSection"
-import AnalyticsDashboard from "@/components/AnalyticsDashboard"
-import ProfessionalMetrics from "@/components/ProfessionalMetrics"
-import InteractiveDemo from "@/components/InteractiveDemo"
-import TestimonialsSection from "@/components/TestimonialsSection"
-import CaseStudiesSection from "@/components/CaseStudiesSection"
-import EnhancedContactSection from "@/components/EnhancedContactSection"
-import SmartRecommendations from "@/components/SmartRecommendations"
-import SkillAssessment from "@/components/SkillAssessment"
+// import AnalyticsDashboard from "@/components/next-release/AnalyticsDashboard" // TODO: Next release
+// import ProfessionalMetrics from "@/components/next-release/ProfessionalMetrics" // TODO: Next release
+// import InteractiveDemo from "@/components/next-release/InteractiveDemo" // TODO: Next release
+// import TestimonialsSection from "@/components/next-release/TestimonialsSection" // TODO: Next release
+// import CaseStudiesSection from "@/components/next-release/CaseStudiesSection" // TODO: Next release
+// import EnhancedContactSection from "@/components/next-release/EnhancedContactSection" // TODO: Next release
+// import SmartRecommendations from "@/components/next-release/SmartRecommendations" // TODO: Next release
+// import SkillAssessment from "@/components/next-release/SkillAssessment" // TODO: Next release
 import ScrollAnimatedSection from "@/components/ScrollAnimatedSection"
 import { useResumeData } from "@/hooks/useResumeData"
 
@@ -109,75 +109,92 @@ const Resume = memo(() => {
         </ScrollAnimatedSection>
       </section>
 
-      <section 
+      {/* TODO: Next release - Analytics Dashboard */}
+      {/* <section 
         id="analytics" 
         className="py-20 px-4 md:px-8 bg-[var(--bg-primary-gradient)] devtool-section-primary"
       >
         <ScrollAnimatedSection animationType="fade" delay={200}>
           <AnalyticsDashboard />
         </ScrollAnimatedSection>
-      </section>
+      </section> */}
 
-      <section 
+      {/* TODO: Next release - Professional Metrics */}
+      {/* <section 
         id="metrics" 
         className="py-20 px-4 md:px-8 bg-[var(--bg-secondary)] devtool-section-secondary"
       >
         <ScrollAnimatedSection animationType="slideUp" delay={150}>
           <ProfessionalMetrics />
         </ScrollAnimatedSection>
-      </section>
+      </section> */}
 
-      <section 
+      {/* TODO: Next release - Interactive Demo */}
+      {/* <section 
         id="demo" 
         className="py-20 px-4 md:px-8 bg-[var(--bg-primary-gradient)] devtool-section-primary"
       >
         <ScrollAnimatedSection animationType="fade" delay={200}>
           <InteractiveDemo />
         </ScrollAnimatedSection>
-      </section>
+      </section> */}
 
-      <section 
+      {/* TODO: Next release - Testimonials */}
+      {/* <section 
         id="testimonials" 
         className="py-20 px-4 md:px-8 bg-[var(--bg-secondary)] devtool-section-secondary"
       >
         <ScrollAnimatedSection animationType="slideUp" delay={150}>
           <TestimonialsSection />
         </ScrollAnimatedSection>
-      </section>
+      </section> */}
 
-      <section 
+      {/* TODO: Next release - Case Studies */}
+      {/* <section 
         id="case-studies" 
         className="py-20 px-4 md:px-8 bg-[var(--bg-primary-gradient)] devtool-section-primary"
       >
         <ScrollAnimatedSection animationType="fade" delay={200}>
           <CaseStudiesSection />
         </ScrollAnimatedSection>
-      </section>
+      </section> */}
 
-      <section 
+      {/* TODO: Next release - Smart Recommendations */}
+      {/* <section 
         id="recommendations" 
         className="py-20 px-4 md:px-8 bg-[var(--bg-secondary)] devtool-section-secondary"
       >
         <ScrollAnimatedSection animationType="slideUp" delay={150}>
           <SmartRecommendations />
         </ScrollAnimatedSection>
-      </section>
+      </section> */}
 
-      <section 
+      {/* TODO: Next release - Skill Assessment */}
+      {/* <section 
         id="assessment" 
         className="py-20 px-4 md:px-8 bg-[var(--bg-primary-gradient)] devtool-section-primary"
       >
         <ScrollAnimatedSection animationType="fade" delay={200}>
           <SkillAssessment />
         </ScrollAnimatedSection>
-      </section>
+      </section> */}
 
-      <section 
+      {/* TODO: Next release - Enhanced Contact Section */}
+      {/* <section 
         id="contact" 
         className="py-20 px-4 md:px-8 bg-[var(--bg-secondary)] devtool-section-secondary"
       >
         <ScrollAnimatedSection animationType="scale" delay={300}>
           <EnhancedContactSection />
+        </ScrollAnimatedSection>
+      </section> */}
+
+      <section 
+        id="contact" 
+        className="py-20 px-4 md:px-8 bg-[var(--bg-primary-gradient)] devtool-section-primary"
+      >
+        <ScrollAnimatedSection animationType="scale" delay={300}>
+          <ContactSection resumeData={resumeData} />
         </ScrollAnimatedSection>
       </section>
 
