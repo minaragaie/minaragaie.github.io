@@ -11,6 +11,7 @@ export async function generateStaticParams() {
     { slug: 'entityconnect' },
     { slug: 'abgadya' },
     { slug: 'storyverse' },
+    { slug: 'rogers-motors' },
   ]
 }
 
