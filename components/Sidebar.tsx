@@ -81,6 +81,9 @@ export default function Sidebar({ currentSection, onSectionClick, isCollapsed, o
       { id: "contact", name: "contact.ts", icon: Mail, color: "#b5cea8", type: "file" },
     ]
 
+    // Map of nicer display labels for specific project slugs
+  
+
     const projectsChildren = [
       "turris-erp",
       "entityconnect",
@@ -88,6 +91,7 @@ export default function Sidebar({ currentSection, onSectionClick, isCollapsed, o
       "medical-rep",
       "booking-engine",
       "communication-suite",
+      "rogers-motors",
     ].map((name) => ({
       id: `projects-${name}`,
       name: `${name}.ts`,
