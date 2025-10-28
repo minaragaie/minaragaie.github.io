@@ -29,6 +29,7 @@ export interface Project {
     name: string
     url: string
     description: string
+    isPrivate?: boolean
   }>
   liveUrl?: string
   imageUrl?: string

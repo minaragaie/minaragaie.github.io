@@ -1,5 +1,6 @@
 "use client"
 import { Project } from "@/types/resume"
+import { Lock } from "lucide-react"
 
 interface ProjectMetadataProps {
   project: Project
@@ -54,9 +55,12 @@ export default function ProjectMetadata({ project }: ProjectMetadataProps) {
                 style={{ color: "var(--projects-text-muted)" }}
               >
                 <span className="text-blue-400">→</span>
-                <div>
-                  <div className="font-medium text-blue-400 hover:text-blue-300">
+                <div className="flex-1">
+                  <div className="flex items-center gap-1.5 font-medium text-blue-400 hover:text-blue-300">
                     {repo.name}
+                    {repo.isPrivate && (
+                      <Lock className="w-3.5 h-3.5 text-amber-500 flex-shrink-0" title="Private repository" />
+                    )}
                   </div>
                   <div className="text-xs opacity-80">{repo.description}</div>
                 </div>
