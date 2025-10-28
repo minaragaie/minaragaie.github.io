@@ -121,6 +121,8 @@
   --projects-card-border-hover: #3e3e42;
   --projects-card-bg-hover: #3e3e42;
   --projects-shadow: 0 4px 12px rgba(0, 122, 204, 0.2);
+  --projects-link-color: #60a5fa;
+  --projects-link-hover-color: #3b82f6;
 
   --tech-bg: #1e1e1e;
   --tech-border: #3e3e42;
@@ -299,6 +301,8 @@
   --projects-card-border-hover: #e6e6e6;
   --projects-card-bg-hover: #ffffff;
   --projects-shadow: 0 4px 12px rgba(110, 158, 255, 0.15);
+  --projects-link-color: #0066cc;
+  --projects-link-hover-color: #0052a3;
 
   --tech-bg: #ffffff;
   --tech-border: #e6e6e6;
@@ -798,6 +802,8 @@
   --projects-card-border-hover: #75715e;
   --projects-card-bg-hover: #383830;
   --projects-shadow: 0 4px 12px rgba(249, 38, 114, 0.3);
+  --projects-link-color: #66d9ef;
+  --projects-link-hover-color: #45d4f5;
 
   --tech-bg: #272822;
   --tech-border: #3e3d32;

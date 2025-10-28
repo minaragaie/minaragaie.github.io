@@ -266,7 +266,7 @@ export default function ProjectContent({ markdownContent, headingTree }: Project
     prose-h3:text-xl prose-h3:mb-2 prose-h3:mt-6 prose-h3:text-blue-200 prose-h3:opacity-90
     prose-h4:text-lg prose-h4:mb-1 prose-h4:mt-4 prose-h4:text-gray-200 prose-h4:opacity-80
     prose-p:leading-relaxed prose-p:mb-4 prose-p:text-gray-300
-    prose-a:text-blue-400 prose-a:no-underline hover:prose-a:text-blue-300 hover:prose-a:underline
+    prose-a:inline-flex prose-a:items-center prose-a:gap-1.5 prose-a:no-underline prose-a:transition-colors
     prose-strong:text-white prose-strong:font-semibold
     prose-em:text-blue-200
     prose-code:text-blue-400 prose-code:bg-gray-800 prose-code:border prose-code:border-gray-700 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:before:content-[''] prose-code:after:content-['']
@@ -286,6 +286,48 @@ export default function ProjectContent({ markdownContent, headingTree }: Project
   return (
     <article className={proseClasses}>
       <style jsx global>{`
+        article a {
+          color: var(--projects-link-color, #60a5fa) !important;
+          position: relative !important;
+          display: inline-flex !important;
+          align-items: center !important;
+          gap: 0.375rem !important;
+          text-decoration: none !important;
+          transition: all 0.2s ease !important;
+        }
+
+        article a:hover {
+          color: var(--projects-link-hover-color, #3b82f6) !important;
+          text-decoration: underline !important;
+        }
+
+        article a::after {
+          font-size: 0.875em !important;
+          opacity: 0.7 !important;
+          transition: opacity 0.2s ease !important;
+          margin-left: 0.25rem !important;
+        }
+
+        article a:hover::after {
+          opacity: 1 !important;
+        }
+
+        article a[href^="#"]::after {
+          content: '🔗' !important;
+        }
+
+        article a[href^="mailto:"]::after {
+          content: '✉' !important;
+        }
+
+        article a[href*="github.com"]::after {
+          content: '🔗' !important;
+        }
+
+        article a[href^="http"]:not([href*="github.com"]):not([href*="mailto"])::after {
+          content: '↗' !important;
+        }
+
         article hr {
           border: none !important;
           height: 0 !important;
