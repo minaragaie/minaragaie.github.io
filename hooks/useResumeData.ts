@@ -51,6 +51,7 @@ interface ResumeData {
   projects: Array<{
     id?: number
     name: string
+    slug?: string
     description: string
     technologies: string[]
     icon: string

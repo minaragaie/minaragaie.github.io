@@ -21,12 +21,14 @@ import {
 } from "lucide-react"
 
 import { staticResumeData } from "@/lib/resume-data"
+import { useResumeData } from "@/hooks/useResumeData"
 
 // Type for static resume data
 interface StaticResumeData {
   experience?: Array<{ id: number; company: string; degree?: string }>
   education?: Array<{ degree: string }>
   certifications?: Array<{ name: string }>
+  projects?: Array<{ name: string; githubUrl?: string; slug?: string }>
 }
 
 // Cast staticResumeData to the proper type
@@ -46,6 +48,7 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ currentSection, onSectionClick, isCollapsed, onToggle }: SidebarProps) {
+  const { resumeData: apiResumeData } = useResumeData()
   const [isExplorerOpen, setIsExplorerOpen] = useState(true)
   const [activeTab, setActiveTab] = useState("explorer")
   const [expandedDirs, setExpandedDirs] = useState<Record<string, boolean>>({
@@ -81,21 +84,27 @@ export default function Sidebar({ currentSection, onSectionClick, isCollapsed, o
       { id: "contact", name: "contact.ts", icon: Mail, color: "#b5cea8", type: "file" },
     ]
 
-    const projectsChildren = [
-      "turris-erp",
-      "entityconnect",
-      "abgadya-learning",
-      "medical-rep",
-      "booking-engine",
-      "communication-suite",
-      "rogers-motors",
-    ].map((name) => ({
-      id: `projects-${name}`,
-      name: `${name}.ts`,
-      icon: FileText,
-      color: "#4ec9b0",
-      parent: "projects",
-    }))
+    // Use projects from API if available, otherwise show empty
+    const projectsList = apiResumeData?.projects && apiResumeData.projects.length > 0
+      ? apiResumeData.projects.map((p: any) => (p as any).slug || slugify(p.name))
+      : []
+    
+    const projectsChildren = projectsList.length > 0
+      ? projectsList.map((slug) => ({
+          id: `projects-${slug}`,
+          name: `${slug}.ts`,
+          icon: FileText,
+          color: "#4ec9b0",
+          parent: "projects",
+        }))
+      : [{
+          id: "projects-empty",
+          name: "No projects available.ts",
+          icon: FileText,
+          color: "#757575",
+          parent: "projects",
+          empty: true,
+        }]
 
     structure.push({
       id: "projects",
@@ -166,6 +175,11 @@ export default function Sidebar({ currentSection, onSectionClick, isCollapsed, o
     fileStructure.reduce((acc, item) => acc + (item.type === "directory" ? item.children.length : 1), 0)
 
   const scrollToSection = (sectionId: string) => {
+    // Handle empty projects case
+    if (sectionId === "projects-empty") {
+      return // Don't do anything for empty state
+    }
+    
     // Handle project navigation
     if (sectionId.startsWith("projects-")) {
       const projectSlug = sectionId.replace("projects-", "")
