@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { 
   Star, 
   GitBranch, 
@@ -17,6 +17,7 @@ import {
   Eye,
   GitCommit
 } from "lucide-react"
+import { useResumeData } from "@/hooks/useResumeData"
 
 interface Repo {
   name: string
@@ -119,6 +120,25 @@ const GitHubActivity: React.FC<{ username: string }> = ({ username }) => {
   const [chartBg, setChartBg] = useState("ffffff")
   const [activeTab, setActiveTab] = useState<'repos' | 'activity' | 'languages'>('repos')
   const [hasPrivateAccess, setHasPrivateAccess] = useState(false)
+  const { resumeData } = useResumeData()
+
+  // Map repo name -> project slug for quick lookup (based on githubUrl)
+  const projectRepoNameToSlug = useMemo(() => {
+    const map = new Map<string, string>()
+    if (resumeData?.projects) {
+      for (const p of resumeData.projects as any[]) {
+        const url: string | undefined = (p as any).githubUrl
+        const slug: string | undefined = (p as any).slug
+        if (url && slug) {
+          const match = url.match(/github\.com\/[^\/]+\/([^\/?#]+)/)
+          if (match && match[1]) {
+            map.set(match[1].toLowerCase(), slug)
+          }
+        }
+      }
+    }
+    return map
+  }, [resumeData])
 
   // Fetch comprehensive GitHub data
   useEffect(() => {
@@ -388,13 +408,10 @@ const GitHubActivity: React.FC<{ username: string }> = ({ username }) => {
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {repos.map((repo, index) => (
-                <a
+                <div
                   key={`${repo.name}-${index}-${repo.html_url}`}
-                href={repo.html_url}
-                target="_blank"
-                rel="noopener noreferrer"
                   className="group bg-[var(--vscode-sidebar)] border border-[var(--vscode-border)] rounded-xl p-6 hover:border-[var(--vscode-blue)] hover:shadow-lg transition-all duration-300"
-              >
+                >
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center space-x-3">
                       <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
@@ -425,12 +442,35 @@ const GitHubActivity: React.FC<{ username: string }> = ({ username }) => {
                         </p>
                       </div>
                     </div>
-                    <ExternalLink className="w-4 h-4 text-[var(--vscode-text-muted)] group-hover:text-[var(--vscode-blue)] transition-colors" />
+                    <a
+                      href={repo.html_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-xs px-2 py-1 rounded-md border border-[var(--vscode-border)] text-[var(--vscode-text-muted)] hover:text-[var(--vscode-text)] hover:border-[var(--vscode-blue)] transition-colors"
+                      title="Open on GitHub"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" />
+                      GitHub
+                    </a>
                 </div>
 
                   <p className="text-sm text-[var(--vscode-text-muted)] mb-4 line-clamp-2">
                     {repo.description || "No description available"}
                   </p>
+
+                  {/* Project link indicator if this repo exists in projects */}
+                  {projectRepoNameToSlug.has(repo.name.toLowerCase()) && (
+                    <div className="mb-4">
+                      <a
+                        href={`/projects/${projectRepoNameToSlug.get(repo.name.toLowerCase())}/`}
+                        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--vscode-blue)] text-white hover:bg-[var(--vscode-blue)]/90 text-xs transition-colors"
+                        title="View project details"
+                      >
+                        <Code className="w-3.5 h-3.5" />
+                        View Project
+                      </a>
+                    </div>
+                  )}
 
                   {repo.topics.length > 0 && (
                     <div className="flex flex-wrap gap-1 mb-4">
@@ -480,7 +520,7 @@ const GitHubActivity: React.FC<{ username: string }> = ({ username }) => {
                       </div>
                     </div>
                   </div>
-                </a>
+                </div>
               ))}
             </div>
           </div>
