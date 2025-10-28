@@ -9,11 +9,19 @@ interface ProjectMetadataProps {
 export default function ProjectMetadata({ project }: ProjectMetadataProps) {
   return (
     <div className="mb-8 pb-6 border-b border-[var(--projects-border)]">
-      <h1
-        className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent"
-      >
-        {project.name}
-      </h1>
+      <div className="flex items-center gap-3 mb-4">
+        <h1
+          className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent"
+        >
+          {project.name}
+        </h1>
+        {(project as any).isPrivateRepo && (
+          <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20">
+            <Lock className="w-4 h-4 text-amber-500 flex-shrink-0" />
+            <span className="text-xs font-medium text-amber-500">Private Repository</span>
+          </div>
+        )}
+      </div>
       <p
         className="text-base md:text-lg mb-4 leading-relaxed"
         style={{ color: "var(--projects-text-muted)" }}
