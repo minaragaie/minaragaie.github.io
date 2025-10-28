@@ -1,30 +1,77 @@
-# resume
+# minaragaie.github.io - Portfolio & Resume
 
-*Automatically synced with your [v0.app](https://v0.app) deployments*
+A modern, interactive resume and portfolio website built with Next.js, styled to look like VS Code.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/minaragaie89-8717s-projects/v0-resume)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/projects/rd9Ej8yYiLj)
+[![Deployed on GitHub Pages](https://img.shields.io/badge/Deployed%20on-GitHub%20Pages-181717?style=for-the-badge&logo=github)](https://minaragaie.github.io)
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+
+## 🚀 Live Demo
+
+**Website**: [https://minaragaie.github.io](https://minaragaie.github.io)
 
 ## Overview
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+An interactive resume and portfolio website featuring:
+- VS Code-inspired theme and UI
+- Real-time GitHub activity integration
+- Interactive project showcases
+- Multiple color themes (Dark, Light, High Contrast, Monokai)
+- Fully responsive design
 
-## Deployment
+## ✨ Features
 
-Your project is live at:
+- **VS Code-Inspired Design**: Complete with sidebar, activity bar, and file explorer
+- **Interactive Projects**: Detailed project pages with markdown support
+- **Real-Time GitHub Integration**: Live commit history and repository stats
+- **Theme Support**: Dark, Light, High Contrast, and Monokai themes
+- **Responsive Design**: Works seamlessly on all devices
+- **Print-Friendly**: Optimized for PDF generation
 
-**[https://vercel.com/minaragaie89-8717s-projects/v0-resume](https://vercel.com/minaragaie89-8717s-projects/v0-resume)**
+## 🛠️ Tech Stack
 
-## Build your app
+- **Framework**: Next.js 15 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Icons**: Lucide React
+- **Backend**: External API for resume data
+- **Deployment**: GitHub Pages with static export
 
-Continue building your app on:
+## 📦 Projects
 
-**[https://v0.app/chat/projects/rd9Ej8yYiLj](https://v0.app/chat/projects/rd9Ej8yYiLj)**
+### Featured Projects
 
-## How It Works
+- **Turris ERP System** 🔒 - Enterprise Resource Planning
+- **EntityConnect Platform** 🔒 - Entity & Membership Management
+- **Abgadya Learning Platform** 🔒 - Educational Progressive Web App
+- **StoryVerse** 🔒 - Full-stack bilingual storytelling platform
+- **Rogers Motors** 🔒 - Automotive dealership platform
 
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+🔒 = Private repository - portfolio content served from backend API
+
+## 🚀 Getting Started
+
+```bash
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Deploy to GitHub Pages
+npm run deploy:github
+```
+
+## 📝 Notes for Backend Integration
+
+This frontend fetches project data from an external backend API. Make sure your backend:
+1. Has all projects defined in `resume.json`
+2. Has corresponding `portfolio.md` files for private projects
+3. API endpoints are properly configured
+
+## 📄 License
+
+© 2025 Mina Youaness - All rights reserved
