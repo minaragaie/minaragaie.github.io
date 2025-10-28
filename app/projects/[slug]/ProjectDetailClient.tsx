@@ -74,13 +74,25 @@ export default function ProjectDetailClient() {
       try {
         // Check if project is private - fetch from backend
         if ((project as any).isPrivateRepo) {
-          const response = await fetch(`${config.API_BASE_URL}${config.ENDPOINTS.PORTFOLIO}&slug=${project.slug}`)
+          const portfolioUrl = `${config.API_BASE_URL}${config.ENDPOINTS.PORTFOLIO}&slug=${project.slug}`
+          console.log('Fetching portfolio from backend:', portfolioUrl)
+          
+          const response = await fetch(portfolioUrl)
           
           if (!response.ok) {
-            throw new Error("Failed to load portfolio from backend")
+            console.error('Backend response error:', response.status, response.statusText)
+            const errorText = await response.text()
+            console.error('Error details:', errorText)
+            throw new Error(`Failed to load portfolio from backend: ${response.status} ${response.statusText}`)
           }
           
           const result = await response.json()
+          console.log('Backend response:', result)
+          
+          if (!result.content || result.content.trim() === '') {
+            throw new Error("Portfolio content is empty or missing")
+          }
+          
           setMarkdownContent(result.content)
           setLoading(false)
           return
