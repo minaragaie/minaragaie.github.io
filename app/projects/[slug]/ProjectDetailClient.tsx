@@ -81,9 +81,23 @@ export default function ProjectDetailClient() {
           
           if (!response.ok) {
             console.error('Backend response error:', response.status, response.statusText)
-            const errorText = await response.text()
-            console.error('Error details:', errorText)
-            throw new Error(`Failed to load portfolio from backend: ${response.status} ${response.statusText}`)
+            try {
+              const errorText = await response.text()
+              console.error('Error details:', errorText)
+              
+              // Try to parse as JSON for more details
+              let errorDetails = errorText
+              try {
+                const errorJson = JSON.parse(errorText)
+                errorDetails = JSON.stringify(errorJson, null, 2)
+              } catch (e) {
+                // Keep as text if not JSON
+              }
+              
+              throw new Error(`Backend API error (${response.status}): ${response.statusText}\n${errorDetails}`)
+            } catch (parseError) {
+              throw new Error(`Failed to load portfolio from backend: ${response.status} ${response.statusText}`)
+            }
           }
           
           const result = await response.json()
