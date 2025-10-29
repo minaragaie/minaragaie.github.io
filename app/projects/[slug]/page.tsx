@@ -12,6 +12,7 @@ export async function generateStaticParams() {
     { slug: 'abgadya' },
     { slug: 'storyverse' },
     { slug: 'rogers-motors' },
+    { slug: 'job-tracker-pro' },
   ]
 }
 
