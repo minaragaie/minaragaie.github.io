@@ -18,6 +18,7 @@ import {
   GitCommit
 } from "lucide-react"
 import { useResumeData } from "@/hooks/useResumeData"
+import { config } from "@/lib/config"
 
 interface Repo {
   name: string
@@ -147,8 +148,8 @@ const GitHubActivity: React.FC<{ username: string }> = ({ username }) => {
         setLoading(true)
         setError(null)
 
-        // Use backend endpoint with GitHub token
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || 'https://resume-backend-service-ft2elzp8i-minaragaie89-8717s-projects.vercel.app'}/api/admin?type=github-activity&username=${username}`)
+        // Use unified backend endpoint
+        const response = await fetch(`${config.API_BASE_URL}${config.ENDPOINTS.GITHUB_ACTIVITY}&username=${username}`)
         
         if (!response.ok) {
           throw new Error(`Failed to fetch GitHub data: ${response.status}`)
