@@ -243,20 +243,20 @@ const GitHubActivity: React.FC<{ username: string }> = ({ username }) => {
     <div className="min-h-screen bg-[var(--vscode-editor-bg)] text-[var(--vscode-editor-foreground)]">
       {/* Header Section */}
       <div className="bg-gradient-to-r from-[var(--vscode-blue)]/10 to-[var(--vscode-green)]/10 border-b border-[var(--vscode-border)]">
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-[var(--vscode-blue)] to-[var(--vscode-green)] rounded-xl flex items-center justify-center">
-                <Github className="w-8 h-8 text-white" />
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-6 md:py-8">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div className="flex items-center gap-3 md:gap-4">
+              <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-[var(--vscode-blue)] to-[var(--vscode-green)] rounded-xl flex items-center justify-center">
+                <Github className="w-6 h-6 md:w-8 md:h-8 text-white" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-[var(--vscode-text)]">@{username}</h1>
-                <p className="text-[var(--vscode-text-muted)]">GitHub Activity Dashboard</p>
+                <h1 className="text-2xl md:text-3xl font-bold text-[var(--vscode-text)]">@{username}</h1>
+                <p className="text-sm md:text-base text-[var(--vscode-text-muted)]">GitHub Activity Dashboard</p>
               </div>
             </div>
-            <div className="text-right">
-              <div className="text-2xl font-bold text-[var(--vscode-text)]">{stats?.totalRepos || 0}</div>
-              <div className="text-sm text-[var(--vscode-text-muted)]">Repositories</div>
+            <div className="text-left md:text-right">
+              <div className="text-xl md:text-2xl font-bold text-[var(--vscode-text)]">{stats?.totalRepos || 0}</div>
+              <div className="text-xs md:text-sm text-[var(--vscode-text-muted)]">Repositories</div>
             </div>
           </div>
         </div>
@@ -264,42 +264,42 @@ const GitHubActivity: React.FC<{ username: string }> = ({ username }) => {
 
       {/* Stats Overview */}
       {stats && (
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <div className="bg-[var(--vscode-sidebar)] rounded-lg p-4 border border-[var(--vscode-border)]">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-6 md:py-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6 md:mb-8">
+            <div className="bg-[var(--vscode-sidebar)] rounded-lg p-3 md:p-4 border border-[var(--vscode-border)]">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-[var(--vscode-text-muted)]">Total Stars</p>
-                  <p className="text-2xl font-bold text-[var(--vscode-text)]">{stats.totalStars}</p>
+                  <p className="text-xs md:text-sm text-[var(--vscode-text-muted)]">Total Stars</p>
+                  <p className="text-xl md:text-2xl font-bold text-[var(--vscode-text)]">{stats.totalStars}</p>
                 </div>
-                <Star className="w-8 h-8 text-yellow-500" />
+                <Star className="w-6 h-6 md:w-8 md:h-8 text-yellow-500" />
               </div>
             </div>
-            <div className="bg-[var(--vscode-sidebar)] rounded-lg p-4 border border-[var(--vscode-border)]">
+            <div className="bg-[var(--vscode-sidebar)] rounded-lg p-3 md:p-4 border border-[var(--vscode-border)]">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-[var(--vscode-text-muted)]">Total Forks</p>
-                  <p className="text-2xl font-bold text-[var(--vscode-text)]">{stats.totalForks}</p>
+                  <p className="text-xs md:text-sm text-[var(--vscode-text-muted)]">Total Forks</p>
+                  <p className="text-xl md:text-2xl font-bold text-[var(--vscode-text)]">{stats.totalForks}</p>
                 </div>
-                <GitBranch className="w-8 h-8 text-blue-500" />
+                <GitBranch className="w-6 h-6 md:w-8 md:h-8 text-blue-500" />
               </div>
             </div>
-            <div className="bg-[var(--vscode-sidebar)] rounded-lg p-4 border border-[var(--vscode-border)]">
+            <div className="bg-[var(--vscode-sidebar)] rounded-lg p-3 md:p-4 border border-[var(--vscode-border)]">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-[var(--vscode-text-muted)]">Total Commits</p>
-                  <p className="text-2xl font-bold text-[var(--vscode-text)]">{stats.totalCommits.toLocaleString()}</p>
+                  <p className="text-xs md:text-sm text-[var(--vscode-text-muted)]">Total Commits</p>
+                  <p className="text-xl md:text-2xl font-bold text-[var(--vscode-text)]">{stats.totalCommits.toLocaleString()}</p>
                 </div>
-                <GitCommit className="w-8 h-8 text-green-500" />
+                <GitCommit className="w-6 h-6 md:w-8 md:h-8 text-green-500" />
               </div>
             </div>
-            <div className="bg-[var(--vscode-sidebar)] rounded-lg p-4 border border-[var(--vscode-border)]">
+            <div className="bg-[var(--vscode-sidebar)] rounded-lg p-3 md:p-4 border border-[var(--vscode-border)]">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-[var(--vscode-text-muted)]">Languages</p>
-                  <p className="text-2xl font-bold text-[var(--vscode-text)]">{Object.keys(stats.languages).length}</p>
+                  <p className="text-xs md:text-sm text-[var(--vscode-text-muted)]">Languages</p>
+                  <p className="text-xl md:text-2xl font-bold text-[var(--vscode-text)]">{Object.keys(stats.languages).length}</p>
                 </div>
-                <Code className="w-8 h-8 text-purple-500" />
+                <Code className="w-6 h-6 md:w-8 md:h-8 text-purple-500" />
               </div>
             </div>
           </div>
@@ -346,11 +346,11 @@ const GitHubActivity: React.FC<{ username: string }> = ({ username }) => {
       )}
 
       {/* Tab Navigation */}
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="flex space-x-1 bg-[var(--vscode-sidebar)] rounded-lg p-1 border border-[var(--vscode-border)]">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6">
+        <div className="flex flex-col sm:flex-row gap-1 sm:space-x-1 bg-[var(--vscode-sidebar)] rounded-lg p-1 border border-[var(--vscode-border)]">
           <button
             onClick={() => setActiveTab('repos')}
-            className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all ${
+            className={`w-full sm:flex-1 py-2 px-3 md:px-4 rounded-md text-sm font-medium transition-all ${
               activeTab === 'repos'
                 ? 'bg-[var(--vscode-blue)] text-white shadow-sm'
                 : 'text-[var(--vscode-text-muted)] hover:text-[var(--vscode-text)]'
@@ -363,7 +363,7 @@ const GitHubActivity: React.FC<{ username: string }> = ({ username }) => {
           </button>
           <button
             onClick={() => setActiveTab('languages')}
-            className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all ${
+            className={`w-full sm:flex-1 py-2 px-3 md:px-4 rounded-md text-sm font-medium transition-all ${
               activeTab === 'languages'
                 ? 'bg-[var(--vscode-blue)] text-white shadow-sm'
                 : 'text-[var(--vscode-text-muted)] hover:text-[var(--vscode-text)]'
@@ -376,7 +376,7 @@ const GitHubActivity: React.FC<{ username: string }> = ({ username }) => {
           </button>
           <button
             onClick={() => setActiveTab('activity')}
-            className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all ${
+            className={`w-full sm:flex-1 py-2 px-3 md:px-4 rounded-md text-sm font-medium transition-all ${
               activeTab === 'activity'
                 ? 'bg-[var(--vscode-blue)] text-white shadow-sm'
                 : 'text-[var(--vscode-text-muted)] hover:text-[var(--vscode-text)]'
@@ -391,12 +391,12 @@ const GitHubActivity: React.FC<{ username: string }> = ({ username }) => {
       </div>
 
       {/* Tab Content */}
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-6 md:py-8">
         {activeTab === 'repos' && (
           <div className="space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-[var(--vscode-text)]">Top Repositories</h2>
-              <div className="flex items-center space-x-4 text-sm text-[var(--vscode-text-muted)]">
+              <h2 className="text-xl md:text-2xl font-bold text-[var(--vscode-text)]">Top Repositories</h2>
+              <div className="hidden sm:flex items-center space-x-4 text-sm text-[var(--vscode-text-muted)]">
                 <div className="flex items-center space-x-2">
                   <div className="w-3 h-3 bg-amber-500 rounded-full"></div>
                   <span>Private</span>
@@ -407,12 +407,12 @@ const GitHubActivity: React.FC<{ username: string }> = ({ username }) => {
                 </div>
               </div>
             </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {repos.map((repo, index) => (
                 <div
                   key={`${repo.name}-${index}-${repo.html_url}`}
-                  className="group bg-[var(--vscode-sidebar)] border border-[var(--vscode-border)] rounded-xl p-6 hover:border-[var(--vscode-blue)] hover:shadow-lg transition-all duration-300"
-                >
+                  className="group bg-[var(--vscode-sidebar)] border border-[var(--vscode-border)] rounded-xl p-4 md:p-6 hover:border-[var(--vscode-blue)] hover:shadow-lg transition-all duration-300"
+              >
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center space-x-3">
                       <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
@@ -529,7 +529,7 @@ const GitHubActivity: React.FC<{ username: string }> = ({ username }) => {
 
         {activeTab === 'languages' && stats && (
           <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-[var(--vscode-text)] mb-6">Language Distribution</h2>
+            <h2 className="text-xl md:text-2xl font-bold text-[var(--vscode-text)] mb-4 md:mb-6">Language Distribution</h2>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="bg-[var(--vscode-sidebar)] border border-[var(--vscode-border)] rounded-xl p-6">
                 <h3 className="text-lg font-semibold text-[var(--vscode-text)] mb-4">By Repository Count</h3>
@@ -593,13 +593,13 @@ const GitHubActivity: React.FC<{ username: string }> = ({ username }) => {
 
         {activeTab === 'activity' && (
           <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-[var(--vscode-text)] mb-6">GitHub Activity</h2>
-            <div className="bg-[var(--vscode-sidebar)] border border-[var(--vscode-border)] rounded-xl p-6">
+            <h2 className="text-xl md:text-2xl font-bold text-[var(--vscode-text)] mb-4 md:mb-6">GitHub Activity</h2>
+            <div className="bg-[var(--vscode-sidebar)] border border-[var(--vscode-border)] rounded-xl p-4 md:p-6">
         <div className="flex justify-center">
           <img
             src={`https://ghchart.rshah.org/${username}?bg_color=${chartBg}`}
             alt={`${username} GitHub contributions`}
-                  className="w-full max-w-4xl rounded-lg shadow-lg"
+                  className="w-full max-w-full sm:max-w-3xl md:max-w-4xl rounded-lg shadow-lg"
           />
         </div>
             </div>
