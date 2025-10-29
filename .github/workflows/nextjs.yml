@@ -83,7 +83,7 @@ jobs:
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
         env:
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NEXT_PUBLIC_API_BASE_URL: https://resume-backend-service.vercel.app
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
