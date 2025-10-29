@@ -1,7 +1,7 @@
 // Configuration for external API and authentication
 export const config = {
   // External API Base URL
-  API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL || "https://resume-backend-service-n8hcyohlp-minaragaie89-8717s-projects.vercel.app",
+  API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
   
   // API Endpoints
   ENDPOINTS: {
@@ -14,6 +14,7 @@ export const config = {
     AUTH: "/api/admin-auth",
     GENERATE_PDF: "/api/generate-pdf",
     AI_CHAT: "/api/ai-chat",
+    GITHUB_ACTIVITY: "/api/admin?type=github-activity",
     // Version control endpoints
     RESUME_HISTORY: "/api/admin?type=resume&action=history",
     RESUME_RESTORE: "/api/admin?type=resume&action=restore",
