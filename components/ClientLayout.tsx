@@ -26,7 +26,7 @@ function LayoutInner({
 }) {
   const { isOpen: explorerIsOpen } = useExplorer()
   return (
-    <div className="h-screen flex bg-[var(--vscode-bg)] text-[var(--vscode-text)] transition-colors duration-300 overflow-hidden">
+    <div className="min-h-[100dvh] flex bg-[var(--vscode-bg)] text-[var(--vscode-text)] transition-colors duration-300 overflow-hidden">
       {/* Fixed Sidebar */}
       <div ref={sidebarRef} className="h-full transition-all duration-300 ease-in-out flex-shrink-0">
         <Sidebar

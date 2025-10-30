@@ -57,7 +57,7 @@ export default function StatusBar() {
     !status.includes("challenge")
 
   return (
-    <div id="app-status-bar" className="flex flex-row items-stretch w-full">
+    <div id="app-status-bar" className="flex flex-row items-stretch w-full pb-[env(safe-area-inset-bottom)]">
       {/* Mobile Remote/Close button (hidden on desktop) */}
       <button
         onClick={() => {
