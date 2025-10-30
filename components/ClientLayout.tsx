@@ -3,11 +3,13 @@
 import { useState, useRef, useEffect } from "react"
 import { usePathname, useRouter } from "next/navigation"
 import { StatusBarProvider } from "@/context/StatusBarContext"
+import { ExplorerProvider } from "@/context/ExplorerContext"
 import { AuthProvider } from "@/context/AuthContext"
 import { TerminalFocusProvider } from "@/context/TerminalFocusContext"
 import Sidebar from "./Sidebar"
 import Header from "./Header"
 import StatusBar from "./StatusBar"
+import SearchPanel from "./SearchPanel"
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(true) // Start closed by default
@@ -48,9 +50,32 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     }
   }
 
+  // Ensure global open-explorer opens the sidebar on mobile/any view
+  useEffect(() => {
+    const onOpenExplorer = () => {
+      // Ensure open happens after any concurrent handlers
+      if (typeof window !== 'undefined' && 'requestAnimationFrame' in window) {
+        window.requestAnimationFrame(() => setSidebarCollapsed(false))
+      } else {
+        setSidebarCollapsed(false)
+      }
+    }
+    if (typeof window !== 'undefined') {
+      window.addEventListener('open-explorer', onOpenExplorer as EventListener)
+      ;(window as any).__openExplorer = () => setSidebarCollapsed(false)
+    }
+    return () => {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('open-explorer', onOpenExplorer as EventListener)
+        if ((window as any).__openExplorer) delete (window as any).__openExplorer
+      }
+    }
+  }, [])
+
   return (
     <AuthProvider>
       <StatusBarProvider>
+        <ExplorerProvider>
         <TerminalFocusProvider>
         <div className="h-screen flex bg-[var(--vscode-bg)] text-[var(--vscode-text)] transition-colors duration-300 overflow-hidden">
         {/* Fixed Sidebar */}
@@ -75,11 +100,15 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             {children}
           </main>
 
+          {/* Sidebar Panel (overlay on mobile, docked on desktop) */}
+          <SearchPanel />
+
           {/* Fixed Status Bar */}
           <StatusBar />
         </div>
       </div>
         </TerminalFocusProvider>
+        </ExplorerProvider>
       </StatusBarProvider>
     </AuthProvider>
   )

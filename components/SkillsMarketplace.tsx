@@ -31,7 +31,9 @@ export default function SkillsMarketplace({ onNavigate }: SkillsMarketplaceProps
     const extensions: SkillExtension[] = []
 
     // Generate extensions from skills data
-    Object.entries(staticResumeData.skills).forEach(([category, skills]) => {
+    const skillsMap = (staticResumeData as any)?.skills as Record<string, string[]> | undefined
+    if (!skillsMap) return []
+    Object.entries(skillsMap).forEach(([category, skills]) => {
       skills.forEach((skill) => {
         const experienceYears = Math.floor(Math.random() * 8) + 2 // 2-10 years
         const projectCount = Math.floor(Math.random() * 15) + 5 // 5-20 projects

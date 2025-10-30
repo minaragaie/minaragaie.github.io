@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import {
   ChevronDown,
   ChevronRight,
@@ -50,7 +50,8 @@ interface SidebarProps {
 export default function Sidebar({ currentSection, onSectionClick, isCollapsed, onToggle }: SidebarProps) {
   const { resumeData: apiResumeData } = useResumeData()
   const [isExplorerOpen, setIsExplorerOpen] = useState(true)
-  const [activeTab, setActiveTab] = useState("explorer")
+  const touchStartXRef = useRef<number | null>(null)
+  const touchCurrentXRef = useRef<number | null>(null)
   const [expandedDirs, setExpandedDirs] = useState<Record<string, boolean>>({
     projects: false,
     experience: false,
@@ -68,10 +69,79 @@ export default function Sidebar({ currentSection, onSectionClick, isCollapsed, o
         e.preventDefault()
         setShowCommandPalette(true)
       }
+      // Close overlay on Escape
+      if (e.key === "Escape" && !isCollapsed) {
+        onToggle()
+      }
     }
     window.addEventListener("keydown", handleKeyDown)
     return () => window.removeEventListener("keydown", handleKeyDown)
   }, [])
+
+  // Broadcast explorer open/close state to other components (e.g., StatusBar)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const ev = new CustomEvent('explorer-state', { detail: { open: !isCollapsed } })
+      window.dispatchEvent(ev)
+    }
+  }, [isCollapsed])
+
+  // Panel is controlled externally via SearchPanel
+
+  // Persist active tab and explorer state
+  useEffect(() => {
+    const savedExplorer = typeof window !== 'undefined' ? localStorage.getItem('sidebar.explorerOpen') : null
+    if (savedExplorer) setIsExplorerOpen(savedExplorer === '1')
+  }, [])
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('sidebar.explorerOpen', isExplorerOpen ? '1' : '0')
+    }
+  }, [isExplorerOpen])
+
+  // Basic swipe gestures: open with edge swipe, close with right swipe on overlay
+  useEffect(() => {
+    const onTouchStart = (e: TouchEvent) => {
+      const x = e.touches[0]?.clientX ?? 0
+      // Only start from left edge when collapsed
+      if (isCollapsed && x <= 24) {
+        touchStartXRef.current = x
+        touchCurrentXRef.current = x
+      } else if (!isCollapsed) {
+        // When open, allow swipe anywhere on left half
+        touchStartXRef.current = x
+        touchCurrentXRef.current = x
+      }
+    }
+    const onTouchMove = (e: TouchEvent) => {
+      if (touchStartXRef.current !== null) {
+        touchCurrentXRef.current = e.touches[0]?.clientX ?? touchCurrentXRef.current
+      }
+    }
+    const onTouchEnd = () => {
+      if (touchStartXRef.current !== null && touchCurrentXRef.current !== null) {
+        const deltaX = touchCurrentXRef.current - touchStartXRef.current
+        // Threshold
+        if (isCollapsed && deltaX > 50) {
+          onToggle() // open
+        } else if (!isCollapsed && deltaX < -50) {
+          onToggle() // close
+        }
+      }
+      touchStartXRef.current = null
+      touchCurrentXRef.current = null
+    }
+    // Mobile only listeners
+    window.addEventListener('touchstart', onTouchStart)
+    window.addEventListener('touchmove', onTouchMove)
+    window.addEventListener('touchend', onTouchEnd)
+    return () => {
+      window.removeEventListener('touchstart', onTouchStart)
+      window.removeEventListener('touchmove', onTouchMove)
+      window.removeEventListener('touchend', onTouchEnd)
+    }
+  }, [isCollapsed, onToggle])
 
   const toggleDirectory = (dirId: string) => {
     setExpandedDirs((prev) => ({ ...prev, [dirId]: !prev[dirId] }))
@@ -211,42 +281,36 @@ export default function Sidebar({ currentSection, onSectionClick, isCollapsed, o
   ]
 
   return (
-    <div className={`relative h-full transition-all duration-300 ease-in-out overflow-hidden ${isCollapsed ? 'w-12' : 'w-[304px]'}`}>
-      {/* Activity Bar */}
-      <div className="absolute left-0 top-0 w-12 h-full bg-[var(--activity-bar-bg)] border-r border-[var(--activity-bar-border)] flex flex-col z-20">
+    <div className={`relative h-full transition-all duration-300 ease-in-out overflow-hidden ${isCollapsed ? 'w-0 md:w-12' : 'w-0 md:w-[304px]'}`}>
+      {/* Activity Bar (hidden on mobile, left rail on md+) */}
+      <div className="hidden md:flex md:absolute md:left-0 md:top-0 md:w-12 md:h-full bg-[var(--activity-bar-bg)] md:border-r border-[var(--activity-bar-border)] flex-col z-40">
           <div className="flex flex-col py-2">
           {sidebarTabs.map((tab) => {
             const Icon = tab.icon
-            const isActive = activeTab === tab.id
             return (
               <button
                 key={tab.id}
                 onClick={() => {
-                  setActiveTab(tab.id)
-                  if (isCollapsed) {
-                    onToggle() // Open sidebar if collapsed
-                  } else if (activeTab === tab.id) {
-                    onToggle() // Close sidebar if clicking the same active tab
-                  }
+                  const ev = new CustomEvent('open-explorer', { detail: { tab: tab.id } })
+                  window.dispatchEvent(ev)
                 }}
-                className={`w-12 h-12 flex items-center justify-center transition-all duration-200 relative group rounded mx-1 my-0.5 ${
-                  isActive && !isCollapsed
-                    ? "text-[var(--activity-bar-text-active)] bg-[var(--activity-bar-active)]"
-                    : "text-[var(--activity-bar-text)] hover:text-[var(--activity-bar-text-active)] hover:bg-[var(--activity-bar-hover)]"
-                }`}
+                className="w-12 h-12 flex items-center justify-center transition-all duration-200 relative group rounded mx-1 my-0.5 text-[var(--activity-bar-text)] hover:text-[var(--activity-bar-text-active)] hover:bg-[var(--activity-bar-hover)]"
                 title={tab.tooltip}
               >
                 <Icon size={20} />
-                {isActive && !isCollapsed && (
-                  <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-[var(--activity-bar-text-active)]"></div>
-                )}
               </button>
             )
           })}
 
           <div className="mt-auto mb-2">
             <button
-              onClick={onToggle}
+              onClick={() => {
+                if (isCollapsed) {
+                  const ev = new CustomEvent('open-explorer', { detail: { tab: 'explorer' } })
+                  window.dispatchEvent(ev)
+                }
+                onToggle()
+              }}
               className="w-12 h-12 flex items-center justify-center text-[var(--activity-bar-text)] hover:text-[var(--activity-bar-text-active)] hover:bg-[var(--activity-bar-hover)] transition-all duration-200 rounded mx-1 my-0.5"
               title={isCollapsed ? "Show Sidebar" : "Hide Sidebar"}
             >
@@ -254,110 +318,9 @@ export default function Sidebar({ currentSection, onSectionClick, isCollapsed, o
             </button>
           </div>
         </div>
-
-      {/* Sidebar Panel */}
-      <div className={`absolute left-12 top-0 w-64 bg-[var(--sidebar-bg)] border-r border-[var(--sidebar-border)] flex flex-col h-full transition-opacity duration-300 ease-in-out ${
-        isCollapsed ? 'opacity-0 invisible pointer-events-none' : 'opacity-100 visible pointer-events-auto'
-      }`}>
-          <div className="md:hidden absolute top-2 right-2 z-50">
-            <button onClick={onToggle} className="w-8 h-8 flex items-center justify-center text-[var(--activity-bar-text)] hover:text-[var(--activity-bar-text-active)] hover:bg-[var(--activity-bar-hover)] rounded transition-all duration-200">
-              <X size={16} />
-            </button>
-          </div>
-
-          {activeTab === "explorer" && (
-            <>
-              <div className="h-9 bg-[var(--sidebar-bg)] flex items-center px-3 text-xs text-[var(--sidebar-text)] font-medium border-b border-[var(--sidebar-border)] uppercase tracking-wide">
-                Explorer
-              </div>
-                    <div className="p-2 overflow-y-auto flex-1 sidebar-scrollbar">
-                <div className="mb-2">
-                  <button
-                    onClick={() => setIsExplorerOpen(!isExplorerOpen)}
-                    className="flex items-center gap-2 text-xs text-[var(--sidebar-text)] hover:text-[var(--sidebar-text-active)] transition-colors w-full py-1 px-2 hover:bg-[var(--sidebar-hover)] rounded"
-                  >
-                    {isExplorerOpen ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
-                    <FolderOpen size={14} className="text-[var(--sidebar-directory-color)]" />
-                    <span className="font-medium uppercase tracking-wide truncate">Resume-Portfolio</span>
-                  </button>
-                </div>
-
-                {isExplorerOpen && (
-                  <div className="ml-4 space-y-0.5">
-                    {fileStructure.map((item) => (
-                      <TreeItem
-                        key={item.id}
-                        id={item.id}
-                        name={item.name}
-                        icon={item.icon}
-                        color={item.color}
-                        isActive={currentSection === item.id}
-                        isExpanded={item.type === "directory" ? expandedDirs[item.id] : undefined}
-                        onToggleExpand={item.type === "directory" ? toggleDirectory : undefined}
-                        onClick={scrollToSection}
-                      >
-                        {item.children &&
-                          item.children.map((child: any) => (
-                            <TreeItem
-                              key={child.id}
-                              id={child.id}
-                              name={child.name}
-                              icon={child.icon}
-                              color={child.color}
-                              isActive={currentSection === child.id}
-                              onClick={scrollToSection}
-                            />
-                          ))}
-                      </TreeItem>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              <div className="p-3 border-t border-[var(--sidebar-border)] bg-[var(--sidebar-bg)]">
-                <div className="text-xs text-[var(--sidebar-text)] space-y-1">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span>{getTotalFileCount()} files • Portfolio v1.0</span>
-                  </div>
-                  <div className="text-[var(--sidebar-text-muted)]">Last modified: Just now</div>
-                </div>
-              </div>
-            </>
-          )}
-
-          {activeTab === "search" && (
-    <div className="flex flex-col h-full">
-      <div className="h-9 bg-[var(--sidebar-bg)] flex items-center px-3 text-xs text-[var(--sidebar-text)] font-medium border-b border-[var(--sidebar-border)] uppercase tracking-wide">
-        Search
       </div>
-                    <div className="p-4 flex-1 sidebar-scrollbar">
-        <button
-                  onClick={() => scrollToSection("projects")}
-          className="w-full flex items-center gap-3 p-3 bg-[var(--sidebar-hover)] hover:bg-[var(--sidebar-hover-active)] rounded-md transition-colors text-left"
-        >
-          <Search size={16} className="text-[var(--sidebar-text)]" />
-          <span className="text-sm text-[var(--sidebar-text)]">Search resume content...</span>
-          <div className="ml-auto text-xs text-[var(--sidebar-text)]">
-            <kbd className="px-1.5 py-0.5 bg-[var(--sidebar-hover)] rounded font-sans">{shortcutKey}</kbd>
-          </div>
-        </button>
-      </div>
-            </div>
-          )}
-          {activeTab === "git" && (
-            <CareerGitHistory onNavigate={scrollToSection} />
-          )}
-          
-          {activeTab === "extensions" && (
-            <SkillsMarketplace onNavigate={scrollToSection} />
-          )}
-          
-          {activeTab === "settings" && (
-            <RecruiterDashboard onNavigate={scrollToSection} />
-          )}
-        </div>
-      </div>
+
+      {/* Sidebar Panel is rendered by SearchPanel component */}
 
       {showCommandPalette && <CommandPalette onNavigate={scrollToSection} onClose={() => setShowCommandPalette(false)} />}
     </div>
