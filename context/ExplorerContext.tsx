@@ -23,14 +23,27 @@ export function ExplorerProvider({ children }: { children: React.ReactNode }) {
   const closeExplorer = useCallback(() => setIsOpen(false), [])
 
   useEffect(() => {
-    const handler = (e: Event) => {
+    const openHandler = (e: Event) => {
       const ce = e as CustomEvent<{ tab?: string }>
       if (ce.detail?.tab) setActiveTab(ce.detail.tab)
       setIsOpen(true)
     }
-    window.addEventListener("open-explorer", handler as EventListener)
-    return () => window.removeEventListener("open-explorer", handler as EventListener)
+    const closeHandler = () => setIsOpen(false)
+    window.addEventListener("open-explorer", openHandler as EventListener)
+    window.addEventListener("close-explorer", closeHandler as EventListener)
+    return () => {
+      window.removeEventListener("open-explorer", openHandler as EventListener)
+      window.removeEventListener("close-explorer", closeHandler as EventListener)
+    }
   }, [])
+
+  // Broadcast open/close state so StatusBar can reflect aria-expanded on mobile
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const ev = new CustomEvent('explorer-state', { detail: { open: isOpen } })
+      window.dispatchEvent(ev)
+    }
+  }, [isOpen])
 
   // Ensure a valid tab is active whenever opening
   useEffect(() => {

@@ -33,9 +33,10 @@ interface DraggableTabProps {
   isActive: boolean
   onNavigate: (path: string) => void
   onTabClose?: (id: Tab["id"]) => void
+  onMountRef?: (el: HTMLDivElement | null, index: number) => void
 }
 
-const DraggableTab: React.FC<DraggableTabProps> = memo(({ tab, index, moveTab, isActive, onNavigate, onTabClose }) => {
+const DraggableTab: React.FC<DraggableTabProps> = memo(({ tab, index, moveTab, isActive, onNavigate, onTabClose, onMountRef }) => {
   const ref = useRef<HTMLDivElement>(null)
 
   const handleNavigate = useCallback(() => {
@@ -79,10 +80,14 @@ const DraggableTab: React.FC<DraggableTabProps> = memo(({ tab, index, moveTab, i
 
   drag(drop(ref))
 
+  useEffect(() => {
+    onMountRef?.(ref.current, index)
+  }, [onMountRef, index])
+
   return (
     <div
       ref={ref}
-      className={`flex items-center gap-2 px-2 sm:px-3 py-1 h-8 cursor-pointer relative ${
+      className={`flex items-center gap-2 px-2 sm:px-3 py-1 h-8 cursor-pointer relative snap-start ${
         tab.id !== "github" ? "border-r border-[var(--vscode-border,#333)]" : ""
       } ${
         isActive
@@ -93,18 +98,26 @@ const DraggableTab: React.FC<DraggableTabProps> = memo(({ tab, index, moveTab, i
       onClick={handleNavigate}
     >
       {tab.icon}
-      <span className="whitespace-nowrap text-sm sm:text-base">{tab.label}</span>
+      <span className="whitespace-nowrap text-sm sm:text-base max-w-[38vw] sm:max-w-none truncate">{tab.label}</span>
 
       {isActive ? (
         <div className="ml-2 w-2 h-2 bg-[var(--vscode-text)] rounded-full" role="status" aria-label="File synced" />
       ) : (
         <button
           onClick={handleTabClose}
-          className="ml-2 text-xs opacity-50 hover:opacity-100"
+          className="ml-2 text-xs opacity-50 hover:opacity-100 hidden sm:inline"
         >
           <X className="w-3 h-3" />
         </button>
       )}
+
+      {/* Ink bar */}
+      <div
+        className={`absolute left-0 right-0 bottom-0 h-0.5 bg-[var(--vscode-blue)] transform origin-left transition-transform duration-200 ease-out ${
+          isActive ? 'scale-x-100' : 'scale-x-0'
+        }`}
+        aria-hidden
+      />
     </div>
   )
 })
@@ -139,9 +152,27 @@ const Header: React.FC = memo(() => {
     setTabs(prev => prev.filter(t => t.id !== id))
   }, [])
 
+  const tabRefs = useRef<Array<HTMLDivElement | null>>([])
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const activeIndex = tabs.findIndex(t => t.path === pathname)
+    const el = tabRefs.current[activeIndex]
+    const container = containerRef.current
+    if (!el || !container) return
+    try {
+      el.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+    } catch {}
+    // Fallback precise centering
+    const containerRect = container.getBoundingClientRect()
+    const elRect = el.getBoundingClientRect()
+    const delta = (elRect.left + elRect.width / 2) - (containerRect.left + containerRect.width / 2)
+    container.scrollTo({ left: container.scrollLeft + delta, behavior: 'smooth' })
+  }, [pathname, tabs])
+
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="w-full bg-[var(--vscode-sidebar)] border-b border-[var(--vscode-border)] flex items-center gap-2 flex-shrink-0 transition-colors duration-300 z-10 overflow-x-auto scrollbar-hide">
+      <div ref={containerRef} className="w-full bg-[var(--vscode-sidebar)] border-b border-[var(--vscode-border)] flex items-center gap-2 flex-shrink-0 transition-colors duration-300 z-10 overflow-x-auto scrollbar-hide snap-x">
         <div className="flex items-center flex-nowrap min-w-max">
           {tabs.map((tab, index) => (
             <DraggableTab
@@ -152,6 +183,7 @@ const Header: React.FC = memo(() => {
               isActive={pathname === tab.path}
               onNavigate={handleNavigate}
               onTabClose={handleTabClose}
+              onMountRef={(el) => { tabRefs.current[index] = el }}
             />
           ))}
         </div>

@@ -22,6 +22,7 @@ import {
 
 import { staticResumeData } from "@/lib/resume-data"
 import { useResumeData } from "@/hooks/useResumeData"
+import { useExplorer } from "@/context/ExplorerContext"
 
 // Type for static resume data
 interface StaticResumeData {
@@ -48,6 +49,7 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ currentSection, onSectionClick, isCollapsed, onToggle }: SidebarProps) {
+  const { isOpen: explorerOpen, activeTab } = useExplorer()
   const { resumeData: apiResumeData } = useResumeData()
   const [isExplorerOpen, setIsExplorerOpen] = useState(true)
   const touchStartXRef = useRef<number | null>(null)
@@ -281,12 +283,13 @@ export default function Sidebar({ currentSection, onSectionClick, isCollapsed, o
   ]
 
   return (
-    <div className={`relative h-full transition-all duration-300 ease-in-out overflow-hidden ${isCollapsed ? 'w-0 md:w-12' : 'w-0 md:w-[304px]'}`}>
+    <div className={`relative h-full transition-all duration-300 ease-in-out overflow-hidden w-0 md:w-12`}>
       {/* Activity Bar (hidden on mobile, left rail on md+) */}
       <div className="hidden md:flex md:absolute md:left-0 md:top-0 md:w-12 md:h-full bg-[var(--activity-bar-bg)] md:border-r border-[var(--activity-bar-border)] flex-col z-40">
           <div className="flex flex-col py-2">
           {sidebarTabs.map((tab) => {
             const Icon = tab.icon
+            const isActive = explorerOpen && activeTab === tab.id
             return (
               <button
                 key={tab.id}
@@ -294,10 +297,17 @@ export default function Sidebar({ currentSection, onSectionClick, isCollapsed, o
                   const ev = new CustomEvent('open-explorer', { detail: { tab: tab.id } })
                   window.dispatchEvent(ev)
                 }}
-                className="w-12 h-12 flex items-center justify-center transition-all duration-200 relative group rounded mx-1 my-0.5 text-[var(--activity-bar-text)] hover:text-[var(--activity-bar-text-active)] hover:bg-[var(--activity-bar-hover)]"
+                className={`w-12 h-12 flex items-center justify-center transition-all duration-200 relative group rounded mx-1 my-0.5 ${
+                  isActive
+                    ? "text-[var(--activity-bar-text-active)] bg-[var(--activity-bar-active)]"
+                    : "text-[var(--activity-bar-text)] hover:text-[var(--activity-bar-text-active)] hover:bg-[var(--activity-bar-hover)]"
+                }`}
                 title={tab.tooltip}
               >
                 <Icon size={20} />
+                {isActive && (
+                  <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-[var(--activity-bar-text-active)]"></div>
+                )}
               </button>
             )
           })}

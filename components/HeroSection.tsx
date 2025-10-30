@@ -64,12 +64,12 @@ const HeroSection = memo(({ resumeData }: HeroSectionProps) => {
 
   return (
     <div className="relative overflow-hidden">
-      <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+      <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-8 md:gap-12 items-center px-4 sm:px-6">
         {/* Left side - Info */}
-        <div className="transition-all duration-1000 animate-fade-in-up">
-          <div className="flex flex-row md:flex-row items-center gap-6 mb-8">
-            <div className="relative group">
-              <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-[var(--vscode-blue)] p-1 bg-gradient-to-br from-[var(--vscode-blue)] to-[var(--vscode-green)]">
+        <div className="transition-all duration-700 animate-fade-in-up">
+          <div className="flex flex-row items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
+            <div className="relative group shrink-0">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-2 border-[var(--vscode-blue)] p-1 bg-gradient-to-br from-[var(--vscode-blue)] to-[var(--vscode-green)]">
                 <Image
                   src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1753407168559-PCWiZjGAS8MtQhjaIJJBeSTHaxePdY.jpeg"
                   alt={`${resumeData.personalInfo.name} - Full Stack Developer`}
@@ -81,42 +81,42 @@ const HeroSection = memo(({ resumeData }: HeroSectionProps) => {
                   blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
                 />
               </div>
-              <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-[#28ca42] rounded-full border-2 border-[#1e1e1e] flex items-center justify-center">
-                <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+              <div className="absolute -bottom-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 bg-[#28ca42] rounded-full border-2 border-[#1e1e1e] flex items-center justify-center">
+                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white rounded-full animate-pulse"></div>
               </div>
             </div>
             <div>
-              <div className="text-[var(--vscode-keyword)] text-sm mb-1 font-mono">// Full Stack Developer</div>
-              <h1 className="text-4xl md:text-5xl font-bold text-[var(--vscode-text)] mb-1">
+              <div className="text-[var(--vscode-keyword)] text-xs sm:text-sm mb-1 font-mono">// Full Stack Developer</div>
+              <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-[var(--vscode-text)] mb-1 leading-tight">
                 <span className="text-[var(--vscode-green)]">const</span> <span className="text-[var(--vscode-keyword)]">developer</span>{" "}
                 <span className="text-[var(--vscode-text)]">=</span> <span className="text-[var(--vscode-string)]">"{resumeData.personalInfo.name}"</span>
               </h1>
-              <div className="h-1 w-32 bg-gradient-to-r from-[var(--vscode-blue)] to-[var(--vscode-green)] rounded-full"></div>
+              <div className="h-1 w-24 sm:w-32 bg-gradient-to-r from-[var(--vscode-blue)] to-[var(--vscode-green)] rounded-full"></div>
             </div>
           </div>
 
-          <div className="space-y-4 mb-8">
-            <div className="flex items-start gap-3 text-[var(--vscode-text-muted)]">
-              <span className="text-[var(--vscode-keyword)] font-mono">experience:</span>
-              <span className="text-[var(--vscode-string)]">"10+ years"</span>
+          <div className="space-y-2 sm:space-y-3 mb-6 sm:mb-8" role="list">
+            <div className="flex flex-col sm:flex-row items-start gap-1.5 sm:gap-3 text-[var(--vscode-text-muted)] text-sm leading-snug" role="listitem">
+              <span className="text-[var(--vscode-keyword)] font-mono sm:min-w-[7.5rem]">experience:</span>
+              <span className="text-[var(--vscode-string)] break-words">"10+ years"</span>
             </div>
-            <div className="flex items-start gap-3 text-[var(--vscode-text-muted)]">
-              <span className="text-[var(--vscode-keyword)] font-mono">specialization:</span>
-              <span className="text-[var(--vscode-string)]">"Full-Stack Web Development"</span>
+            <div className="flex flex-col sm:flex-row items-start gap-1.5 sm:gap-3 text-[var(--vscode-text-muted)] text-sm leading-snug" role="listitem">
+              <span className="text-[var(--vscode-keyword)] font-mono sm:min-w-[7.5rem]">specialization:</span>
+              <span className="text-[var(--vscode-string)] break-words">"Full-Stack Web Development"</span>
             </div>
-            <div className="flex items-start gap-3 text-[var(--vscode-text-muted)]">
-              <span className="text-[var(--vscode-keyword)] font-mono">passion:</span>
-              <span className="text-[var(--vscode-string)]">"Scalable & Secure Applications"</span>
+            <div className="flex flex-col sm:flex-row items-start gap-1.5 sm:gap-3 text-[var(--vscode-text-muted)] text-sm leading-snug" role="listitem">
+              <span className="text-[var(--vscode-keyword)] font-mono sm:min-w-[7.5rem]">passion:</span>
+              <span className="text-[var(--vscode-string)] break-words">"Scalable & Secure Applications"</span>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm mb-8">
-            <div className="flex items-center gap-2 p-3 rounded bg-[var(--card)] hover:bg-[var(--popover)] transition-all">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm mb-6 sm:mb-8">
+            <div className="flex items-center gap-2 p-3 rounded bg-[var(--card)] hover:bg-[var(--popover)] transition-all min-h-[44px]">
               <MapPin className="w-4 h-4 text-[var(--vscode-green)]" />
               <span>Voorhees, NJ</span>
             </div>
             <div
-              className="flex items-center gap-2 p-3 rounded bg-[var(--card)] hover:bg-[var(--popover)] transition-all cursor-pointer"
+              className="flex items-center gap-2 p-3 rounded bg-[var(--card)] hover:bg-[var(--popover)] transition-all cursor-pointer min-h-[44px]"
               onClick={() => {
                 // Open calendar booking in new tab
                 window.open('https://calendly.com/minayouaness/30min', '_blank')
@@ -125,24 +125,24 @@ const HeroSection = memo(({ resumeData }: HeroSectionProps) => {
               <Phone className="w-4 h-4 text-[var(--vscode-green)]" />
               <span>Book a Call</span>
             </div>
-            <div className="flex items-center gap-2 p-3 rounded bg-[var(--card)] hover:bg-[var(--popover)] transition-all">
+            <div className="flex items-center gap-2 p-3 rounded bg-[var(--card)] hover:bg-[var(--popover)] transition-all min-h-[44px]">
               <Mail className="w-4 h-4 text-[var(--vscode-green)]" />
               <span>minaragaie@hotmail.com</span>
             </div>
-            <div className="flex items-center gap-2 p-3 rounded bg-[var(--card)] hover:bg-[var(--popover)] transition-all">
+            <div className="flex items-center gap-2 p-3 rounded bg-[var(--card)] hover:bg-[var(--popover)] transition-all min-h-[44px]">
               <Linkedin className="w-4 h-4 text-[var(--vscode-green)]" />
               <span>LinkedIn</span>
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
            
             <DownloadPDFResume />
             {/* DownloadPDFResume */}
             <Button
               variant="outline"
               size="lg"
-              className="border-2 border-[#007acc] text-[#007acc] hover:bg-[#007acc] hover:text-white bg-transparent/80 backdrop-blur-sm shadow-md hover:shadow-lg">
+              className="border-2 border-[#007acc] text-[#007acc] hover:bg-[#007acc] hover:text-white bg-transparent/80 backdrop-blur-sm shadow-md hover:shadow-lg min-h-[44px]">
               <ExternalLink className="w-4 h-4 mr-2" />
               View Portfolio
             </Button>

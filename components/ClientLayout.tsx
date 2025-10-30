@@ -3,13 +3,59 @@
 import { useState, useRef, useEffect } from "react"
 import { usePathname, useRouter } from "next/navigation"
 import { StatusBarProvider } from "@/context/StatusBarContext"
-import { ExplorerProvider } from "@/context/ExplorerContext"
+import { ExplorerProvider, useExplorer } from "@/context/ExplorerContext"
 import { AuthProvider } from "@/context/AuthContext"
 import { TerminalFocusProvider } from "@/context/TerminalFocusContext"
 import Sidebar from "./Sidebar"
 import Header from "./Header"
 import StatusBar from "./StatusBar"
-import SearchPanel from "./SearchPanel"
+import SidePanel from "./SidePanel"
+
+function LayoutInner({
+  children,
+  sidebarCollapsed,
+  setSidebarCollapsed,
+  handleSectionClick,
+  sidebarRef,
+}: {
+  children: React.ReactNode
+  sidebarCollapsed: boolean
+  setSidebarCollapsed: (v: boolean) => void
+  handleSectionClick: (sectionId: string) => void
+  sidebarRef: React.RefObject<HTMLDivElement> | React.MutableRefObject<HTMLDivElement | null>
+}) {
+  const { isOpen: explorerIsOpen } = useExplorer()
+  return (
+    <div className="h-screen flex bg-[var(--vscode-bg)] text-[var(--vscode-text)] transition-colors duration-300 overflow-hidden">
+      {/* Fixed Sidebar */}
+      <div ref={sidebarRef} className="h-full transition-all duration-300 ease-in-out flex-shrink-0">
+        <Sidebar
+          currentSection=""
+          onSectionClick={handleSectionClick}
+          isCollapsed={sidebarCollapsed}
+          onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
+        />
+      </div>
+
+      {/* Main Content Area */}
+      <div className={`flex flex-col flex-1 overflow-hidden transition-all duration-300 ease-in-out ${explorerIsOpen ? 'md:ml-[304px]' : ''}`}>
+        {/* Fixed Header */}
+        <Header />
+
+        {/* Scrollable Main Content */}
+        <main className="flex-1 overflow-y-auto overflow-x-hidden main-scrollbar">
+          {children}
+        </main>
+
+        {/* Sidebar Panel (overlay on mobile, docked on desktop) */}
+        <SidePanel />
+
+        {/* Fixed Status Bar */}
+        <StatusBar />
+      </div>
+    </div>
+  )
+}
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(true) // Start closed by default
@@ -62,7 +108,12 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     }
     if (typeof window !== 'undefined') {
       window.addEventListener('open-explorer', onOpenExplorer as EventListener)
-      ;(window as any).__openExplorer = () => setSidebarCollapsed(false)
+      ;(window as any).__openExplorer = () => {
+        // Ensure SidePanel opens via context event, then adjust sidebar collapsed state
+        const ev = new CustomEvent('open-explorer', { detail: { tab: 'explorer' } })
+        window.dispatchEvent(ev)
+        setSidebarCollapsed(false)
+      }
     }
     return () => {
       if (typeof window !== 'undefined') {
@@ -76,38 +127,15 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     <AuthProvider>
       <StatusBarProvider>
         <ExplorerProvider>
-        <TerminalFocusProvider>
-        <div className="h-screen flex bg-[var(--vscode-bg)] text-[var(--vscode-text)] transition-colors duration-300 overflow-hidden">
-        {/* Fixed Sidebar */}
-        <div ref={sidebarRef} className="h-full transition-all duration-300 ease-in-out flex-shrink-0">
-          <Sidebar
-            currentSection=""
-            onSectionClick={handleSectionClick}
-            isCollapsed={sidebarCollapsed}
-            onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
-          />
-        </div>
-
-        {/* Main Content Area */}
-        <div className={`flex flex-col flex-1 overflow-hidden transition-all duration-300 ease-in-out ${
-          sidebarCollapsed ? 'ml-0' : 'ml-0'
-        }`}>
-          {/* Fixed Header */}
-          <Header />
-          
-          {/* Scrollable Main Content */}
-          <main className="flex-1 overflow-y-auto overflow-x-hidden main-scrollbar">
-            {children}
-          </main>
-
-          {/* Sidebar Panel (overlay on mobile, docked on desktop) */}
-          <SearchPanel />
-
-          {/* Fixed Status Bar */}
-          <StatusBar />
-        </div>
-      </div>
-        </TerminalFocusProvider>
+          <TerminalFocusProvider>
+            <LayoutInner
+              children={children}
+              sidebarCollapsed={sidebarCollapsed}
+              setSidebarCollapsed={setSidebarCollapsed}
+              handleSectionClick={handleSectionClick}
+              sidebarRef={sidebarRef}
+            />
+          </TerminalFocusProvider>
         </ExplorerProvider>
       </StatusBarProvider>
     </AuthProvider>

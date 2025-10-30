@@ -57,29 +57,41 @@ export default function StatusBar() {
     !status.includes("challenge")
 
   return (
-    <div className="flex flex-row items-stretch w-full">
-      {/* Mobile Remote button (hidden on desktop) */}
+    <div id="app-status-bar" className="flex flex-row items-stretch w-full">
+      {/* Mobile Remote/Close button (hidden on desktop) */}
       <button
-            onClick={() => {
-              // Prefer direct opener if available; fallback to event
-              if (typeof window !== 'undefined' && (window as any).__openExplorer) {
-                ;(window as any).__openExplorer()
-              } else {
-                const ev = new CustomEvent('open-explorer', { detail: { tab: 'explorer' } })
-                window.dispatchEvent(ev)
-              }
-            }}
-            className="md:hidden h-full w-10 rounded-[0px] bg-[#16825d] text-white flex items-center justify-center border-l border-[#3e3e42] shadow-none transition-colors hover:bg-[#12905e] active:bg-[#0f7a4d] focus-visible:outline-none focus-visible:ring focus-visible:ring-white/12"
-            aria-label="Open a Remote Window"
-            aria-expanded={explorerOpen}
-            title="Open a Remote Window"
-          >
-            {/* VS Code Remote style glyph: >< */}
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-95">
-              <path d="M8 5 3 12l5 7"/>
-              <path d="M16 5l5 7-5 7"/>
-            </svg>
-          </button>
+        onClick={() => {
+          if (explorerOpen) {
+            const ev = new Event('close-explorer')
+            window.dispatchEvent(ev)
+          } else if (typeof window !== 'undefined' && (window as any).__openExplorer) {
+            ;(window as any).__openExplorer()
+          } else {
+            const ev = new CustomEvent('open-explorer', { detail: { tab: 'explorer' } })
+            window.dispatchEvent(ev)
+          }
+        }}
+        className={`md:hidden h-full w-10 rounded-[0px] text-white flex items-center justify-center border-l border-[#3e3e42] shadow-none transition-colors focus-visible:outline-none focus-visible:ring focus-visible:ring-white/12 ${
+          explorerOpen ? 'bg-[#0f7a4d] hover:bg-[#0c6b43]' : 'bg-[#16825d] hover:bg-[#12905e] active:bg-[#0f7a4d]'
+        }`}
+        aria-label={explorerOpen ? 'Close Explorer' : 'Open a Remote Window'}
+        aria-expanded={explorerOpen}
+        title={explorerOpen ? 'Close Explorer' : 'Open a Remote Window'}
+      >
+        {explorerOpen ? (
+          // Close icon (X)
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-95">
+            <path d="M18 6 6 18"/>
+            <path d="m6 6 12 12"/>
+          </svg>
+        ) : (
+          // VS Code Remote style glyph: ><
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-95">
+            <path d="M8 5 3 12l5 7"/>
+            <path d="M16 5l5 7-5 7"/>
+          </svg>
+        )}
+      </button>
       
       <div className="flex-1 min-w-0 bg-[#2d2d30] border-t border-[#3e3e42] px-2.5 py-1.5 md:px-4 md:py-3 flex items-center justify-between text-xs md:text-sm">
         
