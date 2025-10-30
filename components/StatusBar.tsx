@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react"
 import { GitBranch, Coffee, X, MessageCircle, LogIn } from "lucide-react"
 import TerminalWindow from "./TerminalWindow"
+import ChatTerminal from "./ChatTerminal"
 import AuthTerminal from "./AuthTerminal"
 import { useStatusBar } from "@/context/StatusBarContext"
 import { useAuth } from "@/context/AuthContext"
@@ -29,6 +30,7 @@ export default function StatusBar() {
   
   // State
   const [explorerOpen, setExplorerOpen] = useState(false)
+  const [chatOpen, setChatOpen] = useState(false)
 
   // Track explorer overlay open/close from Sidebar
   useEffect(() => {
@@ -127,14 +129,7 @@ export default function StatusBar() {
             <span className="hidden sm:inline">Sign In</span>
           </button>
           <button
-            onClick={() => {
-              if (typeof window !== 'undefined' && (window as any).__openExplorer) {
-                ;(window as any).__openExplorer()
-              } else {
-                const ev = new CustomEvent('open-explorer', { detail: { tab: 'explorer' } })
-                window.dispatchEvent(ev)
-              }
-            }}
+            onClick={() => setChatOpen(true)}
             className="flex items-center justify-center gap-1 sm:gap-2 px-1.5 py-0.5 md:px-3 bg-[#007acc] hover:bg-[#007acc]/80 text-white rounded-[3px] transition-colors font-mono text-xs md:text-sm min-h-[32px] min-w-[32px]"
             title="Open AI Assistant"
             aria-label="Open AI Assistant"
@@ -168,6 +163,12 @@ export default function StatusBar() {
             onLogin={handleLogin}
             onClose={closeAuthTerminal}
           />
+        </div>
+      )}
+
+      {chatOpen && (
+        <div className="w-full z-50 transition-all duration-300">
+          <ChatTerminal onClose={() => setChatOpen(false)} />
         </div>
       )}
 

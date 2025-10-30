@@ -111,18 +111,17 @@ const DraggableTab: React.FC<DraggableTabProps> = memo(({ tab, index, moveTab, i
         </button>
       )}
 
-      {/* Ink bar */}
-      <div
-        className={`absolute left-0 right-0 bottom-0 h-0.5 bg-[var(--vscode-blue)] transform origin-left transition-transform duration-200 ease-out ${
-          isActive ? 'scale-x-100' : 'scale-x-0'
-        }`}
-        aria-hidden
-      />
+      {/* Per-tab ink removed; using moving ink bar in track */}
     </div>
   )
 })
 
 DraggableTab.displayName = 'DraggableTab'
+
+const normalizePath = (p: string) => {
+  if (!p) return p
+  return p !== "/" && p.endsWith("/") ? p.slice(0, -1) : p
+}
 
 const Header: React.FC = memo(() => {
   const pathname = usePathname()
@@ -154,33 +153,71 @@ const Header: React.FC = memo(() => {
 
   const tabRefs = useRef<Array<HTMLDivElement | null>>([])
   const containerRef = useRef<HTMLDivElement>(null)
+  const trackRef = useRef<HTMLDivElement>(null)
+  const [inkLeft, setInkLeft] = useState<number>(0)
+  const [inkWidth, setInkWidth] = useState<number>(0)
 
   useEffect(() => {
-    const activeIndex = tabs.findIndex(t => t.path === pathname)
+    const current = normalizePath(pathname)
+    const activeIndex = tabs.findIndex(t => normalizePath(t.path) === current)
     const el = tabRefs.current[activeIndex]
     const container = containerRef.current
     if (!el || !container) return
     try {
       el.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
     } catch {}
-    // Fallback precise centering
-    const containerRect = container.getBoundingClientRect()
-    const elRect = el.getBoundingClientRect()
-    const delta = (elRect.left + elRect.width / 2) - (containerRect.left + containerRect.width / 2)
-    container.scrollTo({ left: container.scrollLeft + delta, behavior: 'smooth' })
+    const measure = () => {
+      const left = (el as HTMLElement).offsetLeft - container.scrollLeft
+      const width = (el as HTMLElement).offsetWidth
+      setInkLeft(left)
+      setInkWidth(width)
+    }
+    // Wait for scrollIntoView to update scrollLeft before measuring
+    if (typeof requestAnimationFrame !== 'undefined') {
+      requestAnimationFrame(() => requestAnimationFrame(measure))
+    } else {
+      setTimeout(measure, 0)
+    }
+  }, [pathname, tabs])
+
+  useEffect(() => {
+    const updateInk = () => {
+      const current = normalizePath(pathname)
+      const activeIndex = tabs.findIndex(t => normalizePath(t.path) === current)
+      const el = tabRefs.current[activeIndex]
+      const container = containerRef.current
+      if (!el || !container) return
+      const left = (el as HTMLElement).offsetLeft - container.scrollLeft
+      const width = (el as HTMLElement).offsetWidth
+      setInkLeft(left)
+      setInkWidth(width)
+    }
+    window.addEventListener('resize', updateInk)
+    const container = containerRef.current
+    if (container) container.addEventListener('scroll', updateInk)
+    return () => {
+      window.removeEventListener('resize', updateInk)
+      if (container) container.removeEventListener('scroll', updateInk)
+    }
   }, [pathname, tabs])
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div ref={containerRef} className="sticky top-0 w-full bg-[var(--vscode-sidebar)] border-b border-[var(--vscode-border)] flex items-center gap-2 flex-shrink-0 transition-colors duration-300 z-30 overflow-x-auto scrollbar-hide snap-x">
-        <div className="flex items-center flex-nowrap min-w-max">
+      <div ref={containerRef} className="sticky top-0 w-full bg-[var(--vscode-sidebar)] border-b border-[var(--vscode-border)] flex items-center gap-2 flex-shrink-0 transition-colors duration-300 z-30 overflow-x-auto scrollbar-hide snap-x relative">
+        {/* Moving ink bar positioned relative to container so it draws over the bottom border */}
+        <div
+          className="pointer-events-none absolute -bottom-px h-[2px] z-50 transition-all duration-200 ease-out"
+          style={{ left: `${inkLeft}px`, width: `${inkWidth}px`, backgroundColor: 'var(--vscode-blue, #007acc)' }}
+          aria-hidden
+        />
+        <div ref={trackRef} className="flex items-center flex-nowrap min-w-max">
           {tabs.map((tab, index) => (
             <DraggableTab
               key={tab.id}
               tab={tab}
               index={index}
               moveTab={moveTab}
-              isActive={pathname === tab.path}
+              isActive={normalizePath(pathname) === normalizePath(tab.path)}
               onNavigate={handleNavigate}
               onTabClose={handleTabClose}
               onMountRef={(el) => { tabRefs.current[index] = el }}
