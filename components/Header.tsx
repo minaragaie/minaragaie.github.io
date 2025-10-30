@@ -172,7 +172,7 @@ const Header: React.FC = memo(() => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div ref={containerRef} className="w-full bg-[var(--vscode-sidebar)] border-b border-[var(--vscode-border)] flex items-center gap-2 flex-shrink-0 transition-colors duration-300 z-10 overflow-x-auto scrollbar-hide snap-x">
+      <div ref={containerRef} className="sticky top-0 w-full bg-[var(--vscode-sidebar)] border-b border-[var(--vscode-border)] flex items-center gap-2 flex-shrink-0 transition-colors duration-300 z-30 overflow-x-auto scrollbar-hide snap-x">
         <div className="flex items-center flex-nowrap min-w-max">
           {tabs.map((tab, index) => (
             <DraggableTab

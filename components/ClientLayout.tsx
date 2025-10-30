@@ -26,7 +26,7 @@ function LayoutInner({
 }) {
   const { isOpen: explorerIsOpen } = useExplorer()
   return (
-    <div className="min-h-[100dvh] flex bg-[var(--vscode-bg)] text-[var(--vscode-text)] transition-colors duration-300 overflow-hidden">
+    <div className="h-[100dvh] flex bg-[var(--vscode-bg)] text-[var(--vscode-text)] transition-colors duration-300 overflow-hidden">
       {/* Fixed Sidebar */}
       <div ref={sidebarRef} className="h-full transition-all duration-300 ease-in-out flex-shrink-0">
         <Sidebar
@@ -39,18 +39,18 @@ function LayoutInner({
 
       {/* Main Content Area */}
       <div className={`flex flex-col flex-1 overflow-hidden transition-all duration-300 ease-in-out ${explorerIsOpen ? 'md:ml-[304px]' : ''}`}>
-        {/* Fixed Header */}
+        {/* Fixed-in-layout Header (outside scroll area) */}
         <Header />
 
         {/* Scrollable Main Content */}
-        <main className="flex-1 overflow-y-auto overflow-x-hidden main-scrollbar">
+        <main className="flex-1 overflow-y-auto overflow-x-hidden main-scrollbar pb-16 md:pb-0">
           {children}
         </main>
 
         {/* Sidebar Panel (overlay on mobile, docked on desktop) */}
         <SidePanel />
 
-        {/* Fixed Status Bar */}
+        {/* Fixed-in-layout Status Bar (outside scroll area) */}
         <StatusBar />
       </div>
     </div>
