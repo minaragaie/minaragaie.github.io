@@ -93,13 +93,27 @@ const Header: React.FC = () => {
   const closeTab = (pathToClose: string) => {
     const nPathToClose = normalizePath(pathToClose)
     const indexToClose = tabs.findIndex(t => normalizePath(t.path) === nPathToClose)
-    if (indexToClose === value) {
-      const tabsAfter = tabs.filter(t => normalizePath(t.path) !== nPathToClose)
-      const nextIndex = Math.max(0, Math.min(indexToClose - 1, tabsAfter.length - 1))
-      const fallback = tabsAfter[nextIndex]
-      if (fallback) router.push(fallback.path)
-    }
+
+    // Remove the dynamic tab immediately
     setDynamicTabs(prev => prev.filter(t => normalizePath(t.path) !== nPathToClose))
+
+    // If the closed tab is currently selected, prefer browser history
+    if (indexToClose === value) {
+      if (typeof window !== 'undefined') {
+        const before = window.location.href
+        // Attempt to go back to the previously opened page (VS Code-like behavior)
+        router.back()
+        // After a short delay, if URL hasn't changed, fallback to neighbor tab
+        setTimeout(() => {
+          if (window.location.href === before) {
+            const tabsAfter = tabs.filter(t => normalizePath(t.path) !== nPathToClose)
+            const nextIndex = Math.max(0, Math.min(indexToClose - 1, tabsAfter.length - 1))
+            const fallback = tabsAfter[nextIndex]
+            if (fallback) router.push(fallback.path)
+          }
+        }, 150)
+      }
+    }
   }
 
   return (
