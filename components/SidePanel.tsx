@@ -120,15 +120,7 @@ export default function SidePanel() {
     if (sectionId.startsWith("projects-")) {
       const projectSlug = sectionId.replace("projects-", "")
       const path = `/projects/${projectSlug}/`
-      if (typeof window !== 'undefined') {
-        if ((window as any).headerAddTab) {
-          ;(window as any).headerAddTab(`${projectSlug}.ts`, path)
-        } else {
-          const ev = new CustomEvent('open-file-tab', { detail: { id: `projects-${projectSlug}`, label: `${projectSlug}.ts`, path } })
-          window.dispatchEvent(ev)
-        }
-      }
-      // SPA navigation
+      // SPA navigation only; Header will create/select the tab based on router
       router.push(path)
       closeExplorer()
       return

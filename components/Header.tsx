@@ -17,10 +17,10 @@ interface TabDef {
 
 const getBaseTabs = (isAuthenticated: boolean): TabDef[] => [
   { id: "mina", label: "mina-youaness-resume.tsx", icon: <FileCode className="w-4 h-4" />, path: "/" },
-  {
-    id: isAuthenticated ? "admin" : "signin",
-    label: isAuthenticated ? "admin.md" : "signin.md",
-    icon: isAuthenticated ? <Settings className="w-4 h-4" /> : <FileText className="w-4 h-4" />,
+  { 
+    id: isAuthenticated ? "admin" : "signin", 
+    label: isAuthenticated ? "admin.md" : "signin.md", 
+    icon: isAuthenticated ? <Settings className="w-4 h-4" /> : <FileText className="w-4 h-4" />, 
     path: isAuthenticated ? "/admin" : "/signin",
   },
   { id: "github", label: "GitHub Activity", icon: <Github className="w-4 h-4" />, path: "/github" },
@@ -35,84 +35,66 @@ const Header: React.FC = () => {
 
   const baseTabs = useMemo(() => getBaseTabs(isAuthenticated), [isAuthenticated])
   const [dynamicTabs, setDynamicTabs] = useState<TabDef[]>([])
-
   const tabs = useMemo(() => [...baseTabs, ...dynamicTabs], [baseTabs, dynamicTabs])
 
+  // Helper: ensure a dynamic tab exists/updated for current /projects/[slug] route
+  const ensureProjectTabFromLocation = () => {
+    if (typeof window === 'undefined') return
+    const path = window.location.pathname
+    const hash = window.location.hash || ''
+    if (!path.startsWith('/projects/')) return
+    const match = path.match(/^\/projects\/([^/#]+)(?:\/?#.*)?$/)
+    if (!match) return
+    const slug = match[1]
+    const fullPath = normalizePath(path) + hash
+    const tabId = `projects-${slug}`
+    setDynamicTabs(prev => {
+      const existingIndex = prev.findIndex(t => t.id === tabId)
+      if (existingIndex !== -1) {
+        const next = [...prev]
+        next[existingIndex] = { ...next[existingIndex], path: fullPath }
+        return next
+      }
+      return [...prev, { id: tabId, label: `${slug}.ts`, icon: <FileText className="w-4 h-4" />, path: fullPath, isDynamic: true }]
+    })
+  }
+
+  // Create/update project tab on pathname changes
+  useEffect(() => {
+    ensureProjectTabFromLocation()
+  }, [pathname])
+
+  // Keep selection hash-aware (recompute on hashchange) and ensure tab on hashchange
   const value = useMemo(() => {
     const hash = typeof window !== 'undefined' ? window.location.hash : ''
     const full = normalizePath(pathname) + hash
-    // Try exact match including hash first
     let idx = tabs.findIndex(t => normalizePath(t.path) === full)
     if (idx !== -1) return idx
-    // Fallback to pathname-only match
     idx = tabs.findIndex(t => normalizePath(t.path) === normalizePath(pathname))
     return idx === -1 ? 0 : idx
   }, [tabs, pathname])
 
+  useEffect(() => {
+    const onHash = () => {
+      ensureProjectTabFromLocation()
+      // Trigger re-render so selection recalculates
+      setDynamicTabs(prev => [...prev])
+    }
+    window.addEventListener('hashchange', onHash)
+    return () => window.removeEventListener('hashchange', onHash)
+  }, [])
+
   const closeTab = (pathToClose: string) => {
     const nPathToClose = normalizePath(pathToClose)
     const indexToClose = tabs.findIndex(t => normalizePath(t.path) === nPathToClose)
-
-    // If the closed tab is currently selected, compute fallback first and navigate immediately
     if (indexToClose === value) {
       const tabsAfter = tabs.filter(t => normalizePath(t.path) !== nPathToClose)
       const nextIndex = Math.max(0, Math.min(indexToClose - 1, tabsAfter.length - 1))
       const fallback = tabsAfter[nextIndex]
-      if (fallback) {
-        router.push(fallback.path)
-      }
+      if (fallback) router.push(fallback.path)
     }
-
-    // Update dynamic tabs list (remove closed)
     setDynamicTabs(prev => prev.filter(t => normalizePath(t.path) !== nPathToClose))
   }
-
-  // Expose global: headerAddTab(label, path)
-  useEffect(() => {
-    (window as any).headerAddTab = (label: string, path: string) => {
-      if (!label || !path) return
-      setDynamicTabs(prev => {
-        if ([...baseTabs, ...prev].some(t => normalizePath(t.path) === normalizePath(path))) return prev
-        return [...prev, { id: label, label, icon: <FileText className="w-4 h-4" />, path, isDynamic: true }]
-      })
-      router.push(path)
-    }
-    return () => {
-      if ((window as any).headerAddTab) delete (window as any).headerAddTab
-    }
-  }, [router, baseTabs])
-
-  // Listen for open-file-tab to add/select a dynamic tab
-  useEffect(() => {
-    const handler = (e: Event) => {
-      const ce = e as CustomEvent<{ id: string; label: string; path: string }>
-      const { id, label, path } = ce.detail || ({} as any)
-      if (!label || !path) return
-      setDynamicTabs(prev => {
-        if ([...baseTabs, ...prev].some(t => normalizePath(t.path) === normalizePath(path))) return prev
-        return [...prev, { id: id || label, label, icon: <FileText className="w-4 h-4" />, path, isDynamic: true }]
-      })
-      router.push(path)
-    }
-    window.addEventListener("open-file-tab", handler as EventListener)
-    return () => window.removeEventListener("open-file-tab", handler as EventListener)
-  }, [router, baseTabs])
-
-  // Ensure a project page always has a corresponding tab
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    const path = window.location.pathname + window.location.hash
-    if (!path.startsWith('/projects/')) return
-    const slugMatch = path.match(/^\/projects\/([^/#]+)(?:\/?#.*)?$/)
-    if (!slugMatch) return
-    const slug = slugMatch[1]
-    const fullPath = normalizePath(window.location.pathname) + (window.location.hash || '')
-
-    setDynamicTabs(prev => {
-      if ([...baseTabs, ...prev].some(t => normalizePath(t.path) === normalizePath(fullPath))) return prev
-      return [...prev, { id: `projects-${slug}`, label: `${slug}.ts`, icon: <FileText className="w-4 h-4" />, path: fullPath, isDynamic: true }]
-    })
-  }, [baseTabs, pathname])
 
   return (
     <div className="sticky top-0 w-full bg-[var(--vscode-sidebar)] border-b border-[var(--vscode-border)] z-30">
@@ -156,15 +138,12 @@ const Header: React.FC = () => {
             label={
               <span className="group inline-flex items-center gap-2 whitespace-nowrap text-sm sm:text-base truncate max-w-[38vw] sm:max-w-none">
                 {t.label}
-                {/* Fixed-width overlay container to avoid width shift */}
                 {t.isDynamic && value === index && (
                   <span className="ml-1 relative inline-flex items-center justify-center" style={{ width: 16, height: 16 }}>
-                    {/* Dot (hide by fading) */}
                     <span
                       className="absolute w-2 h-2 bg-[var(--vscode-text)] rounded-full transition-opacity duration-150 group-hover:opacity-0"
                       aria-hidden
                     />
-                    {/* Close button (show by fading) */}
                     <button
                       onMouseDown={(e) => e.stopPropagation()}
                       onClick={(e) => { e.stopPropagation(); e.preventDefault(); closeTab(t.path) }}
@@ -177,7 +156,6 @@ const Header: React.FC = () => {
                     </button>
                   </span>
                 )}
-                {/* Non-active dynamic tabs: reserve space and fade-in close on hover */}
                 {t.isDynamic && value !== index && (
                   <span className="ml-1 inline-flex items-center justify-center" style={{ width: 16, height: 16 }}>
                     <button
@@ -194,10 +172,10 @@ const Header: React.FC = () => {
                 )}
               </span>
             }
-          />
-        ))}
+            />
+          ))}
       </Tabs>
-    </div>
+      </div>
   )
 }
 
