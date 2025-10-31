@@ -315,10 +315,16 @@ export default function Sidebar({ currentSection, onSectionClick, isCollapsed, o
           <div className="mt-auto mb-2">
             <button
               onClick={() => {
-                if (isCollapsed) {
-                  const ev = new CustomEvent('open-explorer', { detail: { tab: 'explorer' } })
-                  window.dispatchEvent(ev)
+                // Close panel if open
+                if (explorerOpen) {
+                  const evClose = new Event('close-explorer')
+                  window.dispatchEvent(evClose)
+                } else if (isCollapsed) {
+                  // If panel closed and rail collapsed, open explorer panel first
+                  const evOpen = new CustomEvent('open-explorer', { detail: { tab: 'explorer' } })
+                  window.dispatchEvent(evOpen)
                 }
+                // Then toggle the rail collapse/expand
                 onToggle()
               }}
               className="w-12 h-12 flex items-center justify-center text-[var(--activity-bar-text)] hover:text-[var(--activity-bar-text-active)] hover:bg-[var(--activity-bar-hover)] transition-all duration-200 rounded mx-1 my-0.5"
