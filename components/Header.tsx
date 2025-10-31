@@ -51,15 +51,16 @@ const Header: React.FC = () => {
 
   const closeTab = (pathToClose: string) => {
     const nPathToClose = normalizePath(pathToClose)
-    const currentIndex = tabs.findIndex(t => normalizePath(t.path) === pathname)
-    const tabsAfter = tabs.filter(t => normalizePath(t.path) !== nPathToClose)
+    const indexToClose = tabs.findIndex(t => normalizePath(t.path) === nPathToClose)
 
+    // Update dynamic tabs list
     setDynamicTabs(prev => prev.filter(t => normalizePath(t.path) !== nPathToClose))
 
-    // If we closed the active tab, navigate to a sensible neighbor
-    if (normalizePath(pathname) === nPathToClose) {
-      const nextIndex = Math.max(0, Math.min(currentIndex - 1, tabsAfter.length - 1))
-      const fallback = tabsAfter[nextIndex] || baseTabs[0]
+    // If the closed tab is currently selected, navigate to a neighbor
+    if (indexToClose === value) {
+      const tabsAfter = tabs.filter(t => normalizePath(t.path) !== nPathToClose)
+      const nextIndex = Math.max(0, Math.min(indexToClose - 1, tabsAfter.length - 1))
+      const fallback = tabsAfter[nextIndex]
       if (fallback) router.push(fallback.path)
     }
   }
@@ -153,34 +154,41 @@ const Header: React.FC = () => {
             label={
               <span className="group inline-flex items-center gap-2 whitespace-nowrap text-sm sm:text-base truncate max-w-[38vw] sm:max-w-none">
                 {t.label}
-                {/* VS Code-like active dot that turns into an X on hover for dynamic tabs */}
+                {/* Fixed-width overlay container to avoid width shift */}
                 {t.isDynamic && value === index && (
-                  <>
-                    <span className="ml-1 w-2 h-2 bg-[var(--vscode-text)] rounded-full group-hover:hidden" aria-hidden />
+                  <span className="ml-1 relative inline-flex items-center justify-center" style={{ width: 16, height: 16 }}>
+                    {/* Dot (hide by fading) */}
+                    <span
+                      className="absolute w-2 h-2 bg-[var(--vscode-text)] rounded-full transition-opacity duration-150 group-hover:opacity-0"
+                      aria-hidden
+                    />
+                    {/* Close button (show by fading) */}
                     <button
                       onMouseDown={(e) => e.stopPropagation()}
                       onClick={(e) => { e.stopPropagation(); e.preventDefault(); closeTab(t.path) }}
-                      className="ml-1 hidden group-hover:inline-flex items-center justify-center rounded hover:bg-[var(--vscode-border,#333)]/60"
+                      className="absolute inline-flex items-center justify-center rounded hover:bg-[var(--vscode-border,#333)]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
                       title="Close"
                       aria-label={`Close ${t.label}`}
                       style={{ width: 16, height: 16 }}
                     >
                       <CloseIcon className="w-3 h-3 opacity-80" />
                     </button>
-                  </>
+                  </span>
                 )}
-                {/* For non-active dynamic tabs, show close on hover only */}
+                {/* Non-active dynamic tabs: reserve space and fade-in close on hover */}
                 {t.isDynamic && value !== index && (
-                  <button
-                    onMouseDown={(e) => e.stopPropagation()}
-                    onClick={(e) => { e.stopPropagation(); e.preventDefault(); closeTab(t.path) }}
-                    className="ml-1 hidden group-hover:inline-flex items-center justify-center rounded hover:bg-[var(--vscode-border,#333)]/60"
-                    title="Close"
-                    aria-label={`Close ${t.label}`}
-                    style={{ width: 16, height: 16 }}
-                  >
-                    <CloseIcon className="w-3 h-3 opacity-80" />
-                  </button>
+                  <span className="ml-1 inline-flex items-center justify-center" style={{ width: 16, height: 16 }}>
+                    <button
+                      onMouseDown={(e) => e.stopPropagation()}
+                      onClick={(e) => { e.stopPropagation(); e.preventDefault(); closeTab(t.path) }}
+                      className="inline-flex items-center justify-center rounded hover:bg-[var(--vscode-border,#333)]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
+                      title="Close"
+                      aria-label={`Close ${t.label}`}
+                      style={{ width: 16, height: 16 }}
+                    >
+                      <CloseIcon className="w-3 h-3 opacity-80" />
+                    </button>
+                  </span>
                 )}
               </span>
             }
