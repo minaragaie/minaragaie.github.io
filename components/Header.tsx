@@ -36,19 +36,31 @@ const Header: React.FC = () => {
   const baseTabs = useMemo(() => getBaseTabs(isAuthenticated), [isAuthenticated])
   const [dynamicTabs, setDynamicTabs] = useState<TabDef[]>([])
 
+  // Expose global: headerAddTab(label, path)
+  useEffect(() => {
+    (window as any).headerAddTab = (label: string, path: string) => {
+      if (!label || !path) return
+      setDynamicTabs(prev => {
+        if (prev.some(t => normalizePath(t.path) === normalizePath(path))) return prev
+        return [...prev, { id: label, label, icon: <FileText className="w-4 h-4" />, path, isDynamic: true }]
+      })
+      router.push(path)
+    }
+    return () => {
+      if ((window as any).headerAddTab) delete (window as any).headerAddTab
+    }
+  }, [router])
+
   // Listen for open-file-tab to add/select a dynamic tab
   useEffect(() => {
     const handler = (e: Event) => {
       const ce = e as CustomEvent<{ id: string; label: string; path: string }>
       const { id, label, path } = ce.detail || ({} as any)
-      if (!id || !label || !path) return
-
+      if (!label || !path) return
       setDynamicTabs(prev => {
-        // If exists, keep as is; else add
         if (prev.some(t => normalizePath(t.path) === normalizePath(path))) return prev
-        return [...prev, { id, label, icon: <FileText className="w-4 h-4" />, path, isDynamic: true }]
+        return [...prev, { id: id || label, label, icon: <FileText className="w-4 h-4" />, path, isDynamic: true }]
       })
-      // Navigate to the new tab's route
       router.push(path)
     }
     window.addEventListener("open-file-tab", handler as EventListener)
@@ -56,6 +68,22 @@ const Header: React.FC = () => {
   }, [router])
 
   const tabs = useMemo(() => [...baseTabs, ...dynamicTabs], [baseTabs, dynamicTabs])
+
+  // Ensure a project page always has a corresponding tab
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const path = window.location.pathname
+    if (!path.startsWith('/projects/')) return
+    const slugMatch = path.match(/^\/projects\/([^/]+)\/?/)
+    if (!slugMatch) return
+    const slug = slugMatch[1]
+    const fullPath = `${normalizePath(path)}/${window.location.hash || ''}`.replace(/\/+#$/, '/')
+
+    setDynamicTabs(prev => {
+      if ([...baseTabs, ...prev].some(t => normalizePath(t.path) === normalizePath(fullPath))) return prev
+      return [...prev, { id: `projects-${slug}`, label: `${slug}.ts`, icon: <FileText className="w-4 h-4" />, path: fullPath, isDynamic: true }]
+    })
+  }, [baseTabs, pathname])
 
   const value = useMemo(() => {
     const idx = tabs.findIndex(t => normalizePath(t.path) === pathname)

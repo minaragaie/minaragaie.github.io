@@ -5,6 +5,7 @@ import { useExplorer } from "@/context/ExplorerContext"
 import { useResumeData } from "@/hooks/useResumeData"
 import { staticResumeData } from "@/lib/resume-data"
 import { slugify } from "@/lib/utils"
+import { useRouter } from "next/navigation"
 import { ChevronDown, ChevronRight, FolderOpen, X, User, Code, Mail, Briefcase, GraduationCap, Award, FileText, Search, GitBranch, Settings, Utensils as Extensions } from "lucide-react"
 import TreeItem from "./TreeItem"
 import CareerGitHistory from "./CareerGitHistory"
@@ -23,6 +24,7 @@ const resumeData = staticResumeData as StaticResumeData | null
 export default function SidePanel() {
   const { isOpen, closeExplorer, activeTab, openExplorer } = useExplorer()
   const { resumeData: apiResumeData } = useResumeData()
+  const router = useRouter()
   const [isExplorerOpen, setIsExplorerOpen] = useState(true)
   const [touchStartX, setTouchStartX] = useState<number | null>(null)
   const [touchCurrentX, setTouchCurrentX] = useState<number | null>(null)
@@ -115,20 +117,18 @@ export default function SidePanel() {
     if (sectionId === "projects-empty") return
     if (sectionId.startsWith("projects-")) {
       const projectSlug = sectionId.replace("projects-", "")
-      // Notify header to open/select a tab for this file
+      const path = `/projects/${projectSlug}/`
       if (typeof window !== 'undefined') {
-        const ev = new CustomEvent('open-file-tab', {
-          detail: {
-            id: `projects-${projectSlug}`,
-            label: `${projectSlug}.ts`,
-            path: `/projects/${projectSlug}/`,
-            kind: 'project'
-          }
-        })
-        window.dispatchEvent(ev)
+        if ((window as any).headerAddTab) {
+          ;(window as any).headerAddTab(`${projectSlug}.ts`, path)
+        } else {
+          const ev = new CustomEvent('open-file-tab', { detail: { id: `projects-${projectSlug}`, label: `${projectSlug}.ts`, path } })
+          window.dispatchEvent(ev)
+        }
       }
-      // Navigate to project page
-      window.location.href = `/projects/${projectSlug}/`
+      // SPA navigation
+      router.push(path)
+      closeExplorer()
       return
     }
     let targetId = sectionId
