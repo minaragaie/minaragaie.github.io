@@ -157,49 +157,114 @@ const Header: React.FC = memo(() => {
   const [inkLeft, setInkLeft] = useState<number>(0)
   const [inkWidth, setInkWidth] = useState<number>(0)
 
+  const measureAndSetInkPosition = useCallback(() => {
+    const current = normalizePath(pathname)
+    const activeIndex = tabs.findIndex(t => normalizePath(t.path) === current)
+    const el = tabRefs.current[activeIndex]
+    const container = containerRef.current
+    if (!el || !container) return
+
+    const tabRect = el.getBoundingClientRect()
+    const containerRect = container.getBoundingClientRect()
+
+    // Position relative to container's left edge including horizontal scroll
+    const left = (tabRect.left - containerRect.left) + container.scrollLeft
+    const width = tabRect.width
+
+    setInkLeft(left)
+    setInkWidth(width)
+  }, [pathname, tabs])
+
   useEffect(() => {
     const current = normalizePath(pathname)
     const activeIndex = tabs.findIndex(t => normalizePath(t.path) === current)
     const el = tabRefs.current[activeIndex]
     const container = containerRef.current
     if (!el || !container) return
+    
+    // Center the tab
     try {
       el.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
     } catch {}
-    const measure = () => {
-      const left = (el as HTMLElement).offsetLeft - container.scrollLeft
-      const width = (el as HTMLElement).offsetWidth
-      setInkLeft(left)
-      setInkWidth(width)
+    
+    // Wait for scroll animation to complete (smooth scroll typically takes 300-400ms)
+    // Use a combination of RAF polling and timeout to ensure we measure after scroll completes
+    let rafId: number | null = null
+    let lastScrollLeft = container.scrollLeft
+    let stableCount = 0
+    let startedMeasuring = false
+    
+    const checkScrollComplete = () => {
+      if (startedMeasuring) return
+      const currentScrollLeft = container.scrollLeft
+      if (Math.abs(currentScrollLeft - lastScrollLeft) < 0.5) {
+        stableCount++
+        if (stableCount >= 5) {
+          // Scroll has been stable for 5 frames (~83ms at 60fps), measure now
+          startedMeasuring = true
+          if (rafId) cancelAnimationFrame(rafId)
+          measureAndSetInkPosition()
+          return
+        }
+      } else {
+        stableCount = 0
+        lastScrollLeft = currentScrollLeft
+      }
+      rafId = requestAnimationFrame(checkScrollComplete)
     }
-    // Wait for scrollIntoView to update scrollLeft before measuring
-    if (typeof requestAnimationFrame !== 'undefined') {
-      requestAnimationFrame(() => requestAnimationFrame(measure))
-    } else {
-      setTimeout(measure, 0)
-    }
-  }, [pathname, tabs])
-
-  useEffect(() => {
-    const updateInk = () => {
-      const current = normalizePath(pathname)
-      const activeIndex = tabs.findIndex(t => normalizePath(t.path) === current)
-      const el = tabRefs.current[activeIndex]
-      const container = containerRef.current
-      if (!el || !container) return
-      const left = (el as HTMLElement).offsetLeft - container.scrollLeft
-      const width = (el as HTMLElement).offsetWidth
-      setInkLeft(left)
-      setInkWidth(width)
-    }
-    window.addEventListener('resize', updateInk)
-    const container = containerRef.current
-    if (container) container.addEventListener('scroll', updateInk)
+    
+    // Start checking after scroll animation begins
+    setTimeout(() => {
+      lastScrollLeft = container.scrollLeft
+      rafId = requestAnimationFrame(checkScrollComplete)
+    }, 150)
+    
+    // Fallback timeout - measure after scroll animation should definitely be done
+    const timeoutId = setTimeout(() => {
+      if (rafId) cancelAnimationFrame(rafId)
+      if (!startedMeasuring) {
+        startedMeasuring = true
+        measureAndSetInkPosition()
+      }
+    }, 600)
+    
     return () => {
-      window.removeEventListener('resize', updateInk)
-      if (container) container.removeEventListener('scroll', updateInk)
+      if (rafId) cancelAnimationFrame(rafId)
+      clearTimeout(timeoutId)
     }
-  }, [pathname, tabs])
+  }, [pathname, tabs, measureAndSetInkPosition])
+
+  // Set initial position on mount
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      measureAndSetInkPosition()
+    }, 150)
+    return () => clearTimeout(timeout)
+  }, [measureAndSetInkPosition])
+
+  // Handle resize and manual scroll
+  useEffect(() => {
+    const handleResize = () => {
+      measureAndSetInkPosition()
+    }
+    
+    let scrollTimeout: ReturnType<typeof setTimeout> | null = null
+    const handleScroll = () => {
+      if (scrollTimeout) clearTimeout(scrollTimeout)
+      scrollTimeout = setTimeout(() => {
+        measureAndSetInkPosition()
+      }, 100)
+    }
+    
+    window.addEventListener('resize', handleResize)
+    const container = containerRef.current
+    if (container) container.addEventListener('scroll', handleScroll, { passive: true })
+    return () => {
+      if (scrollTimeout) clearTimeout(scrollTimeout)
+      window.removeEventListener('resize', handleResize)
+      if (container) container.removeEventListener('scroll', handleScroll)
+    }
+  }, [measureAndSetInkPosition])
 
   return (
     <DndProvider backend={HTML5Backend}>
