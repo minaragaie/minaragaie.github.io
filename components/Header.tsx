@@ -53,16 +53,18 @@ const Header: React.FC = () => {
     const nPathToClose = normalizePath(pathToClose)
     const indexToClose = tabs.findIndex(t => normalizePath(t.path) === nPathToClose)
 
-    // Update dynamic tabs list
-    setDynamicTabs(prev => prev.filter(t => normalizePath(t.path) !== nPathToClose))
-
-    // If the closed tab is currently selected, navigate to a neighbor
+    // If the closed tab is currently selected, compute fallback first and navigate immediately
     if (indexToClose === value) {
       const tabsAfter = tabs.filter(t => normalizePath(t.path) !== nPathToClose)
       const nextIndex = Math.max(0, Math.min(indexToClose - 1, tabsAfter.length - 1))
       const fallback = tabsAfter[nextIndex]
-      if (fallback) router.push(fallback.path)
+      if (fallback) {
+        router.push(fallback.path)
+      }
     }
+
+    // Update dynamic tabs list (remove closed)
+    setDynamicTabs(prev => prev.filter(t => normalizePath(t.path) !== nPathToClose))
   }
 
   // Expose global: headerAddTab(label, path)
