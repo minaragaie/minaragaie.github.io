@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useMemo, useState } from "react"
-import { FileCode, Github, FileText, Settings } from "lucide-react"
+import { FileCode, Github, FileText, Settings, X as CloseIcon } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
 import { useAuth } from "@/context/AuthContext"
 import Tabs from "@mui/material/Tabs"
@@ -36,12 +36,34 @@ const Header: React.FC = () => {
   const baseTabs = useMemo(() => getBaseTabs(isAuthenticated), [isAuthenticated])
   const [dynamicTabs, setDynamicTabs] = useState<TabDef[]>([])
 
+  const tabs = useMemo(() => [...baseTabs, ...dynamicTabs], [baseTabs, dynamicTabs])
+
+  const value = useMemo(() => {
+    const idx = tabs.findIndex(t => normalizePath(t.path) === pathname)
+    return idx === -1 ? 0 : idx
+  }, [tabs, pathname])
+
+  const closeTab = (pathToClose: string) => {
+    const nPathToClose = normalizePath(pathToClose)
+    const currentIndex = tabs.findIndex(t => normalizePath(t.path) === pathname)
+    const tabsAfter = tabs.filter(t => normalizePath(t.path) !== nPathToClose)
+
+    setDynamicTabs(prev => prev.filter(t => normalizePath(t.path) !== nPathToClose))
+
+    // If we closed the active tab, navigate to a sensible neighbor
+    if (normalizePath(pathname) === nPathToClose) {
+      const nextIndex = Math.max(0, Math.min(currentIndex - 1, tabsAfter.length - 1))
+      const fallback = tabsAfter[nextIndex] || baseTabs[0]
+      if (fallback) router.push(fallback.path)
+    }
+  }
+
   // Expose global: headerAddTab(label, path)
   useEffect(() => {
     (window as any).headerAddTab = (label: string, path: string) => {
       if (!label || !path) return
       setDynamicTabs(prev => {
-        if (prev.some(t => normalizePath(t.path) === normalizePath(path))) return prev
+        if ([...baseTabs, ...prev].some(t => normalizePath(t.path) === normalizePath(path))) return prev
         return [...prev, { id: label, label, icon: <FileText className="w-4 h-4" />, path, isDynamic: true }]
       })
       router.push(path)
@@ -49,7 +71,7 @@ const Header: React.FC = () => {
     return () => {
       if ((window as any).headerAddTab) delete (window as any).headerAddTab
     }
-  }, [router])
+  }, [router, baseTabs])
 
   // Listen for open-file-tab to add/select a dynamic tab
   useEffect(() => {
@@ -58,37 +80,30 @@ const Header: React.FC = () => {
       const { id, label, path } = ce.detail || ({} as any)
       if (!label || !path) return
       setDynamicTabs(prev => {
-        if (prev.some(t => normalizePath(t.path) === normalizePath(path))) return prev
+        if ([...baseTabs, ...prev].some(t => normalizePath(t.path) === normalizePath(path))) return prev
         return [...prev, { id: id || label, label, icon: <FileText className="w-4 h-4" />, path, isDynamic: true }]
       })
       router.push(path)
     }
     window.addEventListener("open-file-tab", handler as EventListener)
     return () => window.removeEventListener("open-file-tab", handler as EventListener)
-  }, [router])
-
-  const tabs = useMemo(() => [...baseTabs, ...dynamicTabs], [baseTabs, dynamicTabs])
+  }, [router, baseTabs])
 
   // Ensure a project page always has a corresponding tab
   useEffect(() => {
     if (typeof window === 'undefined') return
-    const path = window.location.pathname
+    const path = window.location.pathname + window.location.hash
     if (!path.startsWith('/projects/')) return
-    const slugMatch = path.match(/^\/projects\/([^/]+)\/?/)
+    const slugMatch = path.match(/^\/projects\/([^/#]+)(?:\/?#.*)?$/)
     if (!slugMatch) return
     const slug = slugMatch[1]
-    const fullPath = `${normalizePath(path)}/${window.location.hash || ''}`.replace(/\/+#$/, '/')
+    const fullPath = normalizePath(window.location.pathname) + (window.location.hash || '')
 
     setDynamicTabs(prev => {
       if ([...baseTabs, ...prev].some(t => normalizePath(t.path) === normalizePath(fullPath))) return prev
       return [...prev, { id: `projects-${slug}`, label: `${slug}.ts`, icon: <FileText className="w-4 h-4" />, path: fullPath, isDynamic: true }]
     })
   }, [baseTabs, pathname])
-
-  const value = useMemo(() => {
-    const idx = tabs.findIndex(t => normalizePath(t.path) === pathname)
-    return idx === -1 ? 0 : idx
-  }, [tabs, pathname])
 
   return (
     <div className="sticky top-0 w-full bg-[var(--vscode-sidebar)] border-b border-[var(--vscode-border)] z-30">
@@ -134,6 +149,18 @@ const Header: React.FC = () => {
                 {t.label}
                 {value === index && (
                   <span className="ml-1 w-2 h-2 bg-[var(--vscode-text)] rounded-full" aria-hidden />
+                )}
+                {t.isDynamic && (
+                  <button
+                    onMouseDown={(e) => e.stopPropagation()}
+                    onClick={(e) => { e.stopPropagation(); e.preventDefault(); closeTab(t.path) }}
+                    className="ml-1 inline-flex items-center justify-center rounded hover:bg-[var(--vscode-border,#333)]/60"
+                    title="Close"
+                    aria-label={`Close ${t.label}`}
+                    style={{ width: 16, height: 16 }}
+                  >
+                    <CloseIcon className="w-3 h-3 opacity-70" />
+                  </button>
                 )}
               </span>
             }
