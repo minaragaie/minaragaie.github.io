@@ -39,7 +39,13 @@ const Header: React.FC = () => {
   const tabs = useMemo(() => [...baseTabs, ...dynamicTabs], [baseTabs, dynamicTabs])
 
   const value = useMemo(() => {
-    const idx = tabs.findIndex(t => normalizePath(t.path) === pathname)
+    const hash = typeof window !== 'undefined' ? window.location.hash : ''
+    const full = normalizePath(pathname) + hash
+    // Try exact match including hash first
+    let idx = tabs.findIndex(t => normalizePath(t.path) === full)
+    if (idx !== -1) return idx
+    // Fallback to pathname-only match
+    idx = tabs.findIndex(t => normalizePath(t.path) === normalizePath(pathname))
     return idx === -1 ? 0 : idx
   }, [tabs, pathname])
 
@@ -145,21 +151,35 @@ const Header: React.FC = () => {
             icon={t.icon as any}
             iconPosition="start"
             label={
-              <span className="inline-flex items-center gap-2 whitespace-nowrap text-sm sm:text-base truncate max-w-[38vw] sm:max-w-none">
+              <span className="group inline-flex items-center gap-2 whitespace-nowrap text-sm sm:text-base truncate max-w-[38vw] sm:max-w-none">
                 {t.label}
-                {value === index && (
-                  <span className="ml-1 w-2 h-2 bg-[var(--vscode-text)] rounded-full" aria-hidden />
+                {/* VS Code-like active dot that turns into an X on hover for dynamic tabs */}
+                {t.isDynamic && value === index && (
+                  <>
+                    <span className="ml-1 w-2 h-2 bg-[var(--vscode-text)] rounded-full group-hover:hidden" aria-hidden />
+                    <button
+                      onMouseDown={(e) => e.stopPropagation()}
+                      onClick={(e) => { e.stopPropagation(); e.preventDefault(); closeTab(t.path) }}
+                      className="ml-1 hidden group-hover:inline-flex items-center justify-center rounded hover:bg-[var(--vscode-border,#333)]/60"
+                      title="Close"
+                      aria-label={`Close ${t.label}`}
+                      style={{ width: 16, height: 16 }}
+                    >
+                      <CloseIcon className="w-3 h-3 opacity-80" />
+                    </button>
+                  </>
                 )}
-                {t.isDynamic && (
+                {/* For non-active dynamic tabs, show close on hover only */}
+                {t.isDynamic && value !== index && (
                   <button
                     onMouseDown={(e) => e.stopPropagation()}
                     onClick={(e) => { e.stopPropagation(); e.preventDefault(); closeTab(t.path) }}
-                    className="ml-1 inline-flex items-center justify-center rounded hover:bg-[var(--vscode-border,#333)]/60"
+                    className="ml-1 hidden group-hover:inline-flex items-center justify-center rounded hover:bg-[var(--vscode-border,#333)]/60"
                     title="Close"
                     aria-label={`Close ${t.label}`}
                     style={{ width: 16, height: 16 }}
                   >
-                    <CloseIcon className="w-3 h-3 opacity-70" />
+                    <CloseIcon className="w-3 h-3 opacity-80" />
                   </button>
                 )}
               </span>
