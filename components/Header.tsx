@@ -150,30 +150,36 @@ const Header: React.FC = () => {
                       className="absolute w-2 h-2 bg-[var(--vscode-text)] rounded-full transition-opacity duration-150 group-hover:opacity-0"
                       aria-hidden
                     />
-                    <button
+                    <span
+                      role="button"
+                      tabIndex={0}
                       onMouseDown={(e) => e.stopPropagation()}
                       onClick={(e) => { e.stopPropagation(); e.preventDefault(); closeTab(t.path) }}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); closeTab(t.path) } }}
                       className="absolute inline-flex items-center justify-center rounded hover:bg-[var(--vscode-border,#333)]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
                       title="Close"
                       aria-label={`Close ${t.label}`}
                       style={{ width: 16, height: 16 }}
                     >
                       <CloseIcon className="w-3 h-3 opacity-80" />
-                    </button>
+                    </span>
                   </span>
                 )}
                 {t.isDynamic && value !== index && (
                   <span className="ml-1 inline-flex items-center justify-center" style={{ width: 16, height: 16 }}>
-                    <button
+                    <span
+                      role="button"
+                      tabIndex={0}
                       onMouseDown={(e) => e.stopPropagation()}
                       onClick={(e) => { e.stopPropagation(); e.preventDefault(); closeTab(t.path) }}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); closeTab(t.path) } }}
                       className="inline-flex items-center justify-center rounded hover:bg-[var(--vscode-border,#333)]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
                       title="Close"
                       aria-label={`Close ${t.label}`}
                       style={{ width: 16, height: 16 }}
                     >
                       <CloseIcon className="w-3 h-3 opacity-80" />
-                    </button>
+                    </span>
                   </span>
                 )}
               </span>
