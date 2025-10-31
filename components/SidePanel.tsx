@@ -12,6 +12,7 @@ import TreeItem from "./TreeItem"
 import CareerGitHistory from "./CareerGitHistory"
 import SkillsMarketplace from "./SkillsMarketplace"
 import RecruiterDashboard from "./RecruiterDashboard"
+import CommandPalette from "./CommandPalette"
 
 interface StaticResumeData {
   experience?: Array<{ id: number; company: string; degree?: string }>
@@ -33,6 +34,8 @@ export default function SidePanel() {
   const [statusBarHeight, setStatusBarHeight] = useState<number>(56)
   const MOBILE_RAIL_HEIGHT = 56
   
+  const [showCommandPalette, setShowCommandPalette] = useState(false)
+
   // Track expanded directories
   const [expandedDirs, setExpandedDirs] = useState<Set<string>>(new Set())
   const toggleDir = (id: string) => {
@@ -282,7 +285,7 @@ export default function SidePanel() {
           {activeTab === "search" && (
             <div className="flex flex-col h-full">
               <div className="p-4 flex-1 sidebar-scrollbar pb-16">
-                <button onClick={() => onNavigate("projects")} className="w-full flex items-center gap-3 p-3 bg-[var(--sidebar-hover)] hover:bg-[var(--sidebar-hover-active)] rounded-md transition-colors text-left">
+                <button onClick={() => setShowCommandPalette(true)} className="w-full flex items-center gap-3 p-3 bg-[var(--sidebar-hover)] hover:bg-[var(--sidebar-hover-active)] rounded-md transition-colors text-left">
                   <Code size={16} className="text-[var(--sidebar-text)]" />
                   <span className="text-sm text-[var(--sidebar-text)]">Search resume content...</span>
                   <div className="ml-auto text-xs text-[var(--sidebar-text)]">
@@ -290,6 +293,9 @@ export default function SidePanel() {
                   </div>
                 </button>
               </div>
+              {showCommandPalette && (
+                <CommandPalette onNavigate={onNavigate} onClose={() => setShowCommandPalette(false)} />)
+              }
             </div>
           )}
 
@@ -377,11 +383,17 @@ export default function SidePanel() {
           <div className="flex flex-col h-full">
             <div className="h-9 bg-[var(--sidebar-bg)] flex items-center px-3 text-xs text-[var(--sidebar-text)] font-medium border-b border-[var(--sidebar-border)] uppercase tracking-wide">Search</div>
             <div className="p-4 flex-1 sidebar-scrollbar">
-              <button onClick={() => onNavigate("projects")} className="w-full flex items-center gap-3 p-3 bg-[var(--sidebar-hover)] hover:bg-[var(--sidebar-hover-active)] rounded-md transition-colors text-left">
+              <button onClick={() => setShowCommandPalette(true)} className="w-full flex items-center gap-3 p-3 bg-[var(--sidebar-hover)] hover:bg-[var(--sidebar-hover-active)] rounded-md transition-colors text-left">
                 <Code size={16} className="text-[var(--sidebar-text)]" />
                 <span className="text-sm text-[var(--sidebar-text)]">Search resume content...</span>
+                <div className="ml-auto text-xs text-[var(--sidebar-text)]">
+                  <kbd className="px-1.5 py-0.5 bg-[var(--sidebar-hover)] rounded font-sans">⌘⇧P</kbd>
+                </div>
               </button>
             </div>
+            {showCommandPalette && (
+              <CommandPalette onNavigate={onNavigate} onClose={() => setShowCommandPalette(false)} />)
+            }
           </div>
         )}
         {activeTab === "git" && <CareerGitHistory onNavigate={onNavigate} />}
