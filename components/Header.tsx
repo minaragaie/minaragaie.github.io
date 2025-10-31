@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useMemo } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { FileCode, Github, FileText, Settings } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
 import { useAuth } from "@/context/AuthContext"
@@ -8,13 +8,14 @@ import Tabs from "@mui/material/Tabs"
 import Tab from "@mui/material/Tab"
 
 interface TabDef {
-  id: "mina" | "signin" | "admin" | "github"
+  id: string
   label: string
   icon: React.ReactNode
   path: string
+  isDynamic?: boolean
 }
 
-const getTabs = (isAuthenticated: boolean): TabDef[] => [
+const getBaseTabs = (isAuthenticated: boolean): TabDef[] => [
   { id: "mina", label: "mina-youaness-resume.tsx", icon: <FileCode className="w-4 h-4" />, path: "/" },
   {
     id: isAuthenticated ? "admin" : "signin",
@@ -31,7 +32,30 @@ const Header: React.FC = () => {
   const pathname = normalizePath(usePathname())
   const router = useRouter()
   const { isAuthenticated } = useAuth()
-  const tabs = useMemo(() => getTabs(isAuthenticated), [isAuthenticated])
+
+  const baseTabs = useMemo(() => getBaseTabs(isAuthenticated), [isAuthenticated])
+  const [dynamicTabs, setDynamicTabs] = useState<TabDef[]>([])
+
+  // Listen for open-file-tab to add/select a dynamic tab
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const ce = e as CustomEvent<{ id: string; label: string; path: string }>
+      const { id, label, path } = ce.detail || ({} as any)
+      if (!id || !label || !path) return
+
+      setDynamicTabs(prev => {
+        // If exists, keep as is; else add
+        if (prev.some(t => normalizePath(t.path) === normalizePath(path))) return prev
+        return [...prev, { id, label, icon: <FileText className="w-4 h-4" />, path, isDynamic: true }]
+      })
+      // Navigate to the new tab's route
+      router.push(path)
+    }
+    window.addEventListener("open-file-tab", handler as EventListener)
+    return () => window.removeEventListener("open-file-tab", handler as EventListener)
+  }, [router])
+
+  const tabs = useMemo(() => [...baseTabs, ...dynamicTabs], [baseTabs, dynamicTabs])
 
   const value = useMemo(() => {
     const idx = tabs.findIndex(t => normalizePath(t.path) === pathname)
@@ -52,10 +76,7 @@ const Header: React.FC = () => {
         TabIndicatorProps={{ style: { backgroundColor: "var(--vscode-blue, #007acc)", height: 2 } }}
         sx={{
           minHeight: 32,
-          
-          "& .MuiTabs-flexContainer": {
-            alignItems: "center",
-          },
+          "& .MuiTabs-flexContainer": { alignItems: "center" },
           "& .MuiTab-root": {
             minHeight: 32,
             padding: "4px 8px",
@@ -70,23 +91,23 @@ const Header: React.FC = () => {
             color: "var(--vscode-text)",
             backgroundColor: "var(--sidebar-bg-hover)",
           },
-          "& .MuiTab-iconWrapper": {
-            fontSize: 0,
-            marginRight: 6,
-          },
-          "& .MuiTabs-scrollButtons": {
-            color: "var(--vscode-text)",
-          },
+          "& .MuiTab-iconWrapper": { fontSize: 0, marginRight: 6 },
+          "& .MuiTabs-scrollButtons": { color: "var(--vscode-text)" },
         }}
       >
-        {tabs.map((t) => (
+        {tabs.map((t, index) => (
           <Tab
-            key={t.id}
+            key={`${t.id}-${t.path}`}
             disableRipple
             icon={t.icon as any}
             iconPosition="start"
             label={
-              <span className="whitespace-nowrap text-sm sm:text-base truncate max-w-[38vw] sm:max-w-none">{t.label}</span>
+              <span className="inline-flex items-center gap-2 whitespace-nowrap text-sm sm:text-base truncate max-w-[38vw] sm:max-w-none">
+                {t.label}
+                {value === index && (
+                  <span className="ml-1 w-2 h-2 bg-[var(--vscode-text)] rounded-full" aria-hidden />
+                )}
+              </span>
             }
           />
         ))}

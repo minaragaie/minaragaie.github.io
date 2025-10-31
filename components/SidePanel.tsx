@@ -115,6 +115,19 @@ export default function SidePanel() {
     if (sectionId === "projects-empty") return
     if (sectionId.startsWith("projects-")) {
       const projectSlug = sectionId.replace("projects-", "")
+      // Notify header to open/select a tab for this file
+      if (typeof window !== 'undefined') {
+        const ev = new CustomEvent('open-file-tab', {
+          detail: {
+            id: `projects-${projectSlug}`,
+            label: `${projectSlug}.ts`,
+            path: `/projects/${projectSlug}/`,
+            kind: 'project'
+          }
+        })
+        window.dispatchEvent(ev)
+      }
+      // Navigate to project page
       window.location.href = `/projects/${projectSlug}/`
       return
     }
