@@ -37,15 +37,21 @@ const Header: React.FC = () => {
   const [dynamicTabs, setDynamicTabs] = useState<TabDef[]>([])
   const tabs = useMemo(() => [...baseTabs, ...dynamicTabs], [baseTabs, dynamicTabs])
 
+  // Helper: extract project slug from any pathname (works with basePath)
+  const getProjectSlugFromPath = (path: string): string | null => {
+    const parts = path.split('/').filter(Boolean)
+    const idx = parts.indexOf('projects')
+    if (idx !== -1 && parts[idx + 1]) return parts[idx + 1]
+    return null
+  }
+
   // Helper: ensure a dynamic tab exists/updated for current /projects/[slug] route
   const ensureProjectTabFromLocation = () => {
     if (typeof window === 'undefined') return
     const path = window.location.pathname
     const hash = window.location.hash || ''
-    if (!path.startsWith('/projects/')) return
-    const match = path.match(/^\/projects\/([^/#]+)(?:\/?#.*)?$/)
-    if (!match) return
-    const slug = match[1]
+    const slug = getProjectSlugFromPath(path)
+    if (!slug) return
     const fullPath = normalizePath(path) + hash
     const tabId = `projects-${slug}`
     setDynamicTabs(prev => {
