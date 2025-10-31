@@ -1,8 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { Star, Download, Search, CheckCircle } from "lucide-react"
 import { staticResumeData } from "@/lib/resume-data"
+import { useResumeData } from "@/hooks/useResumeData"
 
 interface SkillsMarketplaceProps {
   onNavigate: (sectionId: string) => void
@@ -23,6 +24,9 @@ interface SkillExtension {
 }
 
 export default function SkillsMarketplace({ onNavigate }: SkillsMarketplaceProps) {
+  const { resumeData: apiResumeData } = useResumeData()
+  const data: any = apiResumeData || staticResumeData
+  
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [selectedExtension, setSelectedExtension] = useState<string | null>(null)
@@ -31,7 +35,7 @@ export default function SkillsMarketplace({ onNavigate }: SkillsMarketplaceProps
     const extensions: SkillExtension[] = []
 
     // Generate extensions from skills data
-    const skillsMap = (staticResumeData as any)?.skills as Record<string, string[]> | undefined
+    const skillsMap = data?.skills as Record<string, string[]> | undefined
     if (!skillsMap) return []
     Object.entries(skillsMap).forEach(([category, skills]) => {
       skills.forEach((skill) => {
@@ -118,17 +122,20 @@ export default function SkillsMarketplace({ onNavigate }: SkillsMarketplaceProps
     return icons[skill] || "⚡"
   }
 
-  const skillExtensions = generateSkillExtensions()
+  const skillExtensions = useMemo(() => generateSkillExtensions(), [data])
 
-  const filteredExtensions = skillExtensions.filter((ext) => {
+  const filteredExtensions = useMemo(() => skillExtensions.filter((ext) => {
     const matchesSearch =
       ext.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       ext.description.toLowerCase().includes(searchQuery.toLowerCase())
     const matchesCategory = selectedCategory === "all" || ext.category.toLowerCase() === selectedCategory
     return matchesSearch && matchesCategory
-  })
+  }), [skillExtensions, searchQuery, selectedCategory])
 
-  const categories = ["all", ...Array.from(new Set(skillExtensions.map((ext) => ext.category.toLowerCase())))]
+  const categories = useMemo(() => 
+    ["all", ...Array.from(new Set(skillExtensions.map((ext) => ext.category.toLowerCase())))],
+    [skillExtensions]
+  )
 
   const handleExtensionClick = (extension: SkillExtension) => {
     setSelectedExtension(extension.id)
