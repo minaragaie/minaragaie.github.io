@@ -6,6 +6,7 @@ import { useResumeData } from "@/hooks/useResumeData"
 import { staticResumeData } from "@/lib/resume-data"
 import { slugify } from "@/lib/utils"
 import { useRouter } from "next/navigation"
+import { usePathname } from "next/navigation"
 import { ChevronDown, ChevronRight, FolderOpen, X, User, Code, Mail, Briefcase, GraduationCap, Award, FileText, Search, GitBranch, Settings, Utensils as Extensions } from "lucide-react"
 import TreeItem from "./TreeItem"
 import CareerGitHistory from "./CareerGitHistory"
@@ -25,6 +26,7 @@ export default function SidePanel() {
   const { isOpen, closeExplorer, activeTab, openExplorer } = useExplorer()
   const { resumeData: apiResumeData } = useResumeData()
   const router = useRouter()
+  const pathname = usePathname()
   const [isExplorerOpen, setIsExplorerOpen] = useState(true)
   const [touchStartX, setTouchStartX] = useState<number | null>(null)
   const [touchCurrentX, setTouchCurrentX] = useState<number | null>(null)
@@ -140,6 +142,15 @@ export default function SidePanel() {
         if (cert) targetId = `cert-${cert.name.toLowerCase().replace(/[^a-z0-9]/g, "-")}`
       }
     }
+
+    // If not on the homepage, navigate to it with hash first
+    if (pathname !== "/") {
+      router.push(`/#${targetId}`)
+      closeExplorer()
+      return
+    }
+
+    // On homepage, smooth scroll
     const el = document.getElementById(targetId)
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" })
     closeExplorer()
