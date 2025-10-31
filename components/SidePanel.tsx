@@ -28,6 +28,17 @@ export default function SidePanel() {
   const [touchCurrentX, setTouchCurrentX] = useState<number | null>(null)
   const [statusBarHeight, setStatusBarHeight] = useState<number>(56)
   const MOBILE_RAIL_HEIGHT = 56
+  
+  // Track expanded directories
+  const [expandedDirs, setExpandedDirs] = useState<Set<string>>(new Set())
+  const toggleDir = (id: string) => {
+    setExpandedDirs(prev => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }
 
   useEffect(() => {
     const onEsc = (e: KeyboardEvent) => {
@@ -213,9 +224,27 @@ export default function SidePanel() {
                 {isExplorerOpen && (
                   <div className="ml-4 space-y-0.5">
                     {fileStructure.map((item: any) => (
-                      <TreeItem key={item.id} id={item.id} name={item.name} icon={item.icon} color={item.color} isActive={false} isExpanded={item.type === "directory" ? false : undefined} onClick={scrollToSection}>
+                      <TreeItem
+                        key={item.id}
+                        id={item.id}
+                        name={item.name}
+                        icon={item.icon}
+                        color={item.color}
+                        isActive={false}
+                        isExpanded={item.type === "directory" ? expandedDirs.has(item.id) : undefined}
+                        onToggleExpand={item.type === "directory" ? toggleDir : undefined}
+                        onClick={scrollToSection}
+                      >
                         {item.children && item.children.map((child: any) => (
-                          <TreeItem key={child.id} id={child.id} name={child.name} icon={child.icon} color={child.color} isActive={false} onClick={scrollToSection} />
+                          <TreeItem
+                            key={child.id}
+                            id={child.id}
+                            name={child.name}
+                            icon={child.icon}
+                            color={child.color}
+                            isActive={false}
+                            onClick={scrollToSection}
+                          />
                         ))}
                       </TreeItem>
                     ))}
@@ -299,9 +328,27 @@ export default function SidePanel() {
               {isExplorerOpen && (
                 <div className="ml-4 space-y-0.5">
                   {fileStructure.map((item: any) => (
-                    <TreeItem key={item.id} id={item.id} name={item.name} icon={item.icon} color={item.color} isActive={false} isExpanded={item.type === "directory" ? false : undefined} onClick={scrollToSection}>
+                    <TreeItem
+                      key={item.id}
+                      id={item.id}
+                      name={item.name}
+                      icon={item.icon}
+                      color={item.color}
+                      isActive={false}
+                      isExpanded={item.type === "directory" ? expandedDirs.has(item.id) : undefined}
+                      onToggleExpand={item.type === "directory" ? toggleDir : undefined}
+                      onClick={scrollToSection}
+                    >
                       {item.children && item.children.map((child: any) => (
-                        <TreeItem key={child.id} id={child.id} name={child.name} icon={child.icon} color={child.color} isActive={false} onClick={scrollToSection} />
+                        <TreeItem
+                          key={child.id}
+                          id={child.id}
+                          name={child.name}
+                          icon={child.icon}
+                          color={child.color}
+                          isActive={false}
+                          onClick={scrollToSection}
+                        />
                       ))}
                     </TreeItem>
                   ))}

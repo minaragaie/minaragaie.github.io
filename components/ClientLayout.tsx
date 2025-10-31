@@ -38,7 +38,7 @@ function LayoutInner({
       </div>
 
       {/* Main Content Area */}
-      <div className={`flex flex-col flex-1 overflow-hidden transition-all duration-300 ease-in-out ${explorerIsOpen ? 'md:ml-[304px]' : ''}`}>
+      <div className={`flex flex-col flex-1 overflow-hidden transition-all duration-300 ease-in-out ${explorerIsOpen ? 'md:ml-[256px]' : ''}`}>
         {/* Fixed-in-layout Header (outside scroll area) */}
         <Header />
 
