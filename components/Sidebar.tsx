@@ -36,7 +36,7 @@ interface StaticResumeData {
 const resumeData = staticResumeData as StaticResumeData | null
 import { slugify } from "@/lib/utils"
 import TreeItem from "./TreeItem"
-import CommandPalette from "./CommandPalette"
+import CommandPalette from "./command-palette"
 import CareerGitHistory from "./CareerGitHistory"
 import SkillsMarketplace from "./SkillsMarketplace"
 import RecruiterDashboard from "./RecruiterDashboard"

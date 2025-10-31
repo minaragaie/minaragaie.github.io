@@ -12,7 +12,7 @@ import TreeItem from "./TreeItem"
 import CareerGitHistory from "./CareerGitHistory"
 import SkillsMarketplace from "./SkillsMarketplace"
 import RecruiterDashboard from "./RecruiterDashboard"
-import CommandPalette from "./CommandPalette"
+import CommandPalette from "./command-palette"
 
 interface StaticResumeData {
   experience?: Array<{ id: number; company: string; degree?: string }>
