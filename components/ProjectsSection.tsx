@@ -49,7 +49,7 @@ const ProjectCard = memo(({ project, index, companyName }: ProjectCardProps) => 
         >
           <Icon className="w-5 h-5" style={{ color: "var(--projects-text-white)" }} />
         </div>
-        <div>
+        <div className="flex-1">
           <h3 className="font-semibold text-sm" style={{ color: "var(--projects-text-white)" }}>
             {project.name}
           </h3>
@@ -60,15 +60,15 @@ const ProjectCard = memo(({ project, index, companyName }: ProjectCardProps) => 
             <span className="text-xs" style={{ color: "var(--projects-text-muted)" }}>
               • {project.year}
             </span>
-            {companyName && (
-              <>
-                <span className="text-xs" style={{ color: "var(--projects-text-muted)" }}>•</span>
-                <span className="text-xs px-2 py-0.5 rounded-full bg-[var(--projects-card-bg)] border border-[var(--projects-border)]" style={{ color: "var(--projects-text-accent-blue)" }}>
-                  @ {companyName}
-                </span>
-              </>
-            )}
           </div>
+          {companyName && (
+            <div className="mt-2">
+              <span className="inline-flex items-center gap-1 px-2 py-1 text-xs rounded-md font-medium bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/30 text-blue-400">
+                <Building2 className="w-3 h-3" />
+                {companyName}
+              </span>
+            </div>
+          )}
         </div>
       </div>
 
