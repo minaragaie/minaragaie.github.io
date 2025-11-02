@@ -32,7 +32,8 @@ export default function EducationSection({ resumeData }: EducationSectionProps) 
         {resumeData.education.map((edu, index) => (
           <div
             key={index}
-            className="rounded-lg p-6 sm:p-8 border transition-all duration-300 group opacity-100 translate-y-0"
+            id={`education-${index}`}
+            className="rounded-lg p-6 sm:p-8 border transition-all duration-300 group opacity-100 translate-y-0 scroll-mt-24"
             style={{
               backgroundColor: "var(--card)",
               borderColor: "var(--vscode-border)",

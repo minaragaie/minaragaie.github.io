@@ -44,7 +44,7 @@ export default function ExperienceSection({ resumeData }: ExperienceSectionProps
             </div>
           ) : (
             resumeData.experience.map((exp, index) => (
-            <div key={exp.id} className="relative">
+            <div key={exp.id} id={`experience-${exp.id}`} className="relative scroll-mt-24">
               {/* Timeline marker */}
               <div className="absolute left-1.5 sm:left-5 top-0 w-3 sm:w-4 h-3 sm:h-4 bg-[var(--vscode-blue)] rounded-full border-2 sm:border-4 border-[var(--bg-primary)] z-10 shadow-md shadow-[var(--vscode-blue)]/50"></div>
 

@@ -139,7 +139,8 @@ export default function CertificationsSection({ resumeData }: CertificationsSect
         {(resumeData.certifications as Certificate[]).map((cert, index) => (
           <div
             key={index}
-            className="flex transition-all duration-700 opacity-100 translate-y-0"
+            id={`certifications-${index}`}
+            className="flex transition-all duration-700 opacity-100 translate-y-0 scroll-mt-24"
             style={{
               transitionDelay: `${index * 200}ms`,
               perspective: "1000px",

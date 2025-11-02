@@ -118,15 +118,9 @@ export default function SidePanel() {
       closeExplorer()
       return
     }
-    let targetId = sectionId
-    if (sectionId.includes("-")) {
-      const [parent, idxOrName] = sectionId.split("-")
-      // Navigate to parent section for experience, education, and certifications
-      if (parent === "projects") targetId = "projects"
-      if (parent === "experience") targetId = "experience"
-      if (parent === "education") targetId = "education"
-      if (parent === "certifications") targetId = "certifications"
-    }
+    
+    // Use the sectionId as-is for individual items (experience-1, education-0, certifications-2)
+    const targetId = sectionId
 
     // If not on the homepage, navigate to it with hash first
     if (pathname !== "/") {
@@ -135,9 +129,11 @@ export default function SidePanel() {
       return
     }
 
-    // On homepage, smooth scroll
+    // On homepage, smooth scroll to specific item
     const el = document.getElementById(targetId)
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" })
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" })
+    }
     closeExplorer()
   }
 
