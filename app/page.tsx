@@ -1,6 +1,6 @@
 "use client"
 
-import { memo } from "react"
+import { memo, useEffect } from "react"
 import HeroSection from "@/components/HeroSection"
 import ProjectsSection from "@/components/ProjectsSection"
 import ExperienceSection from "@/components/ExperienceSection"
@@ -21,6 +21,23 @@ import { useResumeData } from "@/hooks/useResumeData"
 
 const Resume = memo(() => {
   const { resumeData, loading, error } = useResumeData()
+
+  // Handle hash navigation after page loads (for experience, education, certifications)
+  useEffect(() => {
+    if (!loading && resumeData) {
+      const hash = window.location.hash
+      if (hash) {
+        const id = hash.substring(1) // Remove the #
+        // Wait for DOM to be ready and animations to settle
+        setTimeout(() => {
+          const element = document.getElementById(id)
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth", block: "start" })
+          }
+        }, 300) // Slightly longer delay to ensure all content is rendered
+      }
+    }
+  }, [loading, resumeData])
 
   if (loading) {
     return (
