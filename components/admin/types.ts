@@ -20,6 +20,7 @@ export interface ResumeData {
     description: string
     technologies: string[]
     achievements?: string[]
+    projects?: string[] // Array of project slugs built during this experience
   }>
   education: Array<{
     degree: string

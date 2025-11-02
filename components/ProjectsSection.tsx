@@ -17,9 +17,10 @@ const iconMap: Record<string, React.ComponentType<any>> = {
 interface ProjectCardProps {
   project: any
   index: number
+  companyName?: string
 }
 
-const ProjectCard = memo(({ project, index }: ProjectCardProps) => {
+const ProjectCard = memo(({ project, index, companyName }: ProjectCardProps) => {
   // Get the icon component from the icon map (if icon is a string) or use it directly (if already a component)
   const Icon = typeof project.icon === 'string' 
     ? (iconMap[project.icon] || Building2)
@@ -52,13 +53,21 @@ const ProjectCard = memo(({ project, index }: ProjectCardProps) => {
           <h3 className="font-semibold text-sm" style={{ color: "var(--projects-text-white)" }}>
             {project.name}
           </h3>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <span className="text-xs" style={{ color: "var(--projects-text-accent-green)" }}>
               {project.status}
             </span>
             <span className="text-xs" style={{ color: "var(--projects-text-muted)" }}>
               • {project.year}
             </span>
+            {companyName && (
+              <>
+                <span className="text-xs" style={{ color: "var(--projects-text-muted)" }}>•</span>
+                <span className="text-xs px-2 py-0.5 rounded-full bg-[var(--projects-card-bg)] border border-[var(--projects-border)]" style={{ color: "var(--projects-text-accent-blue)" }}>
+                  @ {companyName}
+                </span>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -115,6 +124,10 @@ ProjectCard.displayName = 'ProjectCard'
 
 interface ResumeData {
   projects: any[]
+  experience?: Array<{
+    company: string
+    projects?: string[]
+  }>
 }
 
 interface ProjectsSectionProps {
@@ -126,6 +139,15 @@ const ProjectsSection = memo(({ resumeData }: ProjectsSectionProps) => {
   const memoizedProjects = useMemo(() => {
     return resumeData?.projects || []
   }, [resumeData?.projects])
+
+  // Helper function to find company name for a project
+  const getProjectCompany = (projectSlug: string) => {
+    if (!resumeData?.experience) return undefined
+    const experience = resumeData.experience.find(exp => 
+      exp.projects?.includes(projectSlug)
+    )
+    return experience?.company
+  }
 
   return (
     <div className="max-w-6xl mx-auto">
@@ -145,13 +167,19 @@ const ProjectsSection = memo(({ resumeData }: ProjectsSectionProps) => {
         </p>
       </div>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {memoizedProjects.map((project, projectIndex) => (
+        {memoizedProjects.map((project, projectIndex) => {
+          const projectSlug = project.slug || ''
+          const companyName = getProjectCompany(projectSlug)
+          
+          return (
             <ProjectCard
               key={project.name}
               project={project}
               index={projectIndex}
+              companyName={companyName}
             />
-        ))}
+          )
+        })}
       </div>
     </div>
   )

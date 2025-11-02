@@ -1,6 +1,8 @@
 "use client"
-import { Calendar, MapPin, ArrowDown, Briefcase, CheckCircle } from "lucide-react"
+import { Calendar, MapPin, ArrowDown, Briefcase, CheckCircle, ExternalLink } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
+import Link from "next/link"
+
 interface ResumeData {
   experience: Array<{
     id: number
@@ -12,6 +14,12 @@ interface ResumeData {
     technologies: string[]
     type?: string
     achievements?: string[]
+    projects?: string[]
+  }>
+  projects?: Array<{
+    name: string
+    slug?: string
+    description: string
   }>
 }
 
@@ -122,6 +130,35 @@ export default function ExperienceSection({ resumeData }: ExperienceSectionProps
                     ))}
                   </div>
                 </div>
+
+                {/* Related Projects */}
+                {exp.projects && exp.projects.length > 0 && (
+                  <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-[var(--border-color)]">
+                    <h4 className="text-[var(--vscode-green)] font-mono mb-2 text-xs sm:text-sm flex items-center gap-2">
+                      <Briefcase className="w-3 h-3 sm:w-4 sm:h-4" />
+                      // Projects Built During This Role
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {exp.projects.map((projectSlug) => {
+                        const project = resumeData.projects?.find(p => p.slug === projectSlug)
+                        if (!project) return null
+                        
+                        return (
+                          <Link
+                            key={projectSlug}
+                            href={`/projects/${projectSlug}`}
+                            className="group flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[var(--bg-primary)] border border-[var(--vscode-green)]/30 hover:border-[var(--vscode-green)] hover:bg-[var(--vscode-green)]/10 transition-all duration-300"
+                          >
+                            <span className="text-xs sm:text-sm text-[var(--vscode-green)] font-medium">
+                              {project.name}
+                            </span>
+                            <ExternalLink className="w-3 h-3 text-[var(--vscode-green)] opacity-0 group-hover:opacity-100 transition-opacity" />
+                          </Link>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Down arrow */}

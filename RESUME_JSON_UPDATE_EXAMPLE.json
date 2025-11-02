@@ -1,0 +1,91 @@
+{
+  "experience": [
+    {
+      "id": 1,
+      "company": "Turris Group",
+      "title": "Full Stack Developer",
+      "startDate": "January 2023",
+      "endDate": "Present",
+      "description": "Leading development of enterprise solutions for construction and telecommunications workforce management",
+      "technologies": ["Angular 15", "Node.js", "PostgreSQL", "Redis", "DevExtreme"],
+      "achievements": [
+        "Architected and developed comprehensive ERP system serving 500+ users",
+        "Implemented real-time workforce tracking reducing project delays by 30%",
+        "Optimized database queries improving system performance by 40%",
+        "Led migration from legacy system with zero downtime"
+      ],
+      "projects": ["turris-erp"]
+    },
+    {
+      "id": 2,
+      "company": "Freelance / Personal Projects",
+      "title": "Independent Full Stack Developer",
+      "startDate": "2022",
+      "endDate": "2023",
+      "description": "Developed innovative full-stack applications across education, community management, and creative technology",
+      "technologies": ["React", "React Native", "Angular", "Node.js", "MongoDB", "PostgreSQL", "OpenAI"],
+      "achievements": [
+        "Delivered 5+ production-ready applications from concept to deployment",
+        "Integrated AI capabilities to enhance user experiences",
+        "Managed complete software development lifecycle independently",
+        "Built scalable architectures handling thousands of users"
+      ],
+      "projects": ["storyverse", "abgadya", "entityconnect"]
+    }
+  ],
+  "projects": [
+    {
+      "id": 1,
+      "name": "Turris ERP",
+      "slug": "turris-erp",
+      "description": "Enterprise Resource Planning System for construction and telecommunications workforce management",
+      "technologies": ["Angular 15", "Node.js", "PostgreSQL", "Redis", "DevExtreme"],
+      "status": "Production",
+      "year": "2023",
+      "icon": "Building2",
+      "color": "from-blue-500 to-blue-700",
+      "githubUrl": "https://github.com/minaragaie/turris-erp-frontend",
+      "featured": true
+    },
+    {
+      "id": 2,
+      "name": "StoryVerse",
+      "slug": "storyverse",
+      "description": "AI-powered interactive storytelling platform with collaborative features",
+      "technologies": ["React Native", "Node.js", "MongoDB", "OpenAI"],
+      "status": "Production",
+      "year": "2024",
+      "icon": "BookOpen",
+      "color": "from-purple-500 to-purple-700",
+      "githubUrl": "https://github.com/minaragaie/storyverse-app",
+      "featured": true
+    },
+    {
+      "id": 3,
+      "name": "Abgadya",
+      "slug": "abgadya",
+      "description": "Educational platform for Arabic language learning with interactive lessons",
+      "technologies": ["React", "Express", "PostgreSQL"],
+      "status": "Active",
+      "year": "2023",
+      "icon": "GraduationCap",
+      "color": "from-green-500 to-green-700",
+      "githubUrl": "https://github.com/minaragaie/abgadya",
+      "featured": true
+    },
+    {
+      "id": 4,
+      "name": "EntityConnect",
+      "slug": "entityconnect",
+      "description": "Church community management platform (Quaenet monorepo)",
+      "technologies": ["Angular 13", "Sails.js", "React Native", "MySQL"],
+      "status": "Production",
+      "year": "2022",
+      "icon": "Users",
+      "color": "from-amber-500 to-amber-700",
+      "githubUrl": "https://github.com/minaragaie/quaenet",
+      "featured": true
+    }
+  ]
+}
+
