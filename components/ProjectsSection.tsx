@@ -43,32 +43,40 @@ const ProjectCard = memo(({ project, index, companyName }: ProjectCardProps) => 
       "
       style={{ transitionDelay: `${index * 100}ms` }}
     >
-      <div className="flex items-center gap-3 mb-4 transition-all duration-500 translate-x-0 opacity-100">
+      <div className="flex items-start gap-3 mb-4 transition-all duration-500 translate-x-0 opacity-100">
         <div
-          className={`p-2 bg-gradient-to-br ${project.color} rounded transition-transform duration-300 hover:rotate-12`}
+          className={`p-2 bg-gradient-to-br ${project.color} rounded-lg transition-transform duration-300 hover:rotate-12 hover:scale-110`}
         >
           <Icon className="w-5 h-5" style={{ color: "var(--projects-text-white)" }} />
         </div>
-        <div className="flex-1">
-          <h3 className="font-semibold text-sm" style={{ color: "var(--projects-text-white)" }}>
+        <div className="flex-1 min-w-0">
+          <h3 className="font-semibold text-sm mb-1.5 truncate" style={{ color: "var(--projects-text-white)" }}>
             {project.name}
           </h3>
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-xs" style={{ color: "var(--projects-text-accent-green)" }}>
+          <div className="flex items-center gap-2 flex-wrap text-xs">
+            <span className="px-1.5 py-0.5 rounded" style={{ 
+              color: "var(--projects-text-accent-green)",
+              backgroundColor: "var(--projects-card-bg)"
+            }}>
               {project.status}
             </span>
-            <span className="text-xs" style={{ color: "var(--projects-text-muted)" }}>
-              • {project.year}
+            <span style={{ color: "var(--projects-text-muted)" }}>
+              {project.year}
             </span>
+            {companyName && (
+              <>
+                <span style={{ color: "var(--projects-text-muted)" }}>•</span>
+                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded font-medium" style={{
+                  backgroundColor: "rgba(59, 130, 246, 0.1)",
+                  color: "#60a5fa",
+                  border: "1px solid rgba(59, 130, 246, 0.2)"
+                }}>
+                  <Building2 className="w-3 h-3" />
+                  {companyName}
+                </span>
+              </>
+            )}
           </div>
-          {companyName && (
-            <div className="mt-2">
-              <span className="inline-flex items-center gap-1 px-2 py-1 text-xs rounded-md font-medium bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/30 text-blue-400">
-                <Building2 className="w-3 h-3" />
-                {companyName}
-              </span>
-            </div>
-          )}
         </div>
       </div>
 
