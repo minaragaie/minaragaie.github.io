@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useState } from "react"
 import { useExplorer } from "@/context/ExplorerContext"
 import { useResumeData } from "@/hooks/useResumeData"
-import { staticResumeData } from "@/lib/resume-data"
 import { slugify } from "@/lib/utils"
 import { useRouter } from "next/navigation"
 import { usePathname } from "next/navigation"
@@ -13,15 +12,6 @@ import CareerGitHistory from "./CareerGitHistory"
 import SkillsMarketplace from "./SkillsMarketplace"
 import RecruiterDashboard from "./RecruiterDashboard"
 import CommandPalette from "./command-palette"
-
-interface StaticResumeData {
-  experience?: Array<{ id: number; company: string; degree?: string }>
-  education?: Array<{ degree: string }>
-  certifications?: Array<{ name: string }>
-  projects?: Array<{ name: string; githubUrl?: string; slug?: string }>
-}
-
-const resumeData = staticResumeData as StaticResumeData | null
 
 export default function SidePanel() {
   const { isOpen, closeExplorer, activeTab, openExplorer } = useExplorer()
@@ -104,13 +94,13 @@ export default function SidePanel() {
 
     structure.push({ id: "projects", name: "projects/", icon: FolderOpen, color: "#dcb67a", type: "directory", children: projectsChildren })
 
-    const experienceChildren = (resumeData?.experience || []).map((exp: any) => ({ id: `experience-${exp.id}`, name: `${slugify(exp.company.toLowerCase())}.ts`, icon: Briefcase, color: "#dcdcaa", parent: "experience" }))
+    const experienceChildren = (apiResumeData?.experience || []).map((exp: any) => ({ id: `experience-${exp.id}`, name: `${slugify(exp.company.toLowerCase())}.ts`, icon: Briefcase, color: "#dcdcaa", parent: "experience" }))
     structure.push({ id: "experience", name: "experience/", icon: FolderOpen, color: "#dcb67a", type: "directory", children: experienceChildren })
 
-    const educationChildren = (resumeData?.education || []).map((edu: any, idx: any) => ({ id: `education-${idx}`, name: `${slugify((edu.degree || "unknown-degree").toLowerCase())}.ts`, icon: GraduationCap, color: "#c586c0", parent: "education" }))
+    const educationChildren = (apiResumeData?.education || []).map((edu: any, idx: any) => ({ id: `education-${idx}`, name: `${slugify((edu.degree || "unknown-degree").toLowerCase())}.ts`, icon: GraduationCap, color: "#c586c0", parent: "education" }))
     structure.push({ id: "education", name: "education/", icon: FolderOpen, color: "#dcb67a", type: "directory", children: educationChildren })
 
-    const certificationsChildren = (resumeData?.certifications || []).map((cert: any, idx: any) => ({ id: `certifications-${idx}`, name: `${slugify((cert.name || "unknown-certificate").toLowerCase())}.ts`, icon: Award, color: "#ce9178", parent: "certifications" }))
+    const certificationsChildren = (apiResumeData?.certifications || []).map((cert: any, idx: any) => ({ id: `certifications-${idx}`, name: `${slugify((cert.name || "unknown-certificate").toLowerCase())}.ts`, icon: Award, color: "#ce9178", parent: "certifications" }))
     structure.push({ id: "certifications", name: "certifications/", icon: FolderOpen, color: "#dcb67a", type: "directory", children: certificationsChildren })
 
     return structure
@@ -133,7 +123,7 @@ export default function SidePanel() {
       const [parent, idxOrName] = sectionId.split("-")
       if (parent === "projects") targetId = "projects"
       if (parent === "certifications") {
-        const cert = (resumeData?.certifications as any)?.[Number(idxOrName)]
+        const cert = (apiResumeData?.certifications as any)?.[Number(idxOrName)]
         if (cert) targetId = `cert-${cert.name.toLowerCase().replace(/[^a-z0-9]/g, "-")}`
       }
     }
