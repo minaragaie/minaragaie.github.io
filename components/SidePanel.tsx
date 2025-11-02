@@ -121,11 +121,11 @@ export default function SidePanel() {
     let targetId = sectionId
     if (sectionId.includes("-")) {
       const [parent, idxOrName] = sectionId.split("-")
+      // Navigate to parent section for experience, education, and certifications
       if (parent === "projects") targetId = "projects"
-      if (parent === "certifications") {
-        const cert = (apiResumeData?.certifications as any)?.[Number(idxOrName)]
-        if (cert) targetId = `cert-${cert.name.toLowerCase().replace(/[^a-z0-9]/g, "-")}`
-      }
+      if (parent === "experience") targetId = "experience"
+      if (parent === "education") targetId = "education"
+      if (parent === "certifications") targetId = "certifications"
     }
 
     // If not on the homepage, navigate to it with hash first
