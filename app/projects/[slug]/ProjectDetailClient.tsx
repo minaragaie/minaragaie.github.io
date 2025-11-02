@@ -274,7 +274,7 @@ export default function ProjectDetailClient() {
               className="flex-1 min-w-0 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent"
             >
               <div className="pr-4">
-                <ProjectMetadata project={project} />
+                <ProjectMetadata project={project} resumeData={resumeData} />
                 <ProjectContent markdownContent={markdownContent} headingTree={headingTree} />
 
                 {/* Giscus Comments Section - Only for public repos */}

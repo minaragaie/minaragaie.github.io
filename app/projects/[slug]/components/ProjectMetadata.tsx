@@ -1,15 +1,27 @@
 "use client"
 import { Project } from "@/types/resume"
-import { Lock } from "lucide-react"
+import { Lock, Building2 } from "lucide-react"
 
 interface ProjectMetadataProps {
   project: Project
+  resumeData?: any
 }
 
-export default function ProjectMetadata({ project }: ProjectMetadataProps) {
+export default function ProjectMetadata({ project, resumeData }: ProjectMetadataProps) {
+  // Find company for this project
+  const getProjectCompany = () => {
+    if (!resumeData?.experience) return undefined
+    const experience = resumeData.experience.find((exp: any) => 
+      exp.projects?.includes(project.slug)
+    )
+    return experience?.company
+  }
+  
+  const companyName = getProjectCompany()
+
   return (
     <div className="mb-8 pb-6 border-b border-[var(--projects-border)]">
-      <div className="flex items-center gap-3 mb-4">
+      <div className="flex items-center gap-3 mb-4 flex-wrap">
         <h1
           className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent"
         >
@@ -19,6 +31,12 @@ export default function ProjectMetadata({ project }: ProjectMetadataProps) {
           <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20">
             <Lock className="w-4 h-4 text-amber-500 flex-shrink-0" />
             <span className="text-xs font-medium text-amber-500">Private Repository</span>
+          </div>
+        )}
+        {companyName && (
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/30">
+            <Building2 className="w-4 h-4 text-blue-400 flex-shrink-0" />
+            <span className="text-xs font-semibold text-blue-400">{companyName}</span>
           </div>
         )}
       </div>
