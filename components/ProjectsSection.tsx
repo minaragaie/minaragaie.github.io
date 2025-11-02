@@ -1,7 +1,7 @@
 "use client"
 import { memo, useMemo } from "react"
 import Link from "next/link"
-import { Building2, Users, GraduationCap, Stethoscope, Calendar, MessageCircle, BookOpen, ExternalLink } from "lucide-react"
+import { Building2, Users, GraduationCap, Stethoscope, Calendar, MessageCircle, BookOpen, ExternalLink, Sparkles } from "lucide-react"
 
 // Icon mapping for converting string names to icon components
 const iconMap: Record<string, React.ComponentType<any>> = {
@@ -63,7 +63,7 @@ const ProjectCard = memo(({ project, index, companyName }: ProjectCardProps) => 
             <span style={{ color: "var(--projects-text-muted)" }}>
               {project.year}
             </span>
-            {companyName && (
+            {companyName ? (
               <>
                 <span style={{ color: "var(--projects-text-muted)" }}>•</span>
                 <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded font-medium" style={{
@@ -73,6 +73,18 @@ const ProjectCard = memo(({ project, index, companyName }: ProjectCardProps) => 
                 }}>
                   <Building2 className="w-3 h-3" />
                   {companyName}
+                </span>
+              </>
+            ) : (
+              <>
+                <span style={{ color: "var(--projects-text-muted)" }}>•</span>
+                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded font-medium" style={{
+                  backgroundColor: "rgba(139, 92, 246, 0.1)",
+                  color: "#a78bfa",
+                  border: "1px solid rgba(139, 92, 246, 0.2)"
+                }}>
+                  <Sparkles className="w-3 h-3" />
+                  Side Project
                 </span>
               </>
             )}

@@ -1,6 +1,6 @@
 "use client"
 import { Project } from "@/types/resume"
-import { Lock, Building2 } from "lucide-react"
+import { Lock, Building2, Sparkles } from "lucide-react"
 
 interface ProjectMetadataProps {
   project: Project
@@ -33,10 +33,15 @@ export default function ProjectMetadata({ project, resumeData }: ProjectMetadata
             <span className="text-xs font-medium text-amber-500">Private Repository</span>
           </div>
         )}
-        {companyName && (
+        {companyName ? (
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/30">
             <Building2 className="w-4 h-4 text-blue-400 flex-shrink-0" />
             <span className="text-xs font-semibold text-blue-400">{companyName}</span>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gradient-to-r from-purple-500/10 to-violet-500/10 border border-purple-500/30">
+            <Sparkles className="w-4 h-4 text-purple-400 flex-shrink-0" />
+            <span className="text-xs font-semibold text-purple-400">Side Project</span>
           </div>
         )}
       </div>
