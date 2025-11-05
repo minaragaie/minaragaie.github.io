@@ -72,14 +72,30 @@ export const useResumeData = () => {
   const [resumeData, setResumeData] = useState<ResumeData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [retryCount, setRetryCount] = useState(0)
 
   useEffect(() => {
     const fetchResumeData = async () => {
+      let timeoutId: NodeJS.Timeout | null = null
+      
       try {
         setLoading(true)
         setError(null)
         
-        const response = await fetch(`${config.API_BASE_URL}${config.ENDPOINTS.RESUME}`)
+        // Create abort controller for timeout
+        const controller = new AbortController()
+        
+        // Set 15 second timeout
+        timeoutId = setTimeout(() => {
+          controller.abort()
+        }, 15000)
+        
+        const response = await fetch(`${config.API_BASE_URL}${config.ENDPOINTS.RESUME}`, {
+          signal: controller.signal
+        })
+        
+        // Clear timeout on successful response
+        if (timeoutId) clearTimeout(timeoutId)
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`)
@@ -102,8 +118,22 @@ export const useResumeData = () => {
                  throw new Error(result.message || 'Failed to fetch resume data')
                }
       } catch (err) {
+        // Clear timeout if error occurs
+        if (timeoutId) clearTimeout(timeoutId)
+        
         console.error('Error fetching resume data:', err)
-        setError(err instanceof Error ? err.message : 'Unknown error')
+        
+        // Determine error message
+        let errorMessage = 'Unknown error'
+        if (err instanceof Error) {
+          if (err.name === 'AbortError') {
+            errorMessage = 'Request timeout - The server is taking too long to respond'
+          } else {
+            errorMessage = err.message
+          }
+        }
+        
+        setError(errorMessage)
         
         // Fallback to empty data structure
         setResumeData({
@@ -138,7 +168,11 @@ export const useResumeData = () => {
     }
 
     fetchResumeData()
-  }, [])
+  }, [retryCount])
 
-  return { resumeData, loading, error }
+  const retry = () => {
+    setRetryCount(prev => prev + 1)
+  }
+
+  return { resumeData, loading, error, retry }
 }

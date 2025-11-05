@@ -20,7 +20,7 @@ import ScrollAnimatedSection from "@/components/ScrollAnimatedSection"
 import { useResumeData } from "@/hooks/useResumeData"
 
 const Resume = memo(() => {
-  const { resumeData, loading, error } = useResumeData()
+  const { resumeData, loading, error, retry } = useResumeData()
 
   // Handle hash navigation after page loads (for experience, education, certifications)
   useEffect(() => {
@@ -41,10 +41,13 @@ const Resume = memo(() => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen loading-state">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-[var(--vscode-blue)] mx-auto"></div>
-          <p className="mt-4">Loading resume data...</p>
+      <div className="flex items-center justify-center min-h-screen loading-state bg-[var(--bg-primary)]">
+        <div className="text-center max-w-md px-4">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-[var(--vscode-blue)] mx-auto mb-4"></div>
+          <p className="text-lg font-medium text-[var(--text-primary)] mb-2">Loading resume data...</p>
+          <p className="text-sm text-[var(--text-secondary)]">
+            Fetching latest portfolio information from the server
+          </p>
         </div>
       </div>
     )
@@ -52,10 +55,34 @@ const Resume = memo(() => {
 
   if (error) {
     return (
-      <div className="flex items-center justify-center min-h-screen error-state">
-        <div className="text-center">
-          <p className="text-[var(--vscode-error)]">Error loading resume data: {error}</p>
-          <p className="mt-2">Please try refreshing the page</p>
+      <div className="flex items-center justify-center min-h-screen error-state bg-[var(--bg-primary)]">
+        <div className="text-center max-w-lg px-4">
+          <div className="mb-6">
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-[var(--vscode-error)]/10 mb-4">
+              <svg className="w-10 h-10 text-[var(--vscode-error)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+          </div>
+          <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-2">
+            Unable to Load Portfolio
+          </h2>
+          <p className="text-[var(--vscode-error)] mb-2 font-medium">{error}</p>
+          <p className="text-sm text-[var(--text-secondary)] mb-6">
+            The backend server may be temporarily unavailable or experiencing high traffic. Please try again.
+          </p>
+          <button
+            onClick={retry}
+            className="px-6 py-3 bg-[var(--vscode-blue)] hover:bg-[var(--vscode-blue)]/80 text-white rounded-lg font-medium transition-all duration-200 hover:scale-105 shadow-lg"
+          >
+            Retry Loading
+          </button>
+          <p className="mt-4 text-xs text-[var(--text-secondary)]">
+            If the issue persists, please contact me directly at{' '}
+            <a href="mailto:minaragaie@hotmail.com" className="text-[var(--vscode-blue)] hover:underline">
+              minaragaie@hotmail.com
+            </a>
+          </p>
         </div>
       </div>
     )
@@ -63,9 +90,15 @@ const Resume = memo(() => {
 
   if (!resumeData) {
     return (
-      <div className="flex items-center justify-center min-h-screen no-data-state">
-        <div className="text-center">
-          <p>No resume data available</p>
+      <div className="flex items-center justify-center min-h-screen no-data-state bg-[var(--bg-primary)]">
+        <div className="text-center max-w-md px-4">
+          <p className="text-lg text-[var(--text-primary)]">No resume data available</p>
+          <button
+            onClick={retry}
+            className="mt-4 px-6 py-2 bg-[var(--vscode-blue)] text-white rounded-lg hover:bg-[var(--vscode-blue)]/80 transition-colors"
+          >
+            Retry
+          </button>
         </div>
       </div>
     )
