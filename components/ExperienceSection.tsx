@@ -135,8 +135,9 @@ export default function ExperienceSection({ resumeData }: ExperienceSectionProps
                 {exp.projects && exp.projects.length > 0 && (
                   <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-[var(--border-color)]">
                     <h4 className="text-[var(--vscode-green)] font-mono mb-3 text-xs sm:text-sm flex items-center gap-2">
-                      <Briefcase className="w-3 h-3 sm:w-4 sm:h-4" />
-                      // Projects
+                      //<Briefcase className="w-3 h-3 sm:w-4 sm:h-4" />
+                      Projects
+                      
                     </h4>
                     <div className="flex flex-wrap gap-2">
                       {exp.projects.map((projectSlug) => {
