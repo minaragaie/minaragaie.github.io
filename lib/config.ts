@@ -1,7 +1,7 @@
 // Configuration for external API and authentication
 export const config = {
-  // External API Base URL
-  API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
+  // External API Base URL - fallback to external backend if not set
+  API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL || "https://resume-backend-service.vercel.app",
   
   // API Endpoints
   ENDPOINTS: {

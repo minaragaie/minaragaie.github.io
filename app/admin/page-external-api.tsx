@@ -12,7 +12,7 @@ import { Plus, Trash2, Save, Edit, X, LogOut, User, Briefcase, GraduationCap, Aw
 import { useAuth } from "@/context/AuthContext"
 
 // External API base URL
-const API_BASE_URL = "https://resume-backend-service-9e1iv8rr1-minaragaie89-8717s-projects.vercel.app"
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://resume-backend-service.vercel.app"
 
 interface ResumeData {
   personalInfo: {
@@ -95,7 +95,7 @@ export default function AdminPageExternalAPI() {
   useEffect(() => {
     const loadResumeData = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/admin-resume`)
+        const response = await fetch(`${API_BASE_URL}/api/admin?type=resume`)
         if (response.ok) {
           const result = await response.json()
           if (result.success) {
@@ -193,7 +193,7 @@ export default function AdminPageExternalAPI() {
     
     setSaving(true)
     try {
-      const response = await fetch(`${API_BASE_URL}/api/admin-resume`, {
+      const response = await fetch(`${API_BASE_URL}/api/admin?type=resume`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -229,7 +229,7 @@ export default function AdminPageExternalAPI() {
   // Individual CRUD operations using external API
   const deleteExperience = async (id: number) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/admin-experience?id=${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/admin?type=experience&id=${id}`, {
         method: 'DELETE',
       })
       
@@ -237,7 +237,7 @@ export default function AdminPageExternalAPI() {
         const result = await response.json()
         if (result.success) {
           // Reload data to reflect changes
-          const loadResponse = await fetch(`${API_BASE_URL}/api/admin/resume`)
+          const loadResponse = await fetch(`${API_BASE_URL}/api/admin?type=resume`)
           if (loadResponse.ok) {
             const loadResult = await loadResponse.json()
             if (loadResult.success) {
@@ -259,7 +259,7 @@ export default function AdminPageExternalAPI() {
 
   const deleteEducation = async (index: number) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/admin-education?index=${index}`, {
+      const response = await fetch(`${API_BASE_URL}/api/admin?type=education&index=${index}`, {
         method: 'DELETE',
       })
       
@@ -267,7 +267,7 @@ export default function AdminPageExternalAPI() {
         const result = await response.json()
         if (result.success) {
           // Reload data to reflect changes
-          const loadResponse = await fetch(`${API_BASE_URL}/api/admin/resume`)
+          const loadResponse = await fetch(`${API_BASE_URL}/api/admin?type=resume`)
           if (loadResponse.ok) {
             const loadResult = await loadResponse.json()
             if (loadResult.success) {
@@ -289,7 +289,7 @@ export default function AdminPageExternalAPI() {
 
   const deleteCertification = async (index: number) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/admin-certifications?index=${index}`, {
+      const response = await fetch(`${API_BASE_URL}/api/admin?type=certifications&index=${index}`, {
         method: 'DELETE',
       })
       
@@ -297,7 +297,7 @@ export default function AdminPageExternalAPI() {
         const result = await response.json()
         if (result.success) {
           // Reload data to reflect changes
-          const loadResponse = await fetch(`${API_BASE_URL}/api/admin/resume`)
+          const loadResponse = await fetch(`${API_BASE_URL}/api/admin?type=resume`)
           if (loadResponse.ok) {
             const loadResult = await loadResponse.json()
             if (loadResult.success) {
@@ -323,7 +323,7 @@ export default function AdminPageExternalAPI() {
     }
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/admin-resume`, {
+      const response = await fetch(`${API_BASE_URL}/api/admin?type=resume`, {
         method: 'DELETE',
       })
       
@@ -331,7 +331,7 @@ export default function AdminPageExternalAPI() {
         const result = await response.json()
         if (result.success) {
           // Reload data to reflect changes
-          const loadResponse = await fetch(`${API_BASE_URL}/api/admin/resume`)
+          const loadResponse = await fetch(`${API_BASE_URL}/api/admin?type=resume`)
           if (loadResponse.ok) {
             const loadResult = await loadResponse.json()
             if (loadResult.success) {

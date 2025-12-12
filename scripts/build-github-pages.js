@@ -8,7 +8,7 @@ console.log('🚀 Preparing for GitHub Pages deployment...');
 
 // Read the current admin page
 const adminPagePath = path.join(__dirname, '..', 'app', 'admin', 'page.tsx');
-const adminPageGitHubPath = path.join(__dirname, '..', 'app', 'admin', 'page-github.tsx');
+const adminPageExternalAPIPath = path.join(__dirname, '..', 'app', 'admin', 'page-external-api.tsx');
 
 try {
   // Backup the original admin page
@@ -17,10 +17,16 @@ try {
   fs.writeFileSync(backupPath, originalContent);
   console.log('✅ Backed up original admin page');
 
-  // Replace with GitHub Pages version
-  const githubContent = fs.readFileSync(adminPageGitHubPath, 'utf8');
-  fs.writeFileSync(adminPagePath, githubContent);
-  console.log('✅ Replaced admin page with GitHub Pages version');
+  // Replace with External API version (works with GitHub Pages)
+  const externalAPIContent = `"use client"
+
+import AdminPageExternalAPI from "./page-external-api"
+
+export default function AdminPageRoute() {
+  return <AdminPageExternalAPI />
+}`;
+  fs.writeFileSync(adminPagePath, externalAPIContent);
+  console.log('✅ Replaced admin page with External API version (GitHub Pages compatible)');
 
   // Remove API routes (they won't work on GitHub Pages)
   const apiDir = path.join(__dirname, '..', 'app', 'api');
