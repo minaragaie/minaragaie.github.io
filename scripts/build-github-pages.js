@@ -17,16 +17,16 @@ try {
   fs.writeFileSync(backupPath, originalContent);
   console.log('✅ Backed up original admin page');
 
-  // Replace with External API version (works with GitHub Pages)
-  const externalAPIContent = `"use client"
+  // Replace with full AdminPage component (works with GitHub Pages via external API)
+  const adminPageContent = `"use client"
 
-import AdminPageExternalAPI from "./page-external-api"
+import AdminPage from "@/components/admin/AdminPage"
 
 export default function AdminPageRoute() {
-  return <AdminPageExternalAPI />
+  return <AdminPage />
 }`;
-  fs.writeFileSync(adminPagePath, externalAPIContent);
-  console.log('✅ Replaced admin page with External API version (GitHub Pages compatible)');
+  fs.writeFileSync(adminPagePath, adminPageContent);
+  console.log('✅ Replaced admin page with full AdminPage component (GitHub Pages compatible via external API)');
 
   // Remove API routes (they won't work on GitHub Pages)
   const apiDir = path.join(__dirname, '..', 'app', 'api');
